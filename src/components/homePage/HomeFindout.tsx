@@ -1,7 +1,9 @@
 import React from 'react';
 import { Grid, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const HomeFindout = () => {
+    const navigate = useNavigate();
     return (
         <>
             <p className="home-title mbot-3 ">Tìm trọ thông minh với Houflex</p>
@@ -14,6 +16,7 @@ const HomeFindout = () => {
                             variant="contained"
                             color="inherit"
                             className="text-dark mt-3"
+                            onClick={() => navigate('/finding')}
                         >
                             Tìm Kiếm ngay
                         </Button>
@@ -30,6 +33,7 @@ const HomeFindout = () => {
                             variant="contained"
                             color="inherit"
                             className="text-dark mt-3"
+                            onClick={() => navigate('/finding')}
                         >
                             Tìm Kiếm ngay
                         </Button>
