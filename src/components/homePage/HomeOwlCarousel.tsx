@@ -93,7 +93,7 @@ const HomeOwlCarousel = () => {
     const owlDataMap = owlData.map((district: DistrictOwl, index: number) => {
         return (
             <div className="item" key={index}>
-                <Card variant="outlined" style={{ height: '360px' }}>
+                <Card variant="outlined" style={{ minHeight: '380px', maxHeight: '500px' }}>
                     <CardMedia
                         component="img"
                         alt="green iguana"
@@ -109,7 +109,9 @@ const HomeOwlCarousel = () => {
                         </Typography>
                     </CardContent>
                     <CardActions>
-                        <Button size="small">Tìm phòng trọ khu vực này</Button>
+                        <Button size="small" onClick={() => console.log(`e`)}>
+                            Tìm phòng trọ khu vực này
+                        </Button>
                     </CardActions>
                 </Card>
             </div>
@@ -117,8 +119,8 @@ const HomeOwlCarousel = () => {
     });
 
     return (
-        <div className="mt-3">
-            <p>Bạn muốn tìm kiếm ở đâu?</p>
+        <div style={{ marginTop: `5rem` }}>
+            <p className="home-title mbot-3 ">Bạn muốn tìm kiếm ở đâu?</p>
             <ReactOwlCarousel className="owl-theme" margin={10} items={4} loop>
                 {owlDataMap}
             </ReactOwlCarousel>

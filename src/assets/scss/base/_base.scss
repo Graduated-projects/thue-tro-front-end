@@ -11,7 +11,7 @@ body {
     background-color: $lightTheme;
 }
 .container {
-    margin: 0 20px !important;
+    margin: 0 50px !important;
 }
 
 .center {
@@ -33,6 +33,10 @@ body {
     }
     &-sml {
         font-size: 1.4rem;
+    }
+
+    &-super {
+        font-size: 2.8rem;
     }
 
     &-primary {
@@ -67,7 +71,7 @@ body {
             margin-bottom: 0.25rem;
         }
         &-2 {
-            margin-bottom:0.5rem;
+            margin-bottom: 0.5rem;
         }
         &-3 {
             margin-bottom: 0.75rem;
@@ -79,7 +83,7 @@ body {
             margin-top: 0.25rem;
         }
         &-2 {
-            margin-top:0.5rem;
+            margin-top: 0.5rem;
         }
         &-3 {
             margin-top: 0.75rem;
@@ -90,7 +94,7 @@ body {
             margin-left: 0.25rem;
         }
         &-2 {
-            margin-left:0.5rem;
+            margin-left: 0.5rem;
         }
         &-3 {
             margin-left: 0.75rem;
@@ -101,11 +105,14 @@ body {
             margin-right: 0.25rem;
         }
         &-2 {
-            margin-right:0.5rem;
+            margin-right: 0.5rem;
         }
         &-3 {
             margin-right: 0.75rem;
         }
     }
-   
+}
+
+.base-shadow {
+    box-shadow:  0px 0px 15px rgba(0, 0, 0, 0.15);
 }
