@@ -1,0 +1,112 @@
+@import '../variable/variable';
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html,
+body {
+    font-family: 'Roboto Condensed', sans-serif;
+    background-color: $lightTheme;
+}
+.container {
+    max-width: 72rem !important;
+    margin: 0 auto !important;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.center-column {
+    @extend .center;
+    flex-direction: column;
+}
+
+.text {
+    &-lar {
+        font-size: 1.8rem;
+    }
+    &-med {
+        font-size: 1.6rem;
+    }
+    &-sml {
+        font-size: 1.4rem;
+    }
+
+    &-primary {
+        color: $primaryColor !important;
+    }
+    &-danger {
+        color: $dangerColor !important;
+    }
+    &-warning {
+        color: $warningColor !important;
+    }
+    &-success {
+        color: $successColor !important;
+    }
+    &-secondary {
+        color: $secondaryColor !important;
+    }
+    &-legendary {
+        color: $grayColor !important;
+    }
+    &-light {
+        color: $lightColor !important;
+    }
+    &-dark {
+        color: $darkColor !important;
+    }
+}
+
+.m {
+    &bot {
+        &-1 {
+            margin-bottom: 0.25rem;
+        }
+        &-2 {
+            margin-bottom:0.5rem;
+        }
+        &-3 {
+            margin-bottom: 0.75rem;
+        }
+    }
+
+    &t {
+        &-1 {
+            margin-top: 0.25rem;
+        }
+        &-2 {
+            margin-top:0.5rem;
+        }
+        &-3 {
+            margin-top: 0.75rem;
+        }
+    }
+    &l {
+        &-1 {
+            margin-left: 0.25rem;
+        }
+        &-2 {
+            margin-left:0.5rem;
+        }
+        &-3 {
+            margin-left: 0.75rem;
+        }
+    }
+    &r {
+        &-1 {
+            margin-right: 0.25rem;
+        }
+        &-2 {
+            margin-right:0.5rem;
+        }
+        &-3 {
+            margin-right: 0.75rem;
+        }
+    }
+   
+}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -8,7 +8,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import { grey } from '@mui/material/colors';
 
 export default function Headers() {
     const [auth, setAuth] = useState(true);
@@ -24,7 +23,7 @@ export default function Headers() {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static" >
+            <AppBar position="static">
                 <Toolbar>
                     <IconButton
                         size="large"
@@ -40,11 +39,7 @@ export default function Headers() {
                     </Typography>
                     {auth && (
                         <div>
-                            <IconButton
-                                size="large"
-                                onClick={handleMenu}
-                                color="inherit"
-                            >
+                            <IconButton size="large" onClick={handleMenu} color="inherit">
                                 <AccountCircle />
                             </IconButton>
                             <Menu
