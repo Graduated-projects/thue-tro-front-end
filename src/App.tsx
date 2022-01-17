@@ -1,19 +1,26 @@
 import Headers from './components/Headers';
 import './assets/scss/styles.scss';
-import HomeBackground from './components/homePage/HomeBackground';
-import HomeOwlCarousel from './components/homePage/HomeOwlCarousel';
-import HomeFindout from './components/homePage/HomeFindout';
+
+import Footer from './components/Footer';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import routes from './routes';
 
 function App() {
+    const routesMap = routes.map((route, index) => {
+        return <Route key={index} path={route.path} element={<route.component />}></Route>;
+    });
     return (
-        <div className="App">
-            <Headers />
-            <HomeBackground />
-            <div className="container">
-                <HomeOwlCarousel />
-                <HomeFindout />
+        <Router>
+            <div className="App">
+                <Headers />
+                <Routes>{routesMap}</Routes>
+                <div className="bg-light">
+                    <div className="container">
+                        <Footer />
+                    </div>
+                </div>
             </div>
-        </div>
+        </Router>
     );
 }
 

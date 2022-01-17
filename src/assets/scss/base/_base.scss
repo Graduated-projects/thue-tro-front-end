@@ -11,7 +11,7 @@ body {
     background-color: $lightTheme;
 }
 .container {
-    margin: 0 50px !important;
+    margin: 0 $baseMarginContainer !important;
 }
 
 .center {
@@ -112,7 +112,18 @@ body {
         }
     }
 }
+.bg {
+    &-dark {
+        background-color: $darkColor !important;
+    }
+    &-danger {
+        background-color: $dangerColor  !important;
+    }
+    &-light {
+        background-color: $lightColor  !important;
+    }
+}
 
 .base-shadow {
-    box-shadow:  0px 0px 15px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
 }
