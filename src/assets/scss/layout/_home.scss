@@ -1,9 +1,42 @@
 .home-background {
-     height: 600px;
-     background-image: url('../../img/home-background.jpg');
-     background-repeat: no-repeat;
-     background-size: auto;
-     background-attachment: fixed;
-     border-bottom-right-radius: 90px;
-     border-bottom-left-radius: 90px;
+    height: 600px;
+    background-image: url('../../img/home-background.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    border-bottom-right-radius: 90px;
+    border-bottom-left-radius: 90px;
+    text-shadow: 0 0 2px black;
+    font-weight: bold;
+}
+
+.home-title {
+    font-weight: bold;
+    font-size: $titleFont;
+}
+
+.home-findout {
+    height: 600px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: $borderRadius;
+    padding: 4rem 8rem 0 4rem;
+    color: $lightColor;
+    text-shadow: 0 0 2px black;
+    user-select: none;
+    font-weight: bold;
+    @extend .base-shadow;
+    
+    &__left {
+        background-image: url('../../img/findout-left.jpg');
+    }
+    &__right {
+     background-image: url('../../img/findout-right.jfif');
+ }
+}
+
+.footer {
+    padding: 2rem 0;
+    margin-top: 5rem;
+    border-top: thin solid #dddddd;
 }
