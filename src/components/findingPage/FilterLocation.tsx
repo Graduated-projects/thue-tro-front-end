@@ -1,27 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Formik, Field } from 'formik';
 import { LocationSearching } from '../../models/locationSearching';
-import {
-    Button,
-    FormControl,
-    Grid,
-    InputLabel,
-    MenuItem,
-    Select,
-    Slider,
-    TextField,
-} from '@mui/material';
+import { Button, Grid, Slider, MenuItem } from '@mui/material';
+import { TextField } from 'formik-mui';
 
 const initialLocation = {
     location: '',
-    radius: 100,
+    radius: 1,
+    unit: 0,
 };
 
 const onSubmit = (location: LocationSearching): void => {
     console.log(location);
 };
-
 const FilterLocation = () => {
     return (
         <div className="container ">
@@ -38,7 +30,7 @@ const FilterLocation = () => {
                                 placeholder="Nhập vào một địa điểm bất kỳ"
                                 label="Địa điểm"
                                 spellCheck={false}
-                                variant="outlined"
+                                disabled={false}
                             />
                             <Grid
                                 item
@@ -64,20 +56,24 @@ const FilterLocation = () => {
                                 />
                             </Grid>
                             <Grid item container justifyContent="center" spacing={2}>
-                                <FormControl fullWidth className="w-50 mt-5">
-                                    <InputLabel id="demo-simple-select-label">
-                                        đơn vị khoảng cách
-                                    </InputLabel>
-                                    <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        value="m"
-                                        label="đơn vị khoảng cách"
-                                    >
-                                        <MenuItem value="m">mét</MenuItem>
-                                        <MenuItem value="km">kilo mét</MenuItem>
-                                    </Select>
-                                </FormControl>
+                                <Field
+                                    component={TextField}
+                                    type="text"
+                                    name="unit"
+                                    label="Đơn vị khoảng cách"
+                                    select
+                                    variant="outlined"
+                                    margin="normal"
+                                    className="w-50"
+                                    disabled={false}
+                                >
+                                    <MenuItem key="metter" value={0}>
+                                        mét
+                                    </MenuItem>
+                                    <MenuItem key="kilometter" value={1}>
+                                        ki lô mét
+                                    </MenuItem>
+                                </Field>
                             </Grid>
                             <Grid item justifyContent="center">
                                 <Button variant="contained" type="submit">

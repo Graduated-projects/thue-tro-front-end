@@ -19,10 +19,10 @@ const SearchingMap = () => {
     // );
    
     return (
-        <>
+        <div className="container mt-5">
             <MapContainer
-                center={[10.8234563, 106.6934449]}
-                zoom={17}
+                center={[10.762622, 106.660172]}
+                zoom={12}
                 scrollWheelZoom={true}
                 id="map"
                 style={{ height: `480px` }}
@@ -33,7 +33,7 @@ const SearchingMap = () => {
                 />
                 <LocationMarker />
             </MapContainer>
-        </>
+        </div>
     );
 };
 

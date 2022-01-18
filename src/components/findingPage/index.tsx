@@ -5,9 +5,8 @@ import SearchingMap from './SearchingMap';
 const index = () => {
     return (
         <>
-        
-            <FilterLocation />
             <SearchingMap />
+            <FilterLocation />
         </>
     );
 };

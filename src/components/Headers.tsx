@@ -9,6 +9,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { useNavigate } from 'react-router-dom';
+import logo from '../assets/img/logo.png';
 
 export default function Headers() {
     const [auth, setAuth] = useState(true);
@@ -35,7 +36,7 @@ export default function Headers() {
                         sx={{ mr: 2 }}
                         onClick={() => navigate('/')}
                     >
-                        <MenuIcon />
+                        <img src={logo} alt="" className="logo" />
                     </IconButton>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Tìm hiểu thêm

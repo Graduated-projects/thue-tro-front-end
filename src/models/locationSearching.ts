@@ -1,4 +1,5 @@
 export interface LocationSearching {
      location: string,
-     radius: number
+     radius: number,
+     unit: number
 }
