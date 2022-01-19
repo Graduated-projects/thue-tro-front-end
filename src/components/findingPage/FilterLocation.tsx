@@ -1,20 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Formik, Field } from 'formik';
 import { LocationSearching } from '../../models/locationSearching';
 import { Button, Grid, Slider, MenuItem } from '@mui/material';
 import { TextField } from 'formik-mui';
+import { useDispatch } from 'react-redux';
+import { setLocationSlice } from '../../app/slice/locationSlice';
 
 const initialLocation = {
-    location: '',
+    place: '',
     radius: 1,
     unit: 0,
 };
 
-const onSubmit = (location: LocationSearching): void => {
-    console.log(location);
-};
 const FilterLocation = () => {
+    const dispatch = useDispatch();
+
+    const onSubmit = (location: LocationSearching): void => {
+
+        dispatch(setLocationSlice(location));
+    };
+
     return (
         <div className="container ">
             <Formik initialValues={initialLocation} onSubmit={onSubmit}>
@@ -24,8 +30,8 @@ const FilterLocation = () => {
                             <Field
                                 component={TextField}
                                 className="form-control w-50"
-                                name="location"
-                                id="location"
+                                name="place"
+                                id="place"
                                 autoComplete="off"
                                 placeholder="Nhập vào một địa điểm bất kỳ"
                                 label="Địa điểm"

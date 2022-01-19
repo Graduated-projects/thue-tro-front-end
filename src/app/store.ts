@@ -1,7 +1,9 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import locationSlice from './slice/locationSlice';
 
 export const store = configureStore({
   reducer: {
+      location: locationSlice
   },
 });
 
