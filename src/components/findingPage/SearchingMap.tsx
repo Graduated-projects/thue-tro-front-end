@@ -11,7 +11,12 @@ interface MapEventCustomProps {
 
 function MapEventCustom({ location }: MapEventCustomProps) {
     const map = useMap();
-    map.panTo(location.place.position, { duration: 1, easeLinearity: 0.25, noMoveStart: false });
+    map.setView(location.place.position, location.zoom, {
+        duration: 1,
+        easeLinearity: 1,
+        animate: true,
+    });
+
     return null;
 }
 
@@ -22,7 +27,7 @@ const SearchingMap = () => {
     return (
         <div className="container mt-5">
             <MapContainer
-                center={location.place.position || hcmLatLng}
+                center={location.place.position}
                 zoom={location.zoom}
                 scrollWheelZoom={true}
                 id="map"

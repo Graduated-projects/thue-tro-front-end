@@ -13,7 +13,7 @@ const initialLocation: LocationSearching = {
     place: { name: '', position: hcmLatLng },
     radius: 1,
     unit: 0,
-    zoom: 11,
+    zoom: 12,
 };
 
 const getLocationAtSaiGonByAddress = async (location: LocationSearching): Promise<any> => {
