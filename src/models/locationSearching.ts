@@ -1,5 +1,11 @@
+import { latlng } from "./latlng";
+
 export interface LocationSearching {
-     place: string,
-     radius: number,
-     unit: number
+    place: {
+        name: string;
+        position: latlng;
+    };
+    radius: number;
+    unit: number;
+    zoom: number
 }

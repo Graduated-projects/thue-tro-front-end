@@ -6,19 +6,46 @@ import { Button, Grid, Slider, MenuItem } from '@mui/material';
 import { TextField } from 'formik-mui';
 import { useDispatch } from 'react-redux';
 import { setLocationSlice } from '../../app/slice/locationSlice';
+import { latlng } from '../../models/latlng';
+import { hcmLatLng } from '../../util/hcmLngLat';
 
-const initialLocation = {
-    place: '',
+const initialLocation: LocationSearching = {
+    place: { name: '', position: hcmLatLng },
     radius: 1,
     unit: 0,
+    zoom: 11,
+};
+
+const getLocationAtSaiGonByAddress = async (location: LocationSearching): Promise<any> => {
+    //use openStreetMap to get positions
+    const positions = await $.get(
+        window.location.protocol +
+            '//nominatim.openstreetmap.org/search?format=json&q=' +
+            location.place.name
+    );
+
+    const SCOPE_SEARCHING = 'Sài Gòn';
+    const locationsAtSaiGon = positions.filter((location: any, index: number) => {
+        return location.display_name.includes(SCOPE_SEARCHING);
+    });
+
+    if (locationsAtSaiGon.length > 0) return Promise.resolve(locationsAtSaiGon[0]);
+    return Promise.reject();
 };
 
 const FilterLocation = () => {
     const dispatch = useDispatch();
 
     const onSubmit = (location: LocationSearching): void => {
-
-        dispatch(setLocationSlice(location));
+        getLocationAtSaiGonByAddress(location)
+            .then((response) => {
+                const position: latlng = [response.lat, response.lon];
+                const locationDto = { ...location, place: { position }, zoom: 13 };
+                dispatch(setLocationSlice(locationDto));
+            })
+            .catch((err) => {
+                console.error(err);
+            });
     };
 
     return (
@@ -30,7 +57,7 @@ const FilterLocation = () => {
                             <Field
                                 component={TextField}
                                 className="form-control w-50"
-                                name="place"
+                                name="place.name"
                                 id="place"
                                 autoComplete="off"
                                 placeholder="Nhập vào một địa điểm bất kỳ"
@@ -38,6 +65,11 @@ const FilterLocation = () => {
                                 spellCheck={false}
                                 disabled={false}
                             />
+                            <Grid item justifyContent="center">
+                                <Button variant="contained" type="submit">
+                                    chọn
+                                </Button>
+                            </Grid>
                             <Grid
                                 item
                                 container
