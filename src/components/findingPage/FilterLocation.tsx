@@ -40,7 +40,11 @@ const FilterLocation = () => {
         getLocationAtSaiGonByAddress(location)
             .then((response) => {
                 const position: latlng = [response.lat, response.lon];
-                const locationDto = { ...location, place: { position }, zoom: 13 };
+                const locationDto = {
+                    ...location,
+                    place: { position, name: response.display_name },
+                    zoom: 13,
+                };
                 dispatch(setLocationSlice(locationDto));
             })
             .catch((err) => {

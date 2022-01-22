@@ -1,19 +1,28 @@
 import { LatLngExpression } from 'leaflet';
-import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
+import { LocationSearching } from '../../models/locationSearching';
 import { hcmLatLng } from '../../util/hcmLngLat';
+
+interface MapEventCustomProps {
+    location: LocationSearching;
+}
+
+function MapEventCustom({ location }: MapEventCustomProps) {
+    const map = useMap();
+    map.panTo(location.place.position, { duration: 1, easeLinearity: 0.25, noMoveStart: false });
+    return null;
+}
 
 const SearchingMap = () => {
     const location = useSelector((state: RootState) => state.location);
-  
     console.log(location);
-    
 
     return (
         <div className="container mt-5">
             <MapContainer
-                center={hcmLatLng}
+                center={location.place.position || hcmLatLng}
                 zoom={location.zoom}
                 scrollWheelZoom={true}
                 id="map"
@@ -26,6 +35,7 @@ const SearchingMap = () => {
                 <Marker position={location.place.position as LatLngExpression}>
                     <Popup> {location.place.name} </Popup>
                 </Marker>
+                <MapEventCustom location={location} />
             </MapContainer>
         </div>
     );
