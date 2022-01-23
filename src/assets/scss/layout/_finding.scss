@@ -1,0 +1,9 @@
+.swal-saigon-positions {
+     border-bottom: thin solid #dddddd;
+     width: 100%;
+     cursor: pointer;
+     margin: 1rem 0;
+     &:hover {
+          color: $dangerColor;
+     }
+}

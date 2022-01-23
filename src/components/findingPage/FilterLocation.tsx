@@ -4,19 +4,28 @@ import { Form, Formik, Field } from 'formik';
 import { LocationSearching } from '../../models/locationSearching';
 import { Button, Grid, Slider, MenuItem } from '@mui/material';
 import { TextField } from 'formik-mui';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setLocationSlice } from '../../app/slice/locationSlice';
 import { latlng } from '../../models/latlng';
 import { hcmLatLng } from '../../util/hcmLngLat';
+import { RootState } from '../../app/store';
+import Swal from 'sweetalert2';
+import SaiGonLocations from './SaiGonLocations';
+import withReactContent from 'sweetalert2-react-content';
+import { LocationOpenStreetMap } from '../../models/locationOpenStreetMap';
+
+const MySwal = withReactContent(Swal);
 
 const initialLocation: LocationSearching = {
     place: { name: '', position: hcmLatLng },
-    radius: 1,
+    radius: 0,
     unit: 0,
     zoom: 12,
 };
 
-const getLocationAtSaiGonByAddress = async (location: LocationSearching): Promise<any> => {
+const getLocationAtSaiGonByAddress = async (
+    location: LocationSearching
+): Promise<Array<LocationOpenStreetMap>> => {
     //use openStreetMap to get positions
     const positions = await $.get(
         window.location.protocol +
@@ -28,33 +37,54 @@ const getLocationAtSaiGonByAddress = async (location: LocationSearching): Promis
     const locationsAtSaiGon = positions.filter((location: any, index: number) => {
         return location.display_name.includes(SCOPE_SEARCHING);
     });
-
-    if (locationsAtSaiGon.length > 0) return Promise.resolve(locationsAtSaiGon[0]);
+    console.log(positions);
+    
+    if (locationsAtSaiGon.length > 0) return Promise.resolve(locationsAtSaiGon);
     return Promise.reject();
+};
+
+const startSearching = (location: LocationSearching) => {
+    console.log(location);
 };
 
 const FilterLocation = () => {
     const dispatch = useDispatch();
+    const location = useSelector((state: RootState) => state.location);
 
-    const onSubmit = (location: LocationSearching): void => {
-        getLocationAtSaiGonByAddress(location)
+    const getInfoOfLocation = (place: LocationSearching): void => {
+        getLocationAtSaiGonByAddress(place)
             .then((response) => {
-                const position: latlng = [response.lat, response.lon];
-                const locationDto = {
-                    ...location,
-                    place: { position, name: response.display_name },
-                    zoom: 13,
-                };
-                dispatch(setLocationSlice(locationDto));
+                MySwal.fire({
+                    title: '<strong><u>Chọn địa điểm</u></strong>',
+                    html: (
+                        <SaiGonLocations
+                            mySwal={MySwal}
+                            place={place}
+                            locations={response}
+                            dispatch={dispatch}
+                        />
+                    ),
+                    showCloseButton: true,
+                    focusConfirm: false,
+                    confirmButtonText: '<i class="fa fa-thumbs-up"></i> đóng!',
+                });
             })
             .catch((err) => {
-                console.error(err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Không tìm thấy!',
+                    text: 'Vui lòng nhập vào địa chỉ cụ thể',
+                  })
             });
+    };
+
+    const setLocationRadius = (radius: number | number[]) => {
+        dispatch(setLocationSlice({ ...location, radius }));
     };
 
     return (
         <div className="container ">
-            <Formik initialValues={initialLocation} onSubmit={onSubmit}>
+            <Formik initialValues={initialLocation} onSubmit={() => {}}>
                 {(formik) => (
                     <Form className="mt-5">
                         <Grid item container spacing={2} direction="column" alignItems="center">
@@ -70,7 +100,10 @@ const FilterLocation = () => {
                                 disabled={false}
                             />
                             <Grid item justifyContent="center">
-                                <Button variant="contained" type="submit">
+                                <Button
+                                    variant="contained"
+                                    onClick={() => getInfoOfLocation(formik.values)}
+                                >
                                     chọn
                                 </Button>
                             </Grid>
@@ -86,15 +119,17 @@ const FilterLocation = () => {
                                 <Slider
                                     aria-label="Always visible"
                                     defaultValue={1}
-                                    step={0.5}
+                                    step={100}
                                     marks
-                                    min={1}
-                                    max={10}
+                                    min={0}
+                                    max={1000}
                                     valueLabelDisplay="on"
                                     className="w-50"
                                     name="radius"
                                     id="radius"
-                                    onChange={(e, value) => formik.setFieldValue('radius', value)}
+                                    onChange={(e, value) => {
+                                        setLocationRadius(value);
+                                    }}
                                 />
                             </Grid>
                             <Grid item container justifyContent="center" spacing={2}>
@@ -118,7 +153,10 @@ const FilterLocation = () => {
                                 </Field>
                             </Grid>
                             <Grid item justifyContent="center">
-                                <Button variant="contained" type="submit">
+                                <Button
+                                    variant="contained"
+                                    onClick={() => startSearching(location)}
+                                >
                                     Tìm kiếm
                                 </Button>
                             </Grid>

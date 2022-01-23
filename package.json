@@ -31,6 +31,8 @@
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
+    "sweetalert2": "^11.3.6",
+    "sweetalert2-react-content": "^4.2.0",
     "typescript": "^4.1.6",
     "yup": "^0.32.11"
   },

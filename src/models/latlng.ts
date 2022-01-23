@@ -1,1 +1,1 @@
-export type latlng = [number, number]
+export type latlng = [number, number];

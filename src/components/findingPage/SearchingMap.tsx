@@ -1,9 +1,16 @@
 import { LatLngExpression } from 'leaflet';
-import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
+import {
+    Circle,
+    CircleMarker,
+    MapContainer,
+    Marker,
+    Popup,
+    TileLayer,
+    useMap,
+} from 'react-leaflet';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import { LocationSearching } from '../../models/locationSearching';
-import { hcmLatLng } from '../../util/hcmLngLat';
 
 interface MapEventCustomProps {
     location: LocationSearching;
@@ -40,6 +47,15 @@ const SearchingMap = () => {
                 <Marker position={location.place.position as LatLngExpression}>
                     <Popup> {location.place.name} </Popup>
                 </Marker>
+                {location.radius !== 0 && (
+                    <Circle
+                        center={location.place.position}
+                        pathOptions={{ color: 'red' }}
+                        radius={location.radius}
+                    >
+                        <Popup>{`${location.place.name} xung quanh ${location.radius}`}</Popup>
+                    </Circle>
+                )}
                 <MapEventCustom location={location} />
             </MapContainer>
         </div>
