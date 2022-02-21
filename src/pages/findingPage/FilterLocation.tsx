@@ -1,18 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Form, Formik, Field } from 'formik';
-import { LocationSearching } from '../../models/locationSearching';
+import { LocationSearching } from '../../models/location.type';
 import { Button, Grid, Slider, MenuItem } from '@mui/material';
 import { TextField } from 'formik-mui';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLocationSlice } from '../../app/slice/locationSlice';
-import { latlng } from '../../models/latlng';
-import { hcmLatLng } from '../../util/hcmLngLat';
+import { hcmLatLng } from '../../configs/location';
 import { RootState } from '../../app/store';
 import Swal from 'sweetalert2';
 import SaiGonLocations from './SaiGonLocations';
 import withReactContent from 'sweetalert2-react-content';
-import { LocationOpenStreetMap } from '../../models/locationOpenStreetMap';
+import { LocationOpenStreetMap } from '../../models/location.type';
+import { getConstantValue } from 'typescript';
 
 const MySwal = withReactContent(Swal);
 
@@ -38,7 +37,7 @@ const getLocationAtSaiGonByAddress = async (
         return location.display_name.includes(SCOPE_SEARCHING);
     });
     console.log(positions);
-    
+
     if (locationsAtSaiGon.length > 0) return Promise.resolve(locationsAtSaiGon);
     return Promise.reject();
 };
@@ -74,12 +73,16 @@ const FilterLocation = () => {
                     icon: 'error',
                     title: 'Không tìm thấy!',
                     text: 'Vui lòng nhập vào địa chỉ cụ thể',
-                  })
+                });
             });
     };
 
     const setLocationRadius = (radius: number | number[]) => {
         dispatch(setLocationSlice({ ...location, radius }));
+    };
+
+    const setUnit = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
+        dispatch(setLocationSlice({ ...location, unit: e.target.value }));
     };
 
     return (
@@ -143,6 +146,7 @@ const FilterLocation = () => {
                                     margin="normal"
                                     className="w-50"
                                     disabled={false}
+                                    onChange={setUnit}
                                 >
                                     <MenuItem key="metter" value={0}>
                                         mét
@@ -167,7 +171,5 @@ const FilterLocation = () => {
         </div>
     );
 };
-
-FilterLocation.propTypes = {};
 
 export default FilterLocation;

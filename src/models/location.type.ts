@@ -1,3 +1,6 @@
+// import { latlng } from "@/models/interface";
+import { latlng } from "@/models/interface";
+
 export interface LocationOpenStreetMap {
     boundingbox?: Array<number>;
     class?: string;
@@ -12,3 +15,14 @@ export interface LocationOpenStreetMap {
     place_id: number;
     type?: string;
 }
+
+export interface LocationSearching {
+    place: {
+        name: string;
+        position: latlng;
+    };
+    radius: number;
+    unit: number;
+    zoom: number
+}
+

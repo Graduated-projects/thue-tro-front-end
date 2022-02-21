@@ -1,7 +1,9 @@
-import Headers from './components/Headers';
+import React from 'react';
+import Headers from './pages/Headers';
 import './assets/scss/styles.scss';
+import Footer from './pages/Footer';
+// import Footer from '@/pages/Footer';
 
-import Footer from './components/Footer';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import routes from './routes';
 

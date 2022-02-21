@@ -1,6 +1,7 @@
-import NotFound from './components/NotFound';
-import HomePage from './components/homePage/index';
-import FindingPage from './components/findingPage/index';
+import NotFound from './pages/NotFound';
+import HomePage from './pages/homePage/index';
+import FindingPage from './pages/findingPage/index';
+
 const routes = [
     //notFound & Exception
     { path: '/', component: HomePage, exact: true },

@@ -1,7 +1,6 @@
 import { LatLngExpression } from 'leaflet';
 import {
     Circle,
-    CircleMarker,
     MapContainer,
     Marker,
     Popup,
@@ -10,7 +9,7 @@ import {
 } from 'react-leaflet';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
-import { LocationSearching } from '../../models/locationSearching';
+import { LocationSearching } from '../../models/location.type';
 
 interface MapEventCustomProps {
     location: LocationSearching;
