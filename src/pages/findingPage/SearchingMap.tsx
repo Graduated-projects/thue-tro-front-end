@@ -1,14 +1,6 @@
 import { LatLngExpression } from 'leaflet';
-import {
-    Circle,
-    MapContainer,
-    Marker,
-    Popup,
-    TileLayer,
-    useMap,
-} from 'react-leaflet';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../app/store';
+import { Circle, MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
+import { useLocationStore } from '../../app/store';
 import { LocationSearching } from '../../models/location.type';
 
 interface MapEventCustomProps {
@@ -27,9 +19,7 @@ function MapEventCustom({ location }: MapEventCustomProps) {
 }
 
 const SearchingMap = () => {
-    const location = useSelector((state: RootState) => state.location);
-    console.log(location);
-
+    const location = useLocationStore();
     return (
         <div className="container mt-5">
             <MapContainer

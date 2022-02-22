@@ -5,7 +5,7 @@ import Footer from './pages/Footer';
 // import Footer from '@/pages/Footer';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import routes from './routes';
+import routes from './configs/routes';
 
 function App() {
     const routesMap = routes.map((route, index) => {

@@ -1,17 +1,15 @@
 import React from 'react';
 import { Form, Formik, Field } from 'formik';
 import { LocationSearching } from '../../models/location.type';
-import { Button, Grid, Slider, MenuItem } from '@mui/material';
-import { TextField } from 'formik-mui';
-import { useDispatch, useSelector } from 'react-redux';
+import { Button, Grid, Slider, MenuItem, TextField } from '@mui/material';
+import { useDispatch } from 'react-redux';
 import { setLocationSlice } from '../../app/slice/locationSlice';
 import { hcmLatLng } from '../../configs/location';
-import { RootState } from '../../app/store';
+import {  useLocationStore } from '../../app/store';
 import Swal from 'sweetalert2';
 import SaiGonLocations from './SaiGonLocations';
 import withReactContent from 'sweetalert2-react-content';
 import { LocationOpenStreetMap } from '../../models/location.type';
-import { getConstantValue } from 'typescript';
 
 const MySwal = withReactContent(Swal);
 
@@ -48,7 +46,7 @@ const startSearching = (location: LocationSearching) => {
 
 const FilterLocation = () => {
     const dispatch = useDispatch();
-    const location = useSelector((state: RootState) => state.location);
+    const location = useLocationStore();
 
     const getInfoOfLocation = (place: LocationSearching): void => {
         getLocationAtSaiGonByAddress(place)
@@ -92,7 +90,7 @@ const FilterLocation = () => {
                     <Form className="mt-5">
                         <Grid item container spacing={2} direction="column" alignItems="center">
                             <Field
-                                component={TextField}
+                                as={TextField}
                                 className="form-control w-50"
                                 name="place.name"
                                 id="place"
@@ -137,7 +135,7 @@ const FilterLocation = () => {
                             </Grid>
                             <Grid item container justifyContent="center" spacing={2}>
                                 <Field
-                                    component={TextField}
+                                    as={TextField}
                                     type="text"
                                     name="unit"
                                     label="Đơn vị khoảng cách"

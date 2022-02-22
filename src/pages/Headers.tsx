@@ -10,9 +10,10 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/img/logo.png';
+import { path } from '../configs/path';
 
 export default function Headers() {
-    const [auth, setAuth] = useState(true);
+    const [auth, setAuth] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const navigate = useNavigate();
 
@@ -23,6 +24,7 @@ export default function Headers() {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -41,7 +43,7 @@ export default function Headers() {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Tìm hiểu thêm
                     </Typography>
-                    {auth && (
+                    {auth ? (
                         <div>
                             <IconButton size="large" onClick={handleMenu} color="inherit">
                                 <AccountCircle />
@@ -64,6 +66,12 @@ export default function Headers() {
                                 <MenuItem onClick={handleClose}>Thông tin</MenuItem>
                                 <MenuItem onClick={handleClose}>Đăng xuất</MenuItem>
                             </Menu>
+                        </div>
+                    ) : (
+                        <div>
+                            <IconButton size="large" onClick={() => navigate(path.auth.login)} color="inherit">
+                                <AccountCircle />
+                            </IconButton>{' '}
                         </div>
                     )}
                 </Toolbar>
