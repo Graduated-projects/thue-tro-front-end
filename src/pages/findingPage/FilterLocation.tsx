@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Formik, Field } from 'formik';
 import { LocationSearching } from '../../types/location.type';
 import { Button, Grid, Slider, MenuItem, TextField } from '@mui/material';
@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 import SaiGonLocations from './SaiGonLocations';
 import withReactContent from 'sweetalert2-react-content';
 import { LocationOpenStreetMap } from '../../types/location.type';
+import { unitStatus } from '../../configs/const';
 
 const MySwal = withReactContent(Swal);
 
@@ -45,6 +46,7 @@ const startSearching = (location: LocationSearching) => {
 const FilterLocation = () => {
     const dispatch = useDispatch();
     const location = useLocationStore();
+    const [currentUnit, setcurrentUnit] = useState(unitStatus.METER);
     console.log(location);
 
     const getInfoOfLocation = (place: LocationSearching): void => {
@@ -75,12 +77,19 @@ const FilterLocation = () => {
             });
     };
 
-    const setLocationRadius = (radius: number | number[]) => {
-        dispatch(setLocationSlice({ ...location, radius }));
+    const setLocationRadius = (radius: number) => {
+        const realRadius = currentUnit === unitStatus.METER ? radius : radius * 1000;
+        dispatch(setLocationSlice({ ...location, radius: realRadius }));
     };
 
     const setUnit = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
-        dispatch(setLocationSlice({ ...location, unit: e.target.value }));
+        const unitValue = Number(e.target.value);
+        setcurrentUnit(unitValue);
+        if (unitValue === unitStatus.METER) {
+            dispatch(setLocationSlice({ ...location, unit: unitValue, zoom: 15 }));
+        } else {
+            dispatch(setLocationSlice({ ...location, unit: unitValue, zoom: 13 }));
+        }
     };
 
     return (
@@ -117,21 +126,39 @@ const FilterLocation = () => {
                                 className="home-title mt-5"
                             >
                                 <p>Bán kính tìm kiếm:</p>
-                                <Slider
-                                    aria-label="Always visible"
-                                    defaultValue={1}
-                                    step={100}
-                                    marks
-                                    min={0}
-                                    max={1000}
-                                    valueLabelDisplay="on"
-                                    className="w-50"
-                                    name="radius"
-                                    id="radius"
-                                    onChange={(e, value) => {
-                                        setLocationRadius(value);
-                                    }}
-                                />
+                                {currentUnit === unitStatus.METER ? (
+                                    <Slider
+                                        aria-label="Always visible"
+                                        defaultValue={0}
+                                        step={100}
+                                        marks
+                                        min={0}
+                                        max={1000}
+                                        valueLabelDisplay="on"
+                                        className="w-50"
+                                        name="radius"
+                                        id="radius"
+                                        onChange={(e, value) => {
+                                            setLocationRadius(value as number);
+                                        }}
+                                    />
+                                ) : (
+                                    <Slider
+                                        aria-label="Always visible"
+                                        defaultValue={0}
+                                        step={0.5}
+                                        marks
+                                        min={0}
+                                        max={5}
+                                        valueLabelDisplay="on"
+                                        className="w-50"
+                                        name="radius"
+                                        id="radius"
+                                        onChange={(e, value) => {
+                                            setLocationRadius(value as number);
+                                        }}
+                                    />
+                                )}
                             </Grid>
                             <Grid item container justifyContent="center" spacing={2}>
                                 <Field

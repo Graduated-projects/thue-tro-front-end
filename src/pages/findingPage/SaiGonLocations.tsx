@@ -24,10 +24,10 @@ const SaiGonLocations = ({
         const position: latlng = [location.lat as number, location.lon as number];
 
         const locationDto = {
-            radius: locationStore.radius,
-            unit: locationStore.unit,
             place: { position, name: location.display_name },
             zoom: 13,
+            radius: locationStore.radius,
+            unit: locationStore.unit,
         };
         dispatch(setLocationSlice(locationDto));
         mySwal.close();
