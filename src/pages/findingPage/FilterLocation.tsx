@@ -3,7 +3,7 @@ import { Form, Formik, Field } from 'formik';
 import { LocationSearching } from '../../models/location.type';
 import { Button, Grid, Slider, MenuItem, TextField } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { setLocationSlice } from '../../app/slice/locationSlice';
+import { setLocationSlice } from '../../app/slice/location.slice';
 import { hcmLatLng } from '../../configs/location';
 import {  useLocationStore } from '../../app/store';
 import Swal from 'sweetalert2';

@@ -1,7 +1,7 @@
 import React, { Dispatch } from 'react';
 import { LocationOpenStreetMap } from '../../models/location.type';
 import { latlng } from '../../models/interface';
-import { setLocationSlice } from '../../app/slice/locationSlice';
+import { setLocationSlice } from '../../app/slice/location.slice';
 import { LocationSearching } from '@/models/location.type';
 
 interface SaiGonLocationsProps {
