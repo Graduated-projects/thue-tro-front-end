@@ -11,7 +11,7 @@ import Ward10 from '../assets/img/carousel/quan-10.jpg';
 import Ward11 from '../assets/img/carousel/quan-11.jpg';
 import Ward12 from '../assets/img/carousel/quan-12.jpg';
 // import { latlng } from '@/models/latlng';
- import { latlng } from '../models/interface';
+ import { latlng } from '../types/interface';
 
 export const owlData = [
     { title: 'Quận 1', content: 'Trung tâm thành phố', imgUrl: Ward1 },

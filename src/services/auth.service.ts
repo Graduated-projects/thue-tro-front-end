@@ -1,10 +1,9 @@
-import { url } from '../configs/request.api';
+import { api } from '../configs/request.api';
 import axios from 'axios';
-import { BodyRequest } from '@/models/interface';
+import { BodyRequest } from '@/types/interface';
 
 const login = (body: BodyRequest) => {
-    console.log(url.auth.SIGN_IN);
-    return axios.post(url.auth.SIGN_IN, body);
+    return axios.post(api.auth.SIGN_IN, body);
 };
 
 export const authService = {

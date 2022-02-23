@@ -6,7 +6,7 @@ export const server = {
     auth: authService + '/auth',
 };
 
-export const url = {
+export const api = {
     auth: {
         SIGN_UP: server.auth + '/sign-up',
         SIGN_IN: server.auth + '/sign-in',

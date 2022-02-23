@@ -2,12 +2,17 @@ import { authService } from '../../services/auth.service';
 import { Button, Grid, TextField } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Field, Form, Formik } from 'formik';
-
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { path } from '../../configs/path';
+import { setAuthSlice } from '../../app/slice/auth.slice';
+import { useAuthStore } from '../../app/store';
+import { useDispatch } from 'react-redux';
 
 const useStyles = makeStyles({
     container: {
         height: '65vh',
+        flexDirection: 'column',
     },
     formContainer: {
         width: '20rem',
@@ -15,7 +20,7 @@ const useStyles = makeStyles({
 });
 
 interface Body {
-     [key: string]: string
+    [key: string]: string;
 }
 
 const initialUser: Body = {
@@ -23,19 +28,28 @@ const initialUser: Body = {
     password: '',
 };
 
-const onLogin = (user: Body) => {
-     console.log(user);
-     
-    authService.login(user)
-    .then((resp) => {
-         console.log(resp);
-         
-    })
-    
-};
-
 const Login = () => {
     const classes = useStyles();
+    const navigate = useNavigate();
+    const auth = useAuthStore();
+    const dispatch = useDispatch();
+    console.log(auth);
+
+    const onLogin = (user: Body) => {
+        authService.login(user).then((resp) => {
+            localStorage.setItem('accessToken', resp.data);
+            //   navigate(path.main.home)
+            dispatch(setAuthSlice(resp.data));
+        });
+    };
+
+    // useEffect(() => {
+    //   first
+
+    //   return () => {
+    //     second
+    //   }
+    // }, [third])
 
     return (
         <div className={`center ${classes.container}`}>
