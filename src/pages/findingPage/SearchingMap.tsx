@@ -1,7 +1,7 @@
 import { LatLngExpression } from 'leaflet';
 import { Circle, MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
 import { useLocationStore } from '../../app/store';
-import { LocationSearching } from '../../models/location.type';
+import { LocationSearching } from '../../types/location.type';
 
 interface MapEventCustomProps {
     location: LocationSearching;
@@ -25,7 +25,7 @@ const SearchingMap = () => {
             <MapContainer
                 center={location.place.position}
                 zoom={location.zoom}
-                scrollWheelZoom={true}
+                scrollWheelZoom={false}
                 id="map"
                 style={{ height: `480px` }}
             >

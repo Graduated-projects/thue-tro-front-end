@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { LocationSearching } from '../../models/location.type';
+import { LocationSearching } from '../../types/location.type';
 import { hcmLatLng } from '../../configs/location';
-// import { hcmLatLng } from '@/configs/location';
 
 const initialState: LocationSearching = {
     place: {
@@ -17,8 +16,8 @@ const locationSlice = createSlice({
     name: 'location',
     initialState,
     reducers: {
-        setLocationSlice: (state, action) => {
-            return action.payload;
+        setLocationSlice: (state, action) => {         
+            return action.payload
         },
     },
 });

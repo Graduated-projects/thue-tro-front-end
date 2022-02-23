@@ -1,10 +1,7 @@
 {
-    "ts-node": {
-        "require": ["tsconfig-paths/register", "ts-node/register/transpile-only"]
-    },
     "compilerOptions": {
-        "target": "es6",
-        "lib": ["dom", "dom.iterable", "esnext", "es6"],
+        "target": "es5",
+        "lib": ["dom", "dom.iterable", "esnext", "es5"],
         "allowJs": true,
         "skipLibCheck": true,
         "esModuleInterop": true,
@@ -21,12 +18,10 @@
         "noImplicitThis": true,
         "strictNullChecks": true,
         "jsx": "react-jsx",
-        "baseUrl": ".",
+        "baseUrl": "src",
         "paths": {
-            "@/*": ["./src/*"],
-            
+            "@/*": ["*"]
         }
     },
-    "include": ["src"],
-    
+    "include": ["src"]
 }

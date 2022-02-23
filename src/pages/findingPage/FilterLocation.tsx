@@ -1,15 +1,15 @@
 import React from 'react';
 import { Form, Formik, Field } from 'formik';
-import { LocationSearching } from '../../models/location.type';
+import { LocationSearching } from '../../types/location.type';
 import { Button, Grid, Slider, MenuItem, TextField } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { setLocationSlice } from '../../app/slice/locationSlice';
+import { setLocationSlice } from '../../app/slice/location.slice';
 import { hcmLatLng } from '../../configs/location';
-import {  useLocationStore } from '../../app/store';
+import { useLocationStore } from '../../app/store';
 import Swal from 'sweetalert2';
 import SaiGonLocations from './SaiGonLocations';
 import withReactContent from 'sweetalert2-react-content';
-import { LocationOpenStreetMap } from '../../models/location.type';
+import { LocationOpenStreetMap } from '../../types/location.type';
 
 const MySwal = withReactContent(Swal);
 
@@ -55,10 +55,10 @@ const FilterLocation = () => {
                     title: '<strong><u>Chọn địa điểm</u></strong>',
                     html: (
                         <SaiGonLocations
+                            dispatch={dispatch}
                             mySwal={MySwal}
                             place={place}
                             locations={response}
-                            dispatch={dispatch}
                         />
                     ),
                     showCloseButton: true,
@@ -80,7 +80,7 @@ const FilterLocation = () => {
     };
 
     const setUnit = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
-        dispatch(setLocationSlice({ ...location, unit: e.target.value }));
+        dispatch(setLocationSlice({ ...location, unit: Number(e.target.value) }));
     };
 
     return (
@@ -136,7 +136,6 @@ const FilterLocation = () => {
                             <Grid item container justifyContent="center" spacing={2}>
                                 <Field
                                     as={TextField}
-                                    type="text"
                                     name="unit"
                                     label="Đơn vị khoảng cách"
                                     select

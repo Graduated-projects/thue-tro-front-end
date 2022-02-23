@@ -1,5 +1,5 @@
 // import { latlng } from "@/models/interface";
-import { latlng } from "@/models/interface";
+import { latlng } from "@/types/interface";
 
 export interface LocationOpenStreetMap {
     boundingbox?: Array<number>;
