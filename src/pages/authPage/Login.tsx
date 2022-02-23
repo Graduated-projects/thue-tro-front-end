@@ -31,25 +31,20 @@ const initialUser: Body = {
 const Login = () => {
     const classes = useStyles();
     const navigate = useNavigate();
-    const auth = useAuthStore();
     const dispatch = useDispatch();
-    console.log(auth);
 
     const onLogin = (user: Body) => {
         authService.login(user).then((resp) => {
             localStorage.setItem('accessToken', resp.data);
-            //   navigate(path.main.home)
+            navigate(path.main.home);
             dispatch(setAuthSlice(resp.data));
         });
     };
 
-    // useEffect(() => {
-    //   first
-
-    //   return () => {
-    //     second
-    //   }
-    // }, [third])
+    useEffect(() => {
+        const accessToken = localStorage.getItem('accessToken');
+        if (accessToken) navigate(path.main.home);
+    }, []);
 
     return (
         <div className={`center ${classes.container}`}>
