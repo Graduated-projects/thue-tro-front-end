@@ -5,19 +5,27 @@ import { latlng } from '../../types/interface';
 import { setLocationSlice } from '../../app/slice/location.slice';
 import { LocationSearching } from '@/types/location.type';
 
-
 interface SaiGonLocationsProps {
     locations: Array<LocationOpenStreetMap>;
     dispatch: Dispatch<any>;
     place: LocationSearching;
     mySwal: any;
+    locationStore: LocationSearching;
 }
 
-const SaiGonLocations = ({ locations, dispatch, place, mySwal }: SaiGonLocationsProps) => {
+const SaiGonLocations = ({
+    locations,
+    dispatch,
+    place,
+    mySwal,
+    locationStore,
+}: SaiGonLocationsProps) => {
     const chooseLocations = (location: LocationOpenStreetMap) => {
         const position: latlng = [location.lat as number, location.lon as number];
+
         const locationDto = {
-            ...place,
+            radius: locationStore.radius,
+            unit: locationStore.unit,
             place: { position, name: location.display_name },
             zoom: 13,
         };

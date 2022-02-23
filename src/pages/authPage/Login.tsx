@@ -44,7 +44,7 @@ const Login = () => {
     useEffect(() => {
         const accessToken = localStorage.getItem('accessToken');
         if (accessToken) navigate(path.main.home);
-    }, []);
+    }, [navigate]);
 
     return (
         <div className={`center ${classes.container}`}>

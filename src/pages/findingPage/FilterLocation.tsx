@@ -34,8 +34,6 @@ const getLocationAtSaiGonByAddress = async (
     const locationsAtSaiGon = positions.filter((location: any, index: number) => {
         return location.display_name.includes(SCOPE_SEARCHING);
     });
-    console.log(positions);
-
     if (locationsAtSaiGon.length > 0) return Promise.resolve(locationsAtSaiGon);
     return Promise.reject();
 };
@@ -47,6 +45,7 @@ const startSearching = (location: LocationSearching) => {
 const FilterLocation = () => {
     const dispatch = useDispatch();
     const location = useLocationStore();
+    console.log(location);
 
     const getInfoOfLocation = (place: LocationSearching): void => {
         getLocationAtSaiGonByAddress(place)
@@ -59,6 +58,7 @@ const FilterLocation = () => {
                             mySwal={MySwal}
                             place={place}
                             locations={response}
+                            locationStore={location}
                         />
                     ),
                     showCloseButton: true,
@@ -80,7 +80,7 @@ const FilterLocation = () => {
     };
 
     const setUnit = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
-        dispatch(setLocationSlice({ ...location, unit: Number(e.target.value) }));
+        dispatch(setLocationSlice({ ...location, unit: e.target.value }));
     };
 
     return (
@@ -135,10 +135,11 @@ const FilterLocation = () => {
                             </Grid>
                             <Grid item container justifyContent="center" spacing={2}>
                                 <Field
-                                    as={TextField}
+                                    component={TextField}
                                     name="unit"
                                     label="Đơn vị khoảng cách"
                                     select
+                                    defaultValue={0}
                                     variant="outlined"
                                     margin="normal"
                                     className="w-50"
