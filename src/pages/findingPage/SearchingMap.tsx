@@ -27,7 +27,7 @@ const SearchingMap = () => {
                 zoom={location.zoom}
                 scrollWheelZoom={false}
                 id="map"
-                style={{ height: `480px` }}
+                style={{ height: `600px` }}
             >
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

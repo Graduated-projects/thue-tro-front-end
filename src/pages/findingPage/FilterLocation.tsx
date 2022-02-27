@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Formik, Field } from 'formik';
 import { LocationSearching } from '../../types/location.type';
 import { Button, Grid, Slider, MenuItem, TextField } from '@mui/material';
@@ -47,8 +47,7 @@ const FilterLocation = () => {
     const dispatch = useDispatch();
     const location = useLocationStore();
     const [currentUnit, setcurrentUnit] = useState(unitStatus.METER);
-    console.log(location);
-
+ 
     const getInfoOfLocation = (place: LocationSearching): void => {
         getLocationAtSaiGonByAddress(place)
             .then((response) => {
@@ -93,107 +92,102 @@ const FilterLocation = () => {
     };
 
     return (
-        <div className="container ">
-            <Formik initialValues={initialLocation} onSubmit={() => {}}>
-                {(formik) => (
-                    <Form className="mt-5">
-                        <Grid item container spacing={2} direction="column" alignItems="center">
-                            <Field
-                                as={TextField}
-                                className="form-control w-50"
-                                name="place.name"
-                                id="place"
-                                autoComplete="off"
-                                placeholder="Nhập vào một địa điểm bất kỳ"
-                                label="Địa điểm"
-                                spellCheck={false}
-                                disabled={false}
-                            />
-                            <Grid item justifyContent="center">
-                                <Button
-                                    variant="contained"
-                                    onClick={() => getInfoOfLocation(formik.values)}
-                                >
-                                    chọn
-                                </Button>
-                            </Grid>
-                            <Grid
-                                item
-                                container
-                                spacing={2}
-                                direction="column"
-                                alignItems="center"
-                                className="home-title mt-5"
+        <Formik initialValues={initialLocation} onSubmit={() => {}}>
+            {(formik) => (
+                <Form className="mt-5">
+                    <Grid item container spacing={2} direction="column" alignItems="center">
+                        <Field
+                            as={TextField}
+                            name="place.name"
+                            id="place"
+                            className="w-75"
+                            autoComplete="off"
+                            placeholder="Nhập vào một địa điểm bất kỳ"
+                            label="Địa điểm"
+                            spellCheck={false}
+                            disabled={false}
+                        />
+                        <Grid item justifyContent="center">
+                            <Button
+                                variant="contained"
+                                onClick={() => getInfoOfLocation(formik.values)}
                             >
-                                <p>Bán kính tìm kiếm:</p>
-                                {currentUnit === unitStatus.METER ? (
-                                    <Slider
-                                        aria-label="Always visible"
-                                        defaultValue={0}
-                                        step={100}
-                                        marks
-                                        min={0}
-                                        max={1000}
-                                        valueLabelDisplay="on"
-                                        className="w-50"
-                                        name="radius"
-                                        id="radius"
-                                        onChange={(e, value) => {
-                                            setLocationRadius(value as number);
-                                        }}
-                                    />
-                                ) : (
-                                    <Slider
-                                        aria-label="Always visible"
-                                        defaultValue={0}
-                                        step={0.5}
-                                        marks
-                                        min={0}
-                                        max={5}
-                                        valueLabelDisplay="on"
-                                        className="w-50"
-                                        name="radius"
-                                        id="radius"
-                                        onChange={(e, value) => {
-                                            setLocationRadius(value as number);
-                                        }}
-                                    />
-                                )}
-                            </Grid>
-                            <Grid item container justifyContent="center" spacing={2}>
-                                <Field
-                                    component={TextField}
-                                    name="unit"
-                                    label="Đơn vị khoảng cách"
-                                    select
-                                    defaultValue={0}
-                                    variant="outlined"
-                                    margin="normal"
-                                    className="w-50"
-                                    disabled={false}
-                                    onChange={setUnit}
-                                >
-                                    <MenuItem key="metter" value={0}>
-                                        mét
-                                    </MenuItem>
-                                    <MenuItem key="kilometter" value={1}>
-                                        ki lô mét
-                                    </MenuItem>
-                                </Field>
-                            </Grid>
-                            <Grid item justifyContent="center">
-                                <Button
-                                    variant="contained"
-                                    onClick={() => startSearching(location)}
-                                >
-                                    Tìm kiếm
-                                </Button>
-                            </Grid>
+                                chọn
+                            </Button>
                         </Grid>
-                    </Form>
-                )}
-            </Formik>
-        </div>
+                        <Grid
+                            item
+                            container
+                            spacing={2}
+                            direction="column"
+                            alignItems="center"
+                            className="home-title mt-5"
+                        >
+                            <p>Bán kính tìm kiếm:</p>
+                            {currentUnit === unitStatus.METER ? (
+                                <Slider
+                                    aria-label="Always visible"
+                                    defaultValue={0}
+                                    step={100}
+                                    marks
+                                    min={0}
+                                    max={1000}
+                                    valueLabelDisplay="on"
+                                    className="w-75"
+                                    name="radius"
+                                    id="radius"
+                                    onChange={(e, value) => {
+                                        setLocationRadius(value as number);
+                                    }}
+                                />
+                            ) : (
+                                <Slider
+                                    aria-label="Always visible"
+                                    defaultValue={0}
+                                    step={0.5}
+                                    marks
+                                    min={0}
+                                    max={5}
+                                    valueLabelDisplay="on"
+                                    className="w-75"
+                                    name="radius"
+                                    id="radius"
+                                    onChange={(e, value) => {
+                                        setLocationRadius(value as number);
+                                    }}
+                                />
+                            )}
+                        </Grid>
+                        <Grid item container justifyContent="center" spacing={2}>
+                            <Field
+                                component={TextField}
+                                name="unit"
+                                label="Đơn vị khoảng cách"
+                                select
+                                defaultValue={0}
+                                variant="outlined"
+                                margin="normal"
+                                className="w-75"
+                                disabled={false}
+                                onChange={setUnit}
+                            >
+                                <MenuItem key="metter" value={0}>
+                                    mét
+                                </MenuItem>
+                                <MenuItem key="kilometter" value={1}>
+                                    ki lô mét
+                                </MenuItem>
+                            </Field>
+                        </Grid>
+                        <Grid item justifyContent="center">
+                            <Button variant="contained" onClick={() => startSearching(location)}>
+                                Tìm kiếm
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </Form>
+            )}
+        </Formik>
     );
 };
 

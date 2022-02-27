@@ -9,7 +9,7 @@ const initialState: LocationSearching = {
     },
     radius: 0,
     unit: 0,
-    zoom: 12,
+    zoom: 15,
 };
 
 const locationSlice = createSlice({

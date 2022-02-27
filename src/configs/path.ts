@@ -1,7 +1,7 @@
 export const path = {
      main: {
           home: '/',
-          finding: '/finding'
+          finding: '/finding',
      },
      auth: {
           login: '/login'
