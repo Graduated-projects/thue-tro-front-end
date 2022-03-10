@@ -7,11 +7,3 @@ module.exports = override(
         '@': path.resolve(__dirname, 'src'),
     })
 );
-
-module.exports = {
-    resolve: {
-        alias: {
-            '@': path.resolve(__dirname, 'src'),
-        },
-    },
-};

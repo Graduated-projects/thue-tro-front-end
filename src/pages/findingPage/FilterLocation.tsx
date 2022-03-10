@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Form, Formik, Field } from 'formik';
-import { LocationSearching } from '../../types/location.type';
+import { LocationSearching } from '@/types/location.type';
 import { Button, Grid, Slider, MenuItem, TextField } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { setLocationSlice } from '../../app/slice/location.slice';
-import { hcmLatLng } from '../../configs/location';
-import { useLocationStore } from '../../app/store';
+import { setLocationSlice } from '@/app/slice/location.slice';
+import { hcmLatLng } from '@/configs/location';
+import { useLocationStore } from '@/app/store';
 import Swal from 'sweetalert2';
 import SaiGonLocations from './SaiGonLocations';
 import withReactContent from 'sweetalert2-react-content';
-import { LocationOpenStreetMap } from '../../types/location.type';
-import { unitStatus } from '../../configs/const';
+import { LocationOpenStreetMap } from '@/types/location.type';
+import { unitStatus } from '@/configs/const';
 
 const MySwal = withReactContent(Swal);
 
@@ -47,9 +47,9 @@ const FilterLocation = () => {
     const dispatch = useDispatch();
     const location = useLocationStore();
     const [currentUnit, setcurrentUnit] = useState(unitStatus.METER);
- 
-    const getInfoOfLocation = (place: LocationSearching): void => {
-        getLocationAtSaiGonByAddress(place)
+
+    const getInfoOfLocation = (place: LocationSearching): Promise<void> => {
+        return getLocationAtSaiGonByAddress(place)
             .then((response) => {
                 MySwal.fire({
                     title: '<strong><u>Chọn địa điểm</u></strong>',
@@ -66,6 +66,7 @@ const FilterLocation = () => {
                     focusConfirm: false,
                     confirmButtonText: '<i class="fa fa-thumbs-up"></i> đóng!',
                 });
+                return Promise.resolve();
             })
             .catch((err) => {
                 Swal.fire({
@@ -73,6 +74,7 @@ const FilterLocation = () => {
                     title: 'Không tìm thấy!',
                     text: 'Vui lòng nhập vào địa chỉ cụ thể',
                 });
+                return Promise.reject();
             });
     };
 
@@ -92,7 +94,14 @@ const FilterLocation = () => {
     };
 
     return (
-        <Formik initialValues={initialLocation} onSubmit={() => {}}>
+        <Formik
+            initialValues={initialLocation}
+            onSubmit={(user, onFormik) => {
+                getInfoOfLocation(user)
+                    .then(() => onFormik.setSubmitting(false))
+                    .catch(() => onFormik.setSubmitting(false));
+            }}
+        >
             {(formik) => (
                 <Form className="mt-5">
                     <Grid item container spacing={2} direction="column" alignItems="center">
@@ -110,7 +119,8 @@ const FilterLocation = () => {
                         <Grid item justifyContent="center">
                             <Button
                                 variant="contained"
-                                onClick={() => getInfoOfLocation(formik.values)}
+                                type="submit"
+                                disabled={formik.isSubmitting}
                             >
                                 chọn
                             </Button>

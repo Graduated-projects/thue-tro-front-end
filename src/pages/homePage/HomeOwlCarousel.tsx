@@ -5,16 +5,34 @@ import { Button, Card, CardActions, CardContent, CardMedia, Typography } from '@
 
 import ReactOwlCarousel from 'react-owl-carousel';
 import { owlData } from '../../configs/location';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { path } from '../../configs/path';
 import { useDispatch } from 'react-redux';
 import { setLocationSlice } from '../../app/slice/location.slice';
 import { LocationSearching } from '@/types/location.type';
 import { DistrictOwl } from '@/types/interface';
+import { makeStyles } from '@mui/styles';
+
+const useStyles = makeStyles({
+    cardContainer: {
+        height: '380px',
+    },
+    cardMedia: {
+        height: '150px',
+    },
+    cardContent: {
+        height: '300px',
+    },
+    cardAction: {
+        marginTop: 'auto'
+    },
+});
 
 const HomeOwlCarousel: React.FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const classes = useStyles();
+
     const gotoSearching = (district: DistrictOwl) => {
         const locationSearching: LocationSearching = {
             place: {
@@ -30,29 +48,27 @@ const HomeOwlCarousel: React.FC = () => {
     };
     const owlDataMap = owlData.map((district: DistrictOwl, index: number) => {
         return (
-            <div className="item" key={index}>
-                <Card variant="outlined" style={{ minHeight: '380px', maxHeight: '500px' }}>
-                    <CardMedia
-                        component="img"
-                        alt="green iguana"
-                        height="140"
-                        image={district.imgUrl}
-                    />
-                    <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
-                            {district.title}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            {district.content}
-                        </Typography>
-                    </CardContent>
-                    <CardActions>
-                        <Button size="small" onClick={() => gotoSearching(district)}>
-                            Tìm phòng trọ khu vực này
-                        </Button>
-                    </CardActions>
-                </Card>
-            </div>
+            <Card variant="outlined" key={index} className={classes.cardContainer}>
+                <CardMedia
+                    component="img"
+                    alt="green iguana"
+                    className={classes.cardMedia}
+                    image={district.imgUrl}
+                />
+                <CardContent className={classes.cardMedia}>
+                    <Typography gutterBottom variant="h5" component="div">
+                        {district.title}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                        {district.content}
+                    </Typography>
+                </CardContent>
+                <CardActions className={classes.cardAction}>
+                    <Button size="small" onClick={() => gotoSearching(district)}>
+                        Tìm phòng trọ khu vực này
+                    </Button>
+                </CardActions>
+            </Card>
         );
     });
 

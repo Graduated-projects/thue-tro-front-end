@@ -4,6 +4,10 @@ export const path = {
           finding: '/finding',
      },
      auth: {
-          login: '/login'
+          login: '/login',
+          register: '/register'
+     },
+     room: {
+          byId: '/room/:id'
      }
 }

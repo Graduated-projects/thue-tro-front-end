@@ -21,13 +21,14 @@
         "@types/react-leaflet": "^2.8.2",
         "@types/react-redux": "^7.1.22",
         "axios": "^0.26.0",
+        "customize-cra": "^1.0.0",
         "dotenv": "^16.0.0",
         "formik": "^2.2.9",
         "leaflet": "^1.7.1",
         "leaflet-react": "^3.0.5",
-        "module-alias": "^2.2.2",
         "node-sass": "^7.0.1",
         "react": "^17.0.2",
+        "react-app-rewired": "^2.2.1",
         "react-dom": "^17.0.2",
         "react-leaflet": "^3.2.4",
         "react-owl-carousel": "^2.3.3",
@@ -40,9 +41,9 @@
         "yup": "^0.32.11"
     },
     "scripts": {
-        "start": "react-scripts start",
-        "build": "react-scripts build",
-        "test": "react-scripts test",
+        "start": "react-app-rewired start",
+        "build": "react-app-rewired build",
+        "test": "react-app-rewired test",
         "eject": "react-scripts eject"
     },
     "eslintConfig": {
@@ -63,11 +64,5 @@
             "last 1 safari version"
         ]
     },
-    "devDependencies": {
-        "babel-plugin-root-import": "^6.6.0",
-        "jest": "^27.5.1"
-    },
-    "_moduleAliases": {
-        "@": "dist"
-    }
+    "devDependencies": {}
 }

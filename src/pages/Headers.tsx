@@ -11,12 +11,15 @@ import Menu from '@mui/material/Menu';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/img/logo.png';
 import { path } from '../configs/path';
+import { useAuthStore } from '@/app/store';
+import { authAction } from '@/app/action/auth.action';
+import { useAppDispatch } from '@/app/hooks';
 
 export default function Headers() {
-    const [auth, setAuth] = useState(false);
+    const auth = useAuthStore();
     const [anchorEl, setAnchorEl] = useState(null);
     const navigate = useNavigate();
-
+    const dispatch = useAppDispatch();
     const handleMenu = (event: any) => {
         setAnchorEl(event.currentTarget);
     };
@@ -25,6 +28,11 @@ export default function Headers() {
         setAnchorEl(null);
     };
 
+    const logout = () => {
+        setAnchorEl(null);
+        const result = dispatch(authAction.logout());
+        console.log(result);
+    };
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -43,7 +51,7 @@ export default function Headers() {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Tìm hiểu thêm
                     </Typography>
-                    {auth ? (
+                    {auth.isLogin ? (
                         <div>
                             <IconButton size="large" onClick={handleMenu} color="inherit">
                                 <AccountCircle />
@@ -64,12 +72,16 @@ export default function Headers() {
                                 onClose={handleClose}
                             >
                                 <MenuItem onClick={handleClose}>Thông tin</MenuItem>
-                                <MenuItem onClick={handleClose}>Đăng xuất</MenuItem>
+                                <MenuItem onClick={() => logout()}>Đăng xuất</MenuItem>
                             </Menu>
                         </div>
                     ) : (
                         <div>
-                            <IconButton size="large" onClick={() => navigate(path.auth.login)} color="inherit">
+                            <IconButton
+                                size="large"
+                                onClick={() => navigate(path.auth.login)}
+                                color="inherit"
+                            >
                                 <AccountCircle />
                             </IconButton>{' '}
                         </div>
