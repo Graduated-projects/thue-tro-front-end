@@ -2,6 +2,7 @@ export const path = {
      main: {
           home: '/',
           finding: '/finding',
+          userInfo: '/user'
      },
      auth: {
           login: '/login',

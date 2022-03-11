@@ -30,10 +30,10 @@ export default function Headers() {
 
     const logout = () => {
         setAnchorEl(null);
-        const result = dispatch(authAction.logout());
-        console.log(result);
+        dispatch(authAction.logout())
+        .then(() => navigate(path.main.home))
     };
-
+    
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
@@ -71,7 +71,14 @@ export default function Headers() {
                                 open={Boolean(anchorEl)}
                                 onClose={handleClose}
                             >
-                                <MenuItem onClick={handleClose}>Thông tin</MenuItem>
+                                <MenuItem
+                                    onClick={() => {
+                                        navigate(path.main.userInfo);
+                                        setAnchorEl(null);
+                                    }}
+                                >
+                                    Thông tin
+                                </MenuItem>
                                 <MenuItem onClick={() => logout()}>Đăng xuất</MenuItem>
                             </Menu>
                         </div>

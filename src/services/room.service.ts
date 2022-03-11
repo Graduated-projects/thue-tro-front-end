@@ -10,7 +10,12 @@ const getById = (id: string) => {
     return axios.get(api.room.getById.replace(':id', id));
 };
 
+const getAll = (page = 0) => {
+    return axios.get(api.room.getAll + `?${page}`)
+}
+
 export const roomService = {
     getAllByCondition,
     getById,
+    getAll
 };

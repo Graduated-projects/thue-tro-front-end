@@ -18,6 +18,7 @@ export const api = {
     },
     room: {
         getAllByCondition: server.room + '/find',
+        getAll: server.room + '/',
         getById: server.room + '/:id',
     },
     user: {

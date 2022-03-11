@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { roomAction } from '../action/room.action';
 
 const initialState: RoomStore = {
-    rooms: null,
+    rooms: [],
     room: null,
     isLoadingRoom: false,
     isLoadingRooms: false,
@@ -14,17 +14,30 @@ const roomSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: {
-        [roomAction.getRoomById.pending.toString()]: (state, action) => {
+        [roomAction.getById.pending.toString()]: (state, action) => {
             state.isLoadingRoom = true;
         },
-        [roomAction.getRoomById.fulfilled.toString()]: (state, action) => {
+        [roomAction.getById.fulfilled.toString()]: (state, action) => {
             state.isLoadingRoom = false;
             state.room = action.payload
         },
-        [roomAction.getRoomById.rejected.toString()]: (state, action) => {
+        [roomAction.getById.rejected.toString()]: (state, action) => {
             state.isLoadingRoom = false;
             state.room = null
         },
+
+        [roomAction.getAll.pending.toString()]: (state, action) => {
+            state.isLoadingRooms = true;
+        },
+        [roomAction.getAll.fulfilled.toString()]: (state, action) => {
+            state.isLoadingRooms = false;
+            state.rooms = action.payload
+        },
+        [roomAction.getAll.rejected.toString()]: (state, action) => {
+            state.isLoadingRooms = false;
+            state.rooms = []
+        },
+
     },
 });
 

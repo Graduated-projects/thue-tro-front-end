@@ -1,7 +1,7 @@
-import { latlng } from "./interface"
+import { latlng, latlngObject } from "./interface"
 
 export interface RoomStore {
-     rooms: Array<Room> | null,
+     rooms: Array<Room>,
      room: Room | null,
      isLoadingRoom: boolean 
      isLoadingRooms: boolean 
@@ -18,5 +18,5 @@ export interface Room {
      title: string 
      description: string 
      address: string 
-     latLong: latlng | null
+     location: latlngObject
 }

@@ -1,4 +1,4 @@
-import { fireErrorMessage, setHeaderForAxios } from '@/configs/common-function';
+import { setHeaderForAxios } from '@/configs/common-function';
 import { UserStore } from '@/types/auth.type';
 import { createSlice } from '@reduxjs/toolkit';
 import { authAction } from '../action/auth.action';
@@ -29,6 +29,7 @@ const authSlice = createSlice({
             state.accessToken = action.payload.accessToken;
             setHeaderForAxios(action.payload.accessToken);
             localStorage.setItem('accessToken', action.payload.accessToken);
+            console.log(`login successfully!`);
         },
         [authAction.login.rejected.toString()]: (state, action) => {
             state.isLoading = false;
@@ -43,6 +44,7 @@ const authSlice = createSlice({
             state.isLogin = false;
             state.user = null;
             state.accessToken = null;
+            console.log(`logout successfully!`);
             localStorage.removeItem('accessToken');
         },
 
@@ -54,10 +56,8 @@ const authSlice = createSlice({
         [authAction.getUserByToken.fulfilled.toString()]: (state, action) => {
             state.isLoading = false;
             state.isLogin = true;
-            state.user = action.payload.user;
-            state.accessToken = action.payload.accessToken;
-            setHeaderForAxios(action.payload.accessToken);
-            localStorage.setItem('accessToken', action.payload.accessToken);
+            state.user = action.payload;
+            console.log(`get token successfully!`);
         },
         [authAction.getUserByToken.rejected.toString()]: (state, action) => {
             state.isLoading = false;

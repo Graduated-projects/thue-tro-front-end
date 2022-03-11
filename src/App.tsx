@@ -9,7 +9,6 @@ import { useAppDispatch } from './app/hooks';
 import { authAction } from './app/action/auth.action';
 
 function App() {
-    const { user } = useAuthStore();
     const dispatch = useAppDispatch();
 
     useEffect(() => {
