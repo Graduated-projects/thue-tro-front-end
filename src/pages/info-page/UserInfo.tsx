@@ -1,10 +1,14 @@
 import { makeStyles } from '@mui/styles';
 import { customContainer } from '@/configs/styles';
 import React from 'react';
-import { Grid, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
+import { Button, Grid, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useAuthStore } from '@/app/store';
 import { formatPhone } from '@/configs/common-function';
+import HomeWorkIcon from '@mui/icons-material/HomeWork';
+import { path } from '@/configs/path';
 
 const useStyles = makeStyles({
     customContainer,
@@ -13,7 +17,7 @@ const useStyles = makeStyles({
         borderRadius: '7.5px',
         marginTop: '3rem',
         fontSize: '20px',
-        marginBottom: '35vh'
+        marginBottom: '35vh',
     },
     title: {
         fontWeight: 'bold',
@@ -23,6 +27,7 @@ const useStyles = makeStyles({
 const UserInfo = () => {
     const classes = useStyles();
     const { user } = useAuthStore();
+    const navigate = useNavigate();
 
     return (
         <Grid
@@ -79,6 +84,17 @@ const UserInfo = () => {
                             </TableBody>
                         </Table>
                     </TableContainer>
+                    <Grid item xs={12} textAlign="center">
+                        <Button
+                            variant="contained"
+                            color="success"
+                            size="large"
+                            className={`mt-4`}
+                            onClick={() => navigate(path.main.owner)}
+                        >
+                            <HomeWorkIcon /> &nbsp; Đăng ký Trở thành chủ trọ
+                        </Button>
+                    </Grid>
                 </Grid>
             </Grid>
         </Grid>

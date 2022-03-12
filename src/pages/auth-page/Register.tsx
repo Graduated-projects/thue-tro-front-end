@@ -33,7 +33,7 @@ interface Body {
 }
 
 const initialUser: Body = {
-    email: 'datma113112111@gmail.com',
+    email: '',
     password: '',
     fullName: '',
     phoneNumber: '',
@@ -51,7 +51,7 @@ const Register = () => {
         SECONDS: 1,
         THIRD: 2,
     };
-    const [currentRegisterStep, setcurrentRegisterStep] = useState(2);
+    const [currentRegisterStep, setcurrentRegisterStep] = useState(0);
     const onRegisterStep1 = (user: Body, onFormik: FormikProps<Body>) => {
         const ACCEPTED_NUMBER_ERROR_PASS_STEP_1 = 2;
 

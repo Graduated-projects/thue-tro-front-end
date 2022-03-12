@@ -19,6 +19,13 @@ export const setHeaderForAxios = (token: string) => {
     });
 };
 
+export const formatVND = (currancy: number) => {
+    return currancy.toLocaleString('vi', {
+        style: 'currency',
+        currency: 'VND',
+    });
+};
+
 export const fireErrorMessage = (errorMessage: any) => {
     const message =
         (errorMessage.response &&

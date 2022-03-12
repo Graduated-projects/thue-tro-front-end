@@ -15,13 +15,13 @@ import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({
     cardContainer: {
-        height: '380px',
+        height: '480px',
     },
     cardMedia: {
-        height: '150px',
+        height: '200px',
     },
     cardContent: {
-        height: '300px',
+        height: '320px',
     },
     cardAction: {
         marginTop: 'auto'

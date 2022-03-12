@@ -2,7 +2,8 @@ export const path = {
      main: {
           home: '/',
           finding: '/finding',
-          userInfo: '/user'
+          userInfo: '/user',
+          owner: '/onwer'
      },
      auth: {
           login: '/login',

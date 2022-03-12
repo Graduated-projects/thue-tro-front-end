@@ -17,7 +17,7 @@ interface MapEventCustomProps {
 }
 
 const customMarker = L.icon({
-    iconUrl: require('@/static/001-home.png'),
+    iconUrl: require('@/assets/img/001-home.png'),
     iconSize: [30, 30],
 });
 
