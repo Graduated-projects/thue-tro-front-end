@@ -15,9 +15,8 @@ import ReactOwlCarousel from 'react-owl-carousel';
 import { useNavigate } from 'react-router-dom';
 import { path } from '../../configs/path';
 import { makeStyles } from '@mui/styles';
-import { Room } from '@/types/room.type';
-import { formatVND } from '@/configs/common-function';
 import defaultRoomImage from '@/assets/img/findout-left.jpg';
+import { Apartment } from '@/types/apartment.type';
 
 const useStyles = makeStyles({
     cardContainer: {
@@ -53,17 +52,17 @@ const useStyles = makeStyles({
     },
 });
 interface Props {
-    rooms: Array<Room>;
-    isLoadingRooms: boolean;
+    apartments: Array<Apartment>;
+    isLoadingapartments: boolean;
     title: string;
 }
 
-const OwlRoom: React.FC<Props> = ({ rooms, isLoadingRooms, title }: Props) => {
+const Owlapartment: React.FC<Props> = ({ apartments, isLoadingapartments, title }: Props) => {
     const navigate = useNavigate();
     const classes = useStyles();
 
-    const gotoSearching = (roomId: string) => {
-        navigate(path.room.byId.replace(':id', roomId));
+    const gotoSearching = (apartmentId: string) => {
+        // navigate(path.apartment.byId.replace(':id', apartmentId));
     };
 
     const limitContent = (content: string, maximum: number) => {
@@ -71,29 +70,29 @@ const OwlRoom: React.FC<Props> = ({ rooms, isLoadingRooms, title }: Props) => {
         return content.length > MAXIMUM_LENGTH ? content.slice(0, MAXIMUM_LENGTH) + '...' : content;
     };
 
-    const owlDataMap = rooms.map((room: Room, index: number) => {
+    const owlDataMap = apartments.map((apartment: Apartment, index: number) => {
         return (
             <Card variant="outlined" key={index} className={classes.cardContainer}>
                 <CardMedia
                     component="img"
                     alt="green iguana"
                     className={classes.cardMedia}
-                    image={room.images[0] ?? defaultRoomImage}
+                    image={apartment.imageUrls[0] ?? defaultRoomImage}
                 />
                 <CardContent className={classes.cardMedia}>
                     <Typography gutterBottom variant="h5" component="div">
-                        {limitContent(room.title, 30)}
+                        {limitContent(apartment.reminiscentName, 30)}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        <p>{limitContent(room.description, 150)}</p>
+                        <p>{limitContent(apartment.description, 150)}</p>
                         <p>
-                            <b> Giá </b>:
-                            <span className={classes.deposit}>{formatVND(room.deposit)} </span>
+                            <b>Số phòng trống</b>:
+                            <span className={classes.deposit}>{apartment.numberOfFloors} </span>
                         </p>
                     </Typography>
                 </CardContent>
                 <CardActions className={classes.cardAction}>
-                    <Button size="small" onClick={() => gotoSearching(room.id)}>
+                    <Button size="small" onClick={() => gotoSearching(apartment.id as string)}>
                         Chi tiết
                     </Button>
                 </CardActions>
@@ -103,7 +102,7 @@ const OwlRoom: React.FC<Props> = ({ rooms, isLoadingRooms, title }: Props) => {
 
     return (
         <div style={{ marginTop: `5rem` }}>
-            {isLoadingRooms ? (
+            {isLoadingapartments ? (
                 <CircularProgress />
             ) : (
                 <React.Fragment>
@@ -118,6 +117,6 @@ const OwlRoom: React.FC<Props> = ({ rooms, isLoadingRooms, title }: Props) => {
     );
 };
 
-OwlRoom.propTypes = {};
+Owlapartment.propTypes = {};
 
-export default OwlRoom;
+export default Owlapartment;

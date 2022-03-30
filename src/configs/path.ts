@@ -11,5 +11,8 @@ export const path = {
      },
      room: {
           byId: '/room/:id'
+     },
+     apartment: {
+          post: '/apartment/post'
      }
 }

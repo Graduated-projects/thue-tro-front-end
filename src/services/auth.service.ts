@@ -4,7 +4,7 @@ import { BodyRequest } from '@/types/interface';
 import { setHeaderForAxios } from '@/configs/common-function';
 
 const login = (body: BodyRequest) => {
-    return axios.post(api.auth.SIGN_IN, body);
+    return axios.post(api.user.SIGN_IN, body);
 };
 
 const getUserByToken = async () => {
@@ -18,16 +18,38 @@ const logout = () => {
 };
 
 const sendOtp = (email: string) => {
-    return axios.post(api.auth.SEND_OTP, { email });
+    return axios.post(api.user.SEND_OTP, { email });
 };
 
 const isExistsEmail = (email: string) => {
-    return axios.get(api.auth.IS_EXISTS_EMAIL + `/${email}`);
+    return axios.get(api.user.EXISTS + `/?email=${email}`);
 };
 
-const register = (user: BodyRequest) => {
-    return axios.post(api.auth.VERIFY_EMAIL, {email: user.email, otp: user.otp})
-}
+const verifyEmail = (user: BodyRequest) => {
+    return axios.post(api.user.VERIFY_EMAIL, { email: user.email, otp: user.otp });
+};
+
+const detectCard = async (front: File, back: File) => {
+    const frontForm = new FormData();
+    const backForm = new FormData();
+    frontForm.append('file', front);
+    backForm.append('file', back);
+
+    const resultFront = await axios.post(api.ekyc.DETECT_FRONT_CARD, frontForm, {
+        headers: {
+            'content-type': 'multipart/form-data',
+        },
+    });
+
+    const resultBack = await axios.post(api.ekyc.DETECT_BACK_CARD, backForm, {
+        headers: {
+            'content-type': 'multipart/form-data',
+        },
+    });
+    console.log(resultFront, resultBack);
+
+    return Promise.resolve();
+};
 
 export const authService = {
     login,
@@ -35,5 +57,6 @@ export const authService = {
     getUserByToken,
     isExistsEmail,
     sendOtp,
-    register
+    verifyEmail,
+    detectCard,
 };

@@ -8,15 +8,20 @@ export interface RoomStore {
 }
 
 export interface Room {
+     createdBy: string,
+     createdDate: string,
+     lastModifiedBy: string,
+     lastModifiedDate: string,
      id: string,
-     images: Array<string>
-     acreage: number
-     deposit: number 
-     locationImage: string 
-     phoneNumber: string
-     sellerName: string 
-     title: string 
-     description: string 
-     address: string 
-     location: latlngObject
+     numberOfRoom: number,
+     numberOfPeople: number,
+     acreage: number,
+     floor: number,
+     available: boolean,
+     currentNumberOfPeople: number,
+     apartmentId: number,
+     description: string,
+     deposit: number,
+     price: number,
+     period: number
 }

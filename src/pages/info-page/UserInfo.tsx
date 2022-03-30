@@ -84,17 +84,6 @@ const UserInfo = () => {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                    <Grid item xs={12} textAlign="center">
-                        <Button
-                            variant="contained"
-                            color="success"
-                            size="large"
-                            className={`mt-4`}
-                            onClick={() => navigate(path.main.owner)}
-                        >
-                            <HomeWorkIcon /> &nbsp; Đăng ký Trở thành chủ trọ
-                        </Button>
-                    </Grid>
                 </Grid>
             </Grid>
         </Grid>

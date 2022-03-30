@@ -41,13 +41,19 @@ const Login = () => {
         onFormik.setSubmitting(true);
 
         dispatch(authAction.login(user))
-        .then(unwrapResult)
-            .then(() => {
+            .then(unwrapResult)
+            .then((resp) => {
                 onFormik.setSubmitting(false);
+
+                if (!resp.success) {
+                    fireErrorMessage('Sai mật khẩu!');
+                } else {
+                    dispatch(authAction.getUserByToken());
+                }
             })
             .catch((err) => {
                 onFormik.setSubmitting(false);
-                fireErrorMessage(err)
+                fireErrorMessage(err);
             });
     };
 

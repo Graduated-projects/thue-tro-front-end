@@ -4,13 +4,11 @@ import './assets/scss/styles.scss';
 import Footer from '@/pages/Footer';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import routes from '@/configs/routes';
-import { useAuthStore } from './app/store';
 import { useAppDispatch } from './app/hooks';
 import { authAction } from './app/action/auth.action';
 
 function App() {
     const dispatch = useAppDispatch();
-
     useEffect(() => {
         dispatch(authAction.getUserByToken());
     }, [dispatch]);

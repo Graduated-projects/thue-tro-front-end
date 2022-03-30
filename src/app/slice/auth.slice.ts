@@ -24,12 +24,13 @@ const authSlice = createSlice({
         },
         [authAction.login.fulfilled.toString()]: (state, action) => {
             state.isLoading = false;
-            state.isLogin = true;
-            state.user = action.payload.user;
-            state.accessToken = action.payload.accessToken;
-            setHeaderForAxios(action.payload.accessToken);
-            localStorage.setItem('accessToken', action.payload.accessToken);
-            console.log(`login successfully!`);
+
+            if (action.payload.success) {
+                state.isLogin = true;
+                state.accessToken = action.payload.data.access_token;
+                setHeaderForAxios(action.payload.data.access_token);
+                localStorage.setItem('accessToken', action.payload.data.access_token);
+            }
         },
         [authAction.login.rejected.toString()]: (state, action) => {
             state.isLoading = false;
@@ -55,9 +56,13 @@ const authSlice = createSlice({
         },
         [authAction.getUserByToken.fulfilled.toString()]: (state, action) => {
             state.isLoading = false;
-            state.isLogin = true;
-            state.user = action.payload;
-            console.log(`get token successfully!`);
+            console.log(action.payload.data);
+
+            if (action.payload.success) {
+                state.isLoading = false;
+                state.isLogin = true;
+                state.user = action.payload.data;
+            }
         },
         [authAction.getUserByToken.rejected.toString()]: (state, action) => {
             state.isLoading = false;

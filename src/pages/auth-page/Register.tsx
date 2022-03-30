@@ -12,6 +12,7 @@ import { authService } from '@/services/auth.service';
 import { Step1Schema } from '@/validation-yup/register.validation';
 import { fireErrorMessage } from '@/configs/common-function';
 import Swal from 'sweetalert2';
+import VerifyCard from './VerifyCard';
 
 const useStyles = makeStyles({
     container: {
@@ -50,8 +51,9 @@ const Register = () => {
         FIRST: 0,
         SECONDS: 1,
         THIRD: 2,
+        FOURTH: 3,
     };
-    const [currentRegisterStep, setcurrentRegisterStep] = useState(0);
+    const [currentRegisterStep, setcurrentRegisterStep] = useState(3);
     const onRegisterStep1 = (user: Body, onFormik: FormikProps<Body>) => {
         const ACCEPTED_NUMBER_ERROR_PASS_STEP_1 = 2;
 
@@ -59,7 +61,14 @@ const Register = () => {
             authService
                 .isExistsEmail(user.email as string)
                 .then((resp) => {
-                    setcurrentRegisterStep(registerSteps.SECONDS);
+                    const result = resp.data;
+                    const isExists = result.data.exists;
+
+                    if (isExists) fireErrorMessage('Email đã tồn tại!');
+                    else {
+                        authService.sendOtp(user.email);
+                        setcurrentRegisterStep(registerSteps.SECONDS);
+                    }
                 })
                 .catch((err) => {
                     fireErrorMessage(err);
@@ -67,19 +76,26 @@ const Register = () => {
         }
     };
 
-    const onRegisterStep2 = (user: Body, onFormik: FormikProps<Body>) => {
+    // dispatch(authAction.login({ username: user.email, password: user.password })).then(
+    //     () => {
+    //         Swal.fire({
+    //             icon: 'success',
+    //             title: 'Đăng ký thành công!',
+    //             confirmButtonText: 'Về trang chủ',
+    //         }).then(() => {
+    //             navigate(path.main.home);
+    //         });
+    //     }
+    // );
+    const onRegisterStep3 = (user: Body, onFormik: FormikProps<Body>) => {
         if (user.password && user.password === user.confirmPassword) {
-            setcurrentRegisterStep(registerSteps.THIRD);
-            authService.sendOtp(user.email);
+            setcurrentRegisterStep(registerSteps.FOURTH);
         } else {
             fireErrorMessage('Xác nhận mật khẩu không trùng');
         }
     };
-    const onRegisterStep3 = (user: Body, onFormik: FormikProps<Body>) => {
-        authService.sendOtp(user.email);
-    };
 
-    const register = (user: Body, onFormik: FormikProps<Body>) => {
+    const onRegisterStep2 = (user: Body, onFormik: FormikProps<Body>) => {
         onFormik.setSubmitting(true);
         const userRegister = {
             email: user.email,
@@ -87,20 +103,12 @@ const Register = () => {
         };
 
         authService
-            .register(userRegister)
+            .verifyEmail(userRegister)
             .then((resp) => {
                 onFormik.setSubmitting(false);
-                dispatch(authAction.login({ username: user.email, password: user.password })).then(
-                    () => {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Đăng ký thành công!',
-                            confirmButtonText: 'Về trang chủ',
-                        }).then(() => {
-                            navigate(path.main.home);
-                        });
-                    }
-                );
+                const result = resp.data;
+
+                if (result.data.success) setcurrentRegisterStep(registerSteps.THIRD);
             })
             .catch((err) => {
                 onFormik.setSubmitting(false);
@@ -164,7 +172,7 @@ const Register = () => {
                                     <Grid item xs={12}>
                                         <Field
                                             as={TextField}
-                                            type="number"
+                                            type="text"
                                             name="phoneNumber"
                                             id="phoneNumber"
                                             autoComplete="off"
@@ -202,7 +210,7 @@ const Register = () => {
                             )}
                             {/* step 2 */}
 
-                            {currentRegisterStep === registerSteps.SECONDS && (
+                            {currentRegisterStep === registerSteps.THIRD && (
                                 <React.Fragment>
                                     <Grid item xs={12}>
                                         <Field
@@ -245,10 +253,10 @@ const Register = () => {
                                     <Grid item xs={12} className="center">
                                         <Button
                                             variant="contained"
-                                            onClick={() => onRegisterStep2(formik.values, formik)}
+                                            onClick={() => onRegisterStep3(formik.values, formik)}
                                             disabled={!formik.isValid}
                                         >
-                                            Tiếp tục
+                                            Đăng ký
                                         </Button>
                                     </Grid>
                                     <Grid item xs={12} className="center">
@@ -265,7 +273,7 @@ const Register = () => {
                                 </React.Fragment>
                             )}
 
-                            {currentRegisterStep === registerSteps.THIRD && (
+                            {currentRegisterStep === registerSteps.SECONDS && (
                                 <React.Fragment>
                                     <Grid item xs={12} textAlign="center">
                                         Chúng tôi đã gửi về email: <b>{formik.values.email}</b> một
@@ -289,18 +297,14 @@ const Register = () => {
                                     <Grid item xs={12} className="center">
                                         <Button
                                             variant="contained"
-                                            onClick={() => register(formik.values, formik)}
+                                            onClick={() => onRegisterStep2(formik.values, formik)}
                                             disabled={formik.isSubmitting}
                                         >
                                             Xác thực OTP
                                         </Button>
                                     </Grid>
                                     <Grid item xs={12} className="center">
-                                        <Button
-                                            variant="contained"
-                                            color="success"
-                                            onClick={() => onRegisterStep3(formik.values, formik)}
-                                        >
+                                        <Button variant="contained" color="success">
                                             Gữi lại OTP
                                         </Button>
                                     </Grid>
@@ -309,7 +313,7 @@ const Register = () => {
                                             variant="outlined"
                                             color="inherit"
                                             onClick={() =>
-                                                setcurrentRegisterStep(registerSteps.SECONDS)
+                                                setcurrentRegisterStep(registerSteps.FIRST)
                                             }
                                         >
                                             Quay lại
@@ -317,6 +321,8 @@ const Register = () => {
                                     </Grid>
                                 </React.Fragment>
                             )}
+
+                            {currentRegisterStep === registerSteps.FOURTH && <VerifyCard user={initialUser} />}
                         </Grid>
                     </Form>
                 )}

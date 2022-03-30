@@ -1,10 +1,9 @@
 import React from 'react';
-import { roomAction } from '@/app/action/room.action';
 import { useAppDispatch } from '@/app/hooks';
 import { LatLngExpression } from 'leaflet';
 import { useEffect } from 'react';
 import { Circle, MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
-import { useLocationStore, useRoomStore } from '../../app/store';
+import { useLocationStore } from '../../app/store';
 import { LocationSearching } from '../../types/location.type';
 import L from 'leaflet';
 import { makeStyles } from '@mui/styles';
@@ -40,35 +39,32 @@ function MapEventCustom({ location }: MapEventCustomProps) {
 
 const SearchingMap = () => {
     const location = useLocationStore();
-    const { rooms } = useRoomStore();
     const dispatch = useAppDispatch();
     const classes = useStyles();
     const navigate = useNavigate();
 
     useEffect(() => {
-        dispatch(roomAction.getAll(0));
     }, [dispatch]);
 
-    const renderRooms = rooms.map((room: Room, index) => {
-        console.log(room);
-        const [lng, lat] = [room.location.lng, room.location.lat];
+    // const renderRooms = apartment.map((room: Room, index) => {
+    //     const [lng, lat] = [room.location.lng, room.location.lat];
 
-        return (
-            <Marker position={[lat, lng] as LatLngExpression} icon={customMarker}>
-                <Popup>
-                    <Grid container direction="row" justifyContent="center" alignItems="center">
-                        <p style={{ textAlign: 'center' }}>{room.address}</p>
-                        <Button
-                            variant="contained"
-                            onClick={() => navigate(path.room.byId.replace(':id', room.id))}
-                        >
-                            Xem trọ
-                        </Button>
-                    </Grid>
-                </Popup>
-            </Marker>
-        );
-    });
+    //     return (
+    //         <Marker key={index} position={[lat, lng] as LatLngExpression} icon={customMarker}>
+    //             <Popup>
+    //                 <Grid container direction="row" justifyContent="center" alignItems="center">
+    //                     <p style={{ textAlign: 'center' }}>{room.address}</p>
+    //                     <Button
+    //                         variant="contained"
+    //                         onClick={() => navigate(path.room.byId.replace(':id', room.id))}
+    //                     >
+    //                         Xem trọ
+    //                     </Button>
+    //                 </Grid>
+    //             </Popup>
+    //         </Marker>
+    //     );
+    // });
 
     return (
         <div className="container mt-5">
@@ -89,7 +85,7 @@ const SearchingMap = () => {
                     </Popup>
                 </Marker>
 
-                {rooms.length && renderRooms}
+                {/* {rooms.length && renderRooms} */}
 
                 {location.radius !== 0 && (
                     <Circle
