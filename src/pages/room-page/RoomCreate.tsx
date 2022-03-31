@@ -1,25 +1,19 @@
-import { Button, Checkbox, FormControlLabel, Grid, TextField } from '@mui/material';
+import { useAppDispatch } from '@/app/hooks';
+import { path } from '@/configs/path';
+import { Room } from '@/types/room.type';
+import { Button, Grid, TextField } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Apartment } from '@/types/apartment.type';
-import React, { useState } from 'react';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import CloseIcon from '@mui/icons-material/Close';
-import { mediaService } from '@/services/media.service';
-import { fireErrorMessage } from '@/configs/common-function';
-import { apartmentService } from '@/services/apartment.service';
-import Swal from 'sweetalert2';
-import { useNavigate } from 'react-router-dom';
-import { path } from '@/configs/path';
+
 const TextAreaField = (props: any) => <TextField multiline {...props} rows={6} />;
 
 const useStyle = makeStyles({
-    apartmentContainer: {
-        margin: '3rem 2rem',
-        padding: '2rem',
-        borderRadius: '7.5px',
-        boxShadow:
-            'box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;',
+    container: {
+        padding: `4rem 0`,
     },
     title: {
         fontSize: '30px',
@@ -47,30 +41,32 @@ const useStyle = makeStyles({
             boxShadow: '0 0 5px red',
         },
     },
-
     img: {
         width: '75px',
         height: '50px',
     },
 });
 
-const initialApartment: Apartment = {
-    reminiscentName: '',
-    address: '',
-    totalNumberOfRooms: '',
-    numberOfRoomsUnAvailable: '',
-    numberOfRoomsAvailable: '',
+const initialApartment: Room = {
+    nameOfRoom: '',
+    numberOfPeople: '',
+    acreage: '',
+    floor: '',
+    apartmentId: '',
     description: '',
-    numberOfFloors: '',
-    imageUrls: [],
+    deposit: '',
+    price: '',
+    period: '',
 };
 
-const ApartmentPost = () => {
+const RoomCreate = () => {
+    const dispatch = useAppDispatch();
     const classes = useStyle();
-    const [isDisabledFloorField, setisDisabledFloorField] = useState(false);
-    const [filesUpload, setfilesUpload] = useState([]);
     const navigate = useNavigate();
+    const url = window.location.href.split('/');
+    const apartmentId = url[url.length - 1];
 
+    const [filesUpload, setfilesUpload] = useState([]);
     const uploadFiles = (e: any) => {
         setfilesUpload(Array.from(e.target.files));
     };
@@ -96,60 +92,34 @@ const ApartmentPost = () => {
         );
     });
 
-    const postApartment = (apartment: Apartment, formik: any) => {
-        const formData = new FormData();
-        if (filesUpload.length) {
-            filesUpload.forEach((file) => {
-                formData.append('files', file);
-            });
-            mediaService
-                .uploadFiles(formData)
-                .then((resp) => {
-                    const { urls } = resp.data;
-                    apartment.imageUrls = urls;
-                    apartmentService
-                        .postApartment(apartment)
-                        .then((resp) => {
-                            Swal.fire({
-                                title: 'Thành công!',
-                                text: 'Bạn đã tạo 1 căn hộ!',
-                                icon: 'success',
-                                confirmButtonColor: '#3085d6',
-                                confirmButtonText: 'Xác nhận',
-                            }).then((result) => {
-                                navigate(path.main.userInfo);
-                            });
-                        })
-                        .catch((err) => fireErrorMessage(err));
-                })
-                .catch((err) => fireErrorMessage(err));
-        }
+    const createRoom = (room: Room, formik: any) => {
+        console.log(room);
     };
 
     return (
-        <div className={` ${classes.apartmentContainer}`}>
-            <Formik initialValues={initialApartment} onSubmit={postApartment}>
+        <div className={` `}>
+            <Formik initialValues={initialApartment} onSubmit={createRoom}>
                 {(formik) => (
                     <Form>
                         <Grid container spacing={2}>
-                            <Grid item xs={12} className="center">
-                                <p className={`${classes.title}`}>Tạo một căn hộ</p>
+                            <Grid item xs={12} className="center mt-5">
+                                <p className={`${classes.title}`}>Tạo phòng cho căn hộ</p>
                             </Grid>
                         </Grid>
                         <Grid item xs={12} className="mt-5 center center">
                             <Field
                                 as={TextField}
                                 type="text"
-                                name="reminiscentName"
-                                id="reminiscentName"
+                                name="nameOfRoom"
+                                id="nameOfRoom"
                                 autoComplete="off"
-                                placeholder="ví dụ: Nhà trọ giá tốt Quận 5"
-                                label="Tiêu đề phòng (*)"
+                                placeholder="ví dụ: 1"
+                                label="Số phòng (*)"
                                 spellCheck={false}
                                 className="w-50"
                             />
                             <ErrorMessage
-                                name="reminiscentName"
+                                name="nameOfRoom"
                                 render={(err) => <div style={{ color: 'red' }}>{err}</div>}
                             />
                         </Grid>
@@ -157,16 +127,16 @@ const ApartmentPost = () => {
                             <Field
                                 as={TextField}
                                 type="text"
-                                name="address"
-                                id="address"
+                                name="numberOfPeople"
+                                id="numberOfPeople"
                                 autoComplete="off"
-                                placeholder="ví dụ: 497/24/3 Phan văn trị, Phường 5, Quận Gò Vấp, TP HCM"
-                                label="Địa chỉ (*)"
+                                placeholder="ví dụ: 3"
+                                label="Số người / phòng (*)"
                                 spellCheck={false}
                                 className="w-50"
                             />
                             <ErrorMessage
-                                name="address"
+                                name="numberOfPeople"
                                 render={(err) => <div style={{ color: 'red' }}>{err}</div>}
                             />
                         </Grid>
@@ -174,16 +144,16 @@ const ApartmentPost = () => {
                             <Field
                                 as={TextField}
                                 type="text"
-                                name="totalNumberOfRooms"
-                                id="totalNumberOfRooms"
+                                name="acreage"
+                                id="acreage"
                                 autoComplete="off"
                                 placeholder="ví dụ: 10"
-                                label="Tổng số phòng trong căn hộ (*)"
+                                label="Diện tích phòng: m² (*)"
                                 spellCheck={false}
                                 className="w-50"
                             />
                             <ErrorMessage
-                                name="totalNumberOfRooms"
+                                name="acreage"
                                 render={(err) => <div style={{ color: 'red' }}>{err}</div>}
                             />
                         </Grid>
@@ -191,16 +161,67 @@ const ApartmentPost = () => {
                             <Field
                                 as={TextField}
                                 type="text"
-                                name="numberOfRoomsAvailable"
-                                id="numberOfRoomsAvailable"
+                                name="floor"
+                                id="floor"
                                 autoComplete="off"
-                                placeholder="ví dụ: 8"
+                                placeholder="ví dụ: 1"
                                 label="Số phòng còn trống (*)"
                                 spellCheck={false}
                                 className="w-50"
                             />
                             <ErrorMessage
-                                name="numberOfRoomsAvailable"
+                                name="floor"
+                                render={(err) => <div style={{ color: 'red' }}>{err}</div>}
+                            />
+                        </Grid>
+                        <Grid item xs={12} className="mt-5 center">
+                            <Field
+                                as={TextField}
+                                type="text"
+                                name="price"
+                                id="price"
+                                autoComplete="off"
+                                placeholder="ví dụ: 2500000"
+                                label="Giá phòng: VND (*)"
+                                spellCheck={false}
+                                className="w-50"
+                            />
+                            <ErrorMessage
+                                name="price"
+                                render={(err) => <div style={{ color: 'red' }}>{err}</div>}
+                            />
+                        </Grid>
+                        <Grid item xs={12} className="mt-5 center">
+                            <Field
+                                as={TextField}
+                                type="text"
+                                name="deposit"
+                                id="deposit"
+                                autoComplete="off"
+                                placeholder="ví dụ: 800000"
+                                label="Tiền đặt cọc: VND (*)"
+                                spellCheck={false}
+                                className="w-50"
+                            />
+                            <ErrorMessage
+                                name="deposit"
+                                render={(err) => <div style={{ color: 'red' }}>{err}</div>}
+                            />
+                        </Grid>
+                        <Grid item xs={12} className="mt-5 center">
+                            <Field
+                                as={TextField}
+                                type="text"
+                                name="period"
+                                id="period"
+                                autoComplete="off"
+                                placeholder="ví dụ: 3"
+                                label="Kỳ hạn: tháng (*)"
+                                spellCheck={false}
+                                className="w-50"
+                            />
+                            <ErrorMessage
+                                name="period"
                                 render={(err) => <div style={{ color: 'red' }}>{err}</div>}
                             />
                         </Grid>
@@ -220,47 +241,17 @@ const ApartmentPost = () => {
                                 render={(err) => <div style={{ color: 'red' }}>{err}</div>}
                             />
                         </Grid>
-                        <Grid item xs={12} textAlign="center" className="mt-5">
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        defaultChecked
-                                        onChange={() => {
-                                            setisDisabledFloorField(!isDisabledFloorField);
-                                        }}
-                                    />
-                                }
-                                label="Căn hộ có tầng?"
-                                className="w-50"
-                            />
-                            <Field
-                                as={TextField}
-                                type="text"
-                                name="numberOfFloors"
-                                id="numberOfFloors"
-                                autoComplete="off"
-                                placeholder="ví dụ: 10"
-                                label="Tổng số tầng trong căn hộ"
-                                spellCheck={false}
-                                className="w-50"
-                                disabled={isDisabledFloorField}
-                            />
-                            <ErrorMessage
-                                name="numberOfFloors"
-                                render={(err) => <div style={{ color: 'red' }}>{err}</div>}
-                            />
-                        </Grid>
                         <Grid item xs={12} className="center mt-5">
-                            <div className="w-50">Thêm ảnh cho căn hộ:</div>
+                            <div className="w-50">Thêm ảnh cho phòng:</div>
                         </Grid>
                         <Grid item xs={12} className="center">
                             <div className="w-50">
-                                <label htmlFor="apartmentUploadFiles">
+                                <label htmlFor="roomUploadFiles">
                                     <DriveFolderUploadIcon fontSize="large" />
                                     <input
                                         type="file"
                                         multiple
-                                        id="apartmentUploadFiles"
+                                        id="roomUploadFiles"
                                         onChange={(e) => uploadFiles(e)}
                                         style={{ display: 'none' }}
                                     />
@@ -282,4 +273,4 @@ const ApartmentPost = () => {
     );
 };
 
-export default ApartmentPost;
+export default RoomCreate;

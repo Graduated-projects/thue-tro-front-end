@@ -13,13 +13,13 @@ export interface Apartment {
     lastModifiedDate?: string;
     reminiscentName: string;
     address: string;
-    totalNumberOfRooms: number | null;
-    numberOfRoomsUnAvailable: number | null;
-    numberOfRoomsAvailable: number | null;
+    totalNumberOfRooms: number | '' | null;
+    numberOfRoomsUnAvailable: number | '' | null;
+    numberOfRoomsAvailable: number | '' | null;
     latitude?: number;
     longitude?: number;
     description: string;
     ownerId?: number | string;
-    numberOfFloors: number | null;
+    numberOfFloors: number | null | '';
     imageUrls: Array<string>;
 }

@@ -3,7 +3,7 @@ import { customContainer } from '@/configs/styles';
 import React from 'react';
 import { Button, Grid, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-
+import HomeIcon from '@mui/icons-material/Home';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useAuthStore } from '@/app/store';
 import { formatPhone } from '@/configs/common-function';
@@ -84,6 +84,13 @@ const UserInfo = () => {
                             </TableBody>
                         </Table>
                     </TableContainer>
+                </Grid>
+                <Grid item xs={12} textAlign="center">
+                    <Button variant="contained"
+                        onClick={() => navigate(path.apartment.my)}
+                    >
+                        <HomeIcon /> &nbsp; Xem căn hộ của bạn
+                    </Button>
                 </Grid>
             </Grid>
         </Grid>

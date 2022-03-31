@@ -5,6 +5,8 @@ export const server = {
     room: baseUrl + '/room',
     user: baseUrl + '/user',
     ekyc: baseUrl + '/ekyc',
+    media: baseUrl + '/media',
+    apartment: baseUrl + '/apartment'
 };
 
 export const api = {
@@ -28,4 +30,12 @@ export const api = {
         DETECT_FRONT_CARD: server.ekyc + '/detect/front',
         DETECT_BACK_CARD: server.ekyc + '/detect/back',
     },
+    media: {
+        UPLOAD_FILES: server.media + '/upload/multi-file'
+    },
+    apartment: {
+        CREATE: server.apartment + '/create',
+        GET_ALL: server.apartment + '/list',
+
+    }
 };

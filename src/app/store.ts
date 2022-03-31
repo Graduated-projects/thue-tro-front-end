@@ -1,5 +1,6 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import { useAppSelector } from './hooks';
+import apartmentSlice from './slice/apartment.slice';
 
 import authSlice from './slice/auth.slice';
 import cardUploadSlice from './slice/card-upload.slice';
@@ -12,6 +13,7 @@ export const store = configureStore({
         auth: authSlice,
         room: roomSlice,
         card: cardUploadSlice,
+        apartment: apartmentSlice
     },
 
     middleware: (getDefaultMiddleware) =>
@@ -32,3 +34,4 @@ export const useLocationStore = () => useAppSelector((state) => state.location);
 export const useAuthStore = () => useAppSelector((state) => state.auth);
 export const useRoomStore = () => useAppSelector((state) => state.room);
 export const useCardStore = () => useAppSelector((state) => state.card);
+export const useApartmentStore = () => useAppSelector((state) => state.apartment);

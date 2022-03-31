@@ -62,6 +62,7 @@ const authSlice = createSlice({
                 state.isLoading = false;
                 state.isLogin = true;
                 state.user = action.payload.data;
+                
             }
         },
         [authAction.getUserByToken.rejected.toString()]: (state, action) => {

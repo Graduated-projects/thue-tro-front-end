@@ -15,6 +15,11 @@ body {
 .container {
     margin: 0 $baseMarginContainer !important;
 }
+.App {
+    background: url('../../img/background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 
 .center {
     display: flex;
