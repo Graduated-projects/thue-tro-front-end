@@ -17,6 +17,8 @@ export const api = {
         getAllByCondition: server.room + '/find',
         getAll: server.room + '/',
         getById: server.room + '/:id',
+        getAllServiceOfRoom: baseUrl + '/service/list',
+        getServiceUnitByServiceId: baseUrl + '/service/:id/unit'
     },
     user: {
         ME: server.user + '/info',

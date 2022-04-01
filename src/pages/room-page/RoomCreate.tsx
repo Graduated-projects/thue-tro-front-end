@@ -1,13 +1,16 @@
 import { useAppDispatch } from '@/app/hooks';
 import { path } from '@/configs/path';
 import { Room } from '@/types/room.type';
-import { Button, Grid, TextField } from '@mui/material';
+import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import CloseIcon from '@mui/icons-material/Close';
+import { roomService } from '@/services/room.service';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import { formatVND } from '@/configs/common-function';
 
 const TextAreaField = (props: any) => <TextField multiline {...props} rows={6} />;
 
@@ -45,9 +48,20 @@ const useStyle = makeStyles({
         width: '75px',
         height: '50px',
     },
+    addBtn: {
+        cursor: 'pointer',
+        '&:hover': {
+            color: 'blue',
+        },
+    },
+    serviceSaved: {
+        padding: '1rem 0',
+        borderBottom: '1px solid black'
+
+    }
 });
 
-const initialApartment: Room = {
+const initialRoom: Room = {
     nameOfRoom: '',
     numberOfPeople: '',
     acreage: '',
@@ -65,8 +79,146 @@ const RoomCreate = () => {
     const navigate = useNavigate();
     const url = window.location.href.split('/');
     const apartmentId = url[url.length - 1];
-
     const [filesUpload, setfilesUpload] = useState([]);
+    const [services, setservices] = useState<Array<any>>([]);
+    const [allServices, setallServices] = useState([]);
+    const [servicesDispatch, setservicesDispatch] = useState([]);
+
+    useEffect(() => {
+        roomService.getAllServiceOfRoom(0).then((resp) => {
+            setallServices(resp.data.data);
+        });
+    }, []);
+
+    const onChangeService = (e: any, index: number) => {
+        const serviceId = e.target.value;
+        const servicesClone = [...services];
+        servicesClone[index] = allServices.find((x: any) => x.id === serviceId);
+        setservices(servicesClone);
+    };
+
+    const onChangeUnits = (e: any, index: number) => {
+        const value = e.target.value;
+        const servicesClone = [...services];
+        servicesClone[index].currentUnit = servicesClone[index].units.find(
+            (x: any) => x.id === value
+        );
+        setservices(servicesClone);
+    };
+
+    const setValueToService = (e: any, index: number) => {
+        const value = e.target.value;
+        const servicesClone = [...services];
+        servicesClone[index].value = value;
+        setservices(servicesClone);
+    };
+
+    const saveService = (index: number) => {
+        const servicesClone = [...services];
+        services[index].saved = true;
+        setservices(servicesClone);
+    };
+
+    const editService = (index: number) => {
+        const servicesClone = [...services];
+        services[index].saved = false;
+        setservices(servicesClone);
+    };
+
+    const servicesMap = services.map((service, index) => {
+        return (
+            <React.Fragment key={index}>
+                {service.saved ? (
+                    <Grid container spacing={2} className={`mt-5 ${classes.serviceSaved}`} key={index}>
+                        <Grid item xs={12}>
+                            <b>
+                                Dịch vụ đã lưu:
+                                {`${service.currentUnit.description} ${formatVND(service.value)}`}{' '}
+                            </b>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button
+                                variant="contained"
+                                color="error"
+                                onClick={() => editService(index)}
+                            >
+                                sửa dịch vụ này
+                            </Button>
+                        </Grid>
+                    </Grid>
+                ) : (
+                    <Grid container spacing={2} className="mt-5" key={index}>
+                        <Grid item xs={12}>
+                            <FormControl fullWidth className="col-3">
+                                <InputLabel>Chọn dịch vụ</InputLabel>
+                                <Select
+                                    label="Chọn dịch vụ"
+                                    onChange={(e) => onChangeService(e, index)}
+                                >
+                                    {allServices.map((service: any, index) => (
+                                        <MenuItem key={index} value={service.id ?? 0}>
+                                            {service.viName}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Grid container spacing={2}>
+                                <Grid item xs={6}>
+                                    <FormControl fullWidth className="col-3">
+                                        <InputLabel>Đơn vị tính</InputLabel>
+                                        <Select
+                                            label="Đơn vị tính"
+                                            onChange={(e) => onChangeUnits(e, index)}
+                                        >
+                                            {service.units &&
+                                                service.units.map(
+                                                    (unit: any, indexOfUnit: number) => (
+                                                        <MenuItem
+                                                            key={indexOfUnit}
+                                                            value={unit.id ?? 0}
+                                                        >
+                                                            {unit.description}
+                                                        </MenuItem>
+                                                    )
+                                                )}
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <TextField
+                                        className={`w-100`}
+                                        id={`services-${index}`}
+                                        label="Số tiền: VND"
+                                        variant="outlined"
+                                        onChange={(e) => setValueToService(e, index)}
+                                        disabled={!service.units}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button
+                                variant="contained"
+                                color="success"
+                                onClick={() => saveService(index)}
+                            >
+                                Lưu dịch vụ
+                            </Button>
+                        </Grid>
+                    </Grid>
+                )}
+            </React.Fragment>
+        );
+    });
+
+    const pushService = () => {
+        const clone = [...services];
+        clone.push(0);
+        setservices(clone);
+    };
+
     const uploadFiles = (e: any) => {
         setfilesUpload(Array.from(e.target.files));
     };
@@ -98,7 +250,7 @@ const RoomCreate = () => {
 
     return (
         <div className={` `}>
-            <Formik initialValues={initialApartment} onSubmit={createRoom}>
+            <Formik initialValues={initialRoom} onSubmit={createRoom}>
                 {(formik) => (
                     <Form>
                         <Grid container spacing={2}>
@@ -261,6 +413,14 @@ const RoomCreate = () => {
                         <Grid item xs={12} className="center">
                             <div className="w-50 "> {renderFiles} </div>
                         </Grid>
+                        <Grid item xs={12} className="center">
+                            <div className="w-50 ">
+                                {servicesMap}
+                                <div className={`${classes.addBtn}`} onClick={() => pushService()}>
+                                    <AddCircleOutlineIcon /> thêm dịch vụ mới
+                                </div>
+                            </div>
+                        </Grid>
                         <Grid item xs={12} className="center mt-5">
                             <Button variant="contained" color="primary" type="submit">
                                 Hoàn tất
@@ -274,3 +434,21 @@ const RoomCreate = () => {
 };
 
 export default RoomCreate;
+
+const a = {
+    data: [
+        {
+            id: 1,
+            codeName: 'tien_dien',
+            viName: 'tien dien',
+            description: 'tien dien',
+            units: [
+                {
+                    id: 3,
+                    value: 'ON_DEMAND_MEASURE',
+                    description: 'Dung bao nhieu tra bay nhieu (dien, nuoc)',
+                },
+            ],
+        },
+    ],
+};

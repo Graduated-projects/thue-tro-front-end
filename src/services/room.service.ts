@@ -11,11 +11,20 @@ const getById = (id: string) => {
 };
 
 const getAll = (page = 0) => {
-    return axios.get(api.room.getAll + `?${page}`)
-}
+    return axios.get(api.room.getAll + `?${page}`);
+};
+
+const getAllServiceOfRoom = (page = 0) => {
+    return axios.post(api.room.getAllServiceOfRoom);
+};
+const getServiceUnitByServiceId = (serviceId: number) => {
+    return axios.get(api.room.getServiceUnitByServiceId.replace(':id', serviceId.toString()));
+};
 
 export const roomService = {
     getAllByCondition,
     getById,
-    getAll
+    getAll,
+    getAllServiceOfRoom,
+    getServiceUnitByServiceId
 };
