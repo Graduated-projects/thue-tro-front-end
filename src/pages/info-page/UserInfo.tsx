@@ -1,6 +1,6 @@
 import { makeStyles } from '@mui/styles';
 import { customContainer } from '@/configs/styles';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Grid, Table, TableBody, TableCell, TableContainer, TableRow } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
@@ -26,8 +26,12 @@ const useStyles = makeStyles({
 
 const UserInfo = () => {
     const classes = useStyles();
-    const { user } = useAuthStore();
+    const { user, isLogin } = useAuthStore();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!isLogin) navigate(path.main.home);
+    }, []);
 
     return (
         <Grid
@@ -86,9 +90,7 @@ const UserInfo = () => {
                     </TableContainer>
                 </Grid>
                 <Grid item xs={12} textAlign="center">
-                    <Button variant="contained"
-                        onClick={() => navigate(path.apartment.my)}
-                    >
+                    <Button variant="contained" onClick={() => navigate(path.apartment.my)}>
                         <HomeIcon /> &nbsp; Xem căn hộ của bạn
                     </Button>
                 </Grid>

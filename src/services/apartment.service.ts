@@ -13,8 +13,10 @@ const getApartments = (page: number = 0) => {
 const getRoomsByApartmentId = (page: number = 0, apartmentId: string) => {
      return axios.get(api.apartment.GET_ROOMS.replace(":id", apartmentId) + `?page=${page}`)
 }
+const getApartmentById = (apartmentId: string) => axios.get(api.apartment.GET_BY_ID.replace(":id", apartmentId))
 export const apartmentService = {
      postApartment,
      getApartments,
-     getRoomsByApartmentId
+     getRoomsByApartmentId,
+     getApartmentById
 }

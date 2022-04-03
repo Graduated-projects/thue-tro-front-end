@@ -39,7 +39,8 @@ export const api = {
     apartment: {
         CREATE: server.apartment + '/create',
         GET_ALL: server.apartment + '/list',
-        GET_ROOMS: server.apartment + '/rooms/:id'
+        GET_ROOMS: server.apartment + '/rooms/:id',
+        GET_BY_ID: server.apartment + '/detail/:id'
 
     }
 };

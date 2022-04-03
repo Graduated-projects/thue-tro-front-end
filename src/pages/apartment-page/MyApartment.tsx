@@ -43,10 +43,13 @@ const useStyle = makeStyles({
 const MyApartment = () => {
     const dispatch = useAppDispatch();
     const { apartments, isLoadingApartments } = useApartmentStore();
-    const { user } = useAuthStore();
+    const { user, isLogin } = useAuthStore();
     const classes = useStyle();
     const navigate = useNavigate();
-    console.log(apartments);
+
+    useEffect(() => {
+        if (!isLogin) navigate(path.main.home);
+    }, []);
 
     useEffect(() => {
         dispatch(apartmentAction.getAll(0));

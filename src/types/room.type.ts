@@ -24,5 +24,6 @@ export interface Room {
     deposit: number | '';
     price: number | '';
     period: number | '';
-    imageUrls: Array<string>
+    imageUrls: Array<string>,
+    serviceList?: Array<any>
 }

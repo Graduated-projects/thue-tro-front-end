@@ -1,7 +1,7 @@
 import { Button, Checkbox, FormControlLabel, Grid, TextField } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Apartment } from '@/types/apartment.type';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import CloseIcon from '@mui/icons-material/Close';
@@ -11,6 +11,7 @@ import { apartmentService } from '@/services/apartment.service';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { path } from '@/configs/path';
+import { useAuthStore } from '@/app/store';
 const TextAreaField = (props: any) => <TextField multiline {...props} rows={6} />;
 
 const useStyle = makeStyles({
@@ -67,9 +68,16 @@ const initialApartment: Apartment = {
 
 const ApartmentPost = () => {
     const classes = useStyle();
+    const { isLogin } = useAuthStore();
+
     const [isDisabledFloorField, setisDisabledFloorField] = useState(false);
     const [filesUpload, setfilesUpload] = useState([]);
     const navigate = useNavigate();
+
+
+    useEffect(() => {
+        if (!isLogin) navigate(path.main.home);
+    }, []);
 
     const uploadFiles = (e: any) => {
         setfilesUpload(Array.from(e.target.files));

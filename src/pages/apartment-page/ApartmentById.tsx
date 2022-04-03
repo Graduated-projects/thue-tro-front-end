@@ -34,14 +34,22 @@ const ApartmentById = () => {
     const apartmentId = url[url.length - 1];
     const { rooms } = useApartmentStore();
     const { user, isLogin } = useAuthStore();
+    const { apartment } = useApartmentStore();
+
+    useEffect(() => {
+        if (!isLogin) navigate(path.main.home);
+    }, []);
+
     useEffect(() => {
         const params = {
             page: 0,
             apartmentId,
         };
         dispatch(apartmentAction.getRoomsByApartmentId(params));
+        dispatch(apartmentAction.getById(apartmentId));
     }, [dispatch, apartmentId, user]);
-
+    console.log(rooms);
+    
     const gotoRoomDetail = (roomId: string) => {
         navigate(
             path.apartment.byId.replace(':id', apartmentId) + path.room.byId.replace(':id', roomId)
@@ -84,6 +92,9 @@ const ApartmentById = () => {
                         </Button>
                     </React.Fragment>
                 )}
+                <p className="mt-5">
+                    Địa chỉ căn hộ: <b> {apartment?.address}</b>
+                </p>
                 <p> Danh sách căn hộ của bạn </p>
 
                 <Grid container spacing={2}>

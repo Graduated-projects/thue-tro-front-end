@@ -28,8 +28,6 @@ const authSlice = createSlice({
             if (action.payload.success) {
                 state.isLogin = true;
                 state.accessToken = action.payload.data.access_token;
-                setHeaderForAxios(action.payload.data.access_token);
-                localStorage.setItem('accessToken', action.payload.data.access_token);
             }
         },
         [authAction.login.rejected.toString()]: (state, action) => {
