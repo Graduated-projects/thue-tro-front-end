@@ -5,7 +5,7 @@ export type latlngObject = {
 }
 
 export interface BodyRequest {
-     [key: string]: string;
+     [key: string]: any;
  }
 
 export interface DistrictOwl {

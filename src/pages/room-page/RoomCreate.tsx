@@ -10,7 +10,8 @@ import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import CloseIcon from '@mui/icons-material/Close';
 import { roomService } from '@/services/room.service';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { formatVND } from '@/configs/common-function';
+import { fireErrorMessage, formatVND } from '@/configs/common-function';
+import Swal from 'sweetalert2';
 
 const TextAreaField = (props: any) => <TextField multiline {...props} rows={6} />;
 
@@ -56,9 +57,8 @@ const useStyle = makeStyles({
     },
     serviceSaved: {
         padding: '1rem 0',
-        borderBottom: '1px solid black'
-
-    }
+        borderBottom: '1px solid black',
+    },
 });
 
 const initialRoom: Room = {
@@ -66,11 +66,11 @@ const initialRoom: Room = {
     numberOfPeople: '',
     acreage: '',
     floor: '',
-    apartmentId: '',
     description: '',
     deposit: '',
     price: '',
     period: '',
+    imageUrls: [],
 };
 
 const RoomCreate = () => {
@@ -82,7 +82,6 @@ const RoomCreate = () => {
     const [filesUpload, setfilesUpload] = useState([]);
     const [services, setservices] = useState<Array<any>>([]);
     const [allServices, setallServices] = useState([]);
-    const [servicesDispatch, setservicesDispatch] = useState([]);
 
     useEffect(() => {
         roomService.getAllServiceOfRoom(0).then((resp) => {
@@ -129,11 +128,18 @@ const RoomCreate = () => {
         return (
             <React.Fragment key={index}>
                 {service.saved ? (
-                    <Grid container spacing={2} className={`mt-5 ${classes.serviceSaved}`} key={index}>
+                    <Grid
+                        container
+                        spacing={2}
+                        className={`mt-5 ${classes.serviceSaved}`}
+                        key={index}
+                    >
                         <Grid item xs={12}>
                             <b>
                                 Dịch vụ đã lưu:
-                                {`${service.currentUnit.description} ${formatVND(service.value)}`}{' '}
+                                {`${service.currentUnit.description}: ${formatVND(
+                                    Number(service.value)
+                                )}`}
                             </b>
                         </Grid>
                         <Grid item xs={12}>
@@ -245,7 +251,45 @@ const RoomCreate = () => {
     });
 
     const createRoom = (room: Room, formik: any) => {
-        console.log(room);
+        const servicesDto = services.map((service) => ({
+            serviceId: service.id,
+            unitsUnitPrice: [{ unitId: service.currentUnit.id, price: Number(service.value) }],
+        }));
+
+        const newRoom = {
+            ...room,
+            acreage: Number(room.acreage),
+            deposit: Number(room.deposit),
+            floor: Number(room.floor),
+            nameOfRoom: Number(room.nameOfRoom),
+            numberOfPeople: Number(room.numberOfPeople),
+            period: Number(room.period),
+            price: Number(room.price),
+            createRoomServiceList: servicesDto,
+        };
+        roomService
+            .createRoom(newRoom, apartmentId)
+            .then((resp) => {
+                console.log(resp.data);
+                if (resp.data.success) {
+                    Swal.fire({
+                        title: 'Thành công!',
+                        text: 'Bạn đã phòng vào căn hộ này!',
+                        icon: 'success',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Xác nhận',
+                    }).then((result) => {
+                        navigate(path.main.userInfo);
+                    });
+                } else {
+                    fireErrorMessage('tạo phòng không thành công!');
+                }
+            })
+            .catch((err) => {
+                fireErrorMessage(err);
+            });
+
+        console.log(`newRoom: `, newRoom);
     };
 
     return (
@@ -434,21 +478,3 @@ const RoomCreate = () => {
 };
 
 export default RoomCreate;
-
-const a = {
-    data: [
-        {
-            id: 1,
-            codeName: 'tien_dien',
-            viName: 'tien dien',
-            description: 'tien dien',
-            units: [
-                {
-                    id: 3,
-                    value: 'ON_DEMAND_MEASURE',
-                    description: 'Dung bao nhieu tra bay nhieu (dien, nuoc)',
-                },
-            ],
-        },
-    ],
-};

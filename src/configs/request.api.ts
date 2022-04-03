@@ -16,9 +16,10 @@ export const api = {
     room: {
         getAllByCondition: server.room + '/find',
         getAll: server.room + '/',
-        getById: server.room + '/:id',
+        create: server.room + '/create',
+        getById: server.room + '/detail/:id',
         getAllServiceOfRoom: baseUrl + '/service/list',
-        getServiceUnitByServiceId: baseUrl + '/service/:id/unit'
+        getServiceUnitByServiceId: baseUrl + '/service/:id/unit',
     },
     user: {
         ME: server.user + '/info',
@@ -38,6 +39,7 @@ export const api = {
     apartment: {
         CREATE: server.apartment + '/create',
         GET_ALL: server.apartment + '/list',
+        GET_ROOMS: server.apartment + '/rooms/:id'
 
     }
 };

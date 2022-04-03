@@ -89,7 +89,7 @@ const MyApartment = () => {
             ) : (
                 <div className={`container`}>
                     <div className={`${classes.container} `}>
-                        <Grid xs={12} textAlign="center" className={`text-success ${classes.my}`}>
+                        <Grid item xs={12} textAlign="center" className={`text-success ${classes.my}`}>
                             Tất cả căn hộ của tôi
                         </Grid>
                         {apartmentsMap}

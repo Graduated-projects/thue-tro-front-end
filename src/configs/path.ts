@@ -11,7 +11,8 @@ export const path = {
     },
     room: {
         byId: '/room/:id',
-        create: '/room/create/:id'
+        create: '/room/create/:id',
+        contract: '/room/contract/:id'
     },
     apartment: {
         post: '/apartment/post',

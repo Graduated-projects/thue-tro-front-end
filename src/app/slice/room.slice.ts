@@ -19,7 +19,7 @@ const roomSlice = createSlice({
         },
         [roomAction.getById.fulfilled.toString()]: (state, action) => {
             state.isLoadingRoom = false;
-            state.room = action.payload
+            state.room = action.payload.data
         },
         [roomAction.getById.rejected.toString()]: (state, action) => {
             state.isLoadingRoom = false;

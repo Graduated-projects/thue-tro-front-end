@@ -56,12 +56,13 @@ const authSlice = createSlice({
         },
         [authAction.getUserByToken.fulfilled.toString()]: (state, action) => {
             state.isLoading = false;
-            console.log(action.payload.data);
+            console.log(`getByToken: `, action.payload.data);
 
             if (action.payload.success) {
                 state.isLoading = false;
                 state.isLogin = true;
                 state.user = action.payload.data;
+                state.accessToken = localStorage.getItem("accessToken")
                 
             }
         },

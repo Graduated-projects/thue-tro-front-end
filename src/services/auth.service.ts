@@ -18,7 +18,7 @@ const logout = () => {
 };
 
 const sendOtp = (email: string) => {
-    return axios.post(api.user.SEND_OTP, { email });
+    return axios.post(api.user.SEND_OTP, { email, type: 1 });
 };
 
 const isExistsEmail = (email: string) => {
@@ -26,7 +26,7 @@ const isExistsEmail = (email: string) => {
 };
 
 const verifyEmail = (user: BodyRequest) => {
-    return axios.post(api.user.VERIFY_EMAIL, { email: user.email, otp: user.otp });
+    return axios.post(api.user.VERIFY_EMAIL, { email: user.email, otp: user.otp, type: 1 });
 };
 
 const detectCard = async (front: File, back: File) => {

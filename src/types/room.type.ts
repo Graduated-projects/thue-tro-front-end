@@ -19,9 +19,10 @@ export interface Room {
     floor: number | '';
     available?: boolean;
     currentNumberOfPeople?: number | '';
-    apartmentId: number | '';
+    apartmentId?: number | '';
     description: string;
     deposit: number | '';
     price: number | '';
     period: number | '';
+    imageUrls: Array<string>
 }

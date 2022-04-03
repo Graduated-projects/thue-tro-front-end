@@ -10,6 +10,8 @@ import ApartmentPost from '@/pages/apartment-page/ApartmentPost';
 import MyApartment from '@/pages/apartment-page/MyApartment';
 import ApartmentById from '@/pages/apartment-page/ApartmentById';
 import RoomCreate from '@/pages/room-page/RoomCreate';
+import RoomByDepartmentId from '@/pages/room-page/RoomByDepartmentId';
+import RoomContract from '@/pages/room-page/RoomContract';
 
 const routes = [
     //notFound & Exception
@@ -22,7 +24,9 @@ const routes = [
     { path: path.apartment.post, component: ApartmentPost, exact: true },
     { path: path.apartment.my, component: MyApartment, exact: true },
     { path: path.apartment.byId, component: ApartmentById, exact: true },
+    { path: path.apartment.byId + path.room.byId, component: RoomByDepartmentId, exact: true },
     { path: path.room.create, component: RoomCreate, exact: true },
+    { path: path.room.contract, component: RoomContract, exact: true },
     { path: '*', component: NotFound, exact: true },
 
     //Note: Page not Found need stay last of array.

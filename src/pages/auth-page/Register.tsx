@@ -53,7 +53,7 @@ const Register = () => {
         THIRD: 2,
         FOURTH: 3,
     };
-    const [currentRegisterStep, setcurrentRegisterStep] = useState(3);
+    const [currentRegisterStep, setcurrentRegisterStep] = useState(0);
     const onRegisterStep1 = (user: Body, onFormik: FormikProps<Body>) => {
         const ACCEPTED_NUMBER_ERROR_PASS_STEP_1 = 2;
 

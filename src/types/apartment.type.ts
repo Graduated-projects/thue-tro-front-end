@@ -1,8 +1,12 @@
+import { Room } from "./room.type";
+
 export interface ApartmentStore {
     apartments: Array<Apartment>;
     apartment: Apartment | null;
     isLoadingApartment: boolean;
     isLoadingApartments: boolean;
+    rooms: Array<Room>,
+    isLoadingRooms: boolean
 }
 
 export interface Apartment {
