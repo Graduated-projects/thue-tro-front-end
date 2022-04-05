@@ -8,6 +8,7 @@ import React, { useEffect } from 'react';
 import { Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { path } from '@/configs/path';
+import Logo from '@/assets/img/logo.png';
 
 const useStyle = makeStyles({
     my: {
@@ -26,7 +27,7 @@ const useStyle = makeStyles({
         margin: `1rem 0`,
         padding: `1rem 3rem`,
         display: `flex`,
-        width: '50%',
+        width: '75%',
         '&:nth-child(even)': {
             backgroundColor: '#dddddd',
         },
@@ -38,6 +39,11 @@ const useStyle = makeStyles({
         fontSize: `25px`,
         fontWeight: 'bold',
     },
+    img: {
+        width: '100%',
+        height: '200px',
+        margin: '0.25rem'
+    }
 });
 
 const MyApartment = () => {
@@ -54,33 +60,48 @@ const MyApartment = () => {
     useEffect(() => {
         dispatch(apartmentAction.getAll(0));
     }, [dispatch, user]);
+    console.log(apartments);
 
     const apartmentsMap = apartments.map((apartment: Apartment, index: number) => {
         return (
             <div
                 className={`${classes.apartmentContainer}`}
                 key={index}
-                onClick={() => navigate(path.apartment.byId.replace(':id', apartment?.id as string))}
+                onClick={() =>
+                    navigate(path.apartment.byId.replace(':id', apartment?.id as string))
+                }
             >
-                <div className={`d-flex justify-content-center align-items-center w-100`}>
-                    <div className={`${classes.title} mbot-5 center w-100`}>
-                        {apartment.reminiscentName}
-                    </div>
-                    <div>
-                        <b>Địa chỉ:</b> {apartment.address}
-                    </div>
-                    <div>
-                        <b>Số tầng:</b> {apartment.numberOfFloors}
-                    </div>
-                    <div>
-                        <b>Số phòng trống:</b>
-                        <span className="text-danger"> {apartment.numberOfRoomsAvailable}</span>
-                    </div>
-                    <div>
-                        <b>Tổng số phòng: </b>
-                        {apartment.totalNumberOfRooms}
-                    </div>
-                </div>
+                <Grid container spacing={2}>
+                    <Grid item xs={3}>
+                        <div className="w-100 center" style={{borderRight: '1px solid black'}}>
+                            <img className={`${classes.img}`} src={apartment.imageUrls[0] || Logo} alt="" />
+                        </div>
+                    </Grid>
+                    <Grid item xs={9}>
+                        <div className={`d-flex justify-content-center align-items-center w-100`}>
+                            <div className={`${classes.title} mbot-5 center w-100`}>
+                                {apartment.reminiscentName}
+                            </div>
+                            <div>
+                                <b>Địa chỉ:</b> {apartment.address}
+                            </div>
+                            <div>
+                                <b>Số tầng:</b> {apartment.numberOfFloors}
+                            </div>
+                            <div>
+                                <b>Số phòng trống:</b>
+                                <span className="text-danger">
+                                    {' '}
+                                    {apartment.numberOfRoomsAvailable}
+                                </span>
+                            </div>
+                            <div>
+                                <b>Tổng số phòng: </b>
+                                {apartment.totalNumberOfRooms}
+                            </div>
+                        </div>
+                    </Grid>
+                </Grid>
             </div>
         );
     });
@@ -92,7 +113,12 @@ const MyApartment = () => {
             ) : (
                 <div className={`container`}>
                     <div className={`${classes.container} `}>
-                        <Grid item xs={12} textAlign="center" className={`text-success ${classes.my}`}>
+                        <Grid
+                            item
+                            xs={12}
+                            textAlign="center"
+                            className={`text-success ${classes.my}`}
+                        >
                             Tất cả căn hộ của tôi
                         </Grid>
                         {apartmentsMap}

@@ -12,6 +12,7 @@ import { roomService } from '@/services/room.service';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { fireErrorMessage, formatVND } from '@/configs/common-function';
 import Swal from 'sweetalert2';
+import { mediaService } from '@/services/media.service';
 
 const TextAreaField = (props: any) => <TextField multiline {...props} rows={6} />;
 
@@ -135,9 +136,10 @@ const RoomCreate = () => {
                         key={index}
                     >
                         <Grid item xs={12}>
-                            <b>
+                           
                                 Dịch vụ đã lưu:
-                                {`${service.currentUnit.description}: ${formatVND(
+                                <b>
+                                {`${service.description} - ${service.currentUnit.description}: ${formatVND(
                                     Number(service.value)
                                 )}`}
                             </b>
@@ -250,23 +252,44 @@ const RoomCreate = () => {
         );
     });
 
-    const createRoom = (room: Room, formik: any) => {
+    const createRoom = async (room: Room, formik: any) => {
         const servicesDto = services.map((service) => ({
             serviceId: service.id,
             unitsUnitPrice: [{ unitId: service.currentUnit.id, price: Number(service.value) }],
         }));
+        let urlUploaded: Array<string> = []
+
+        if (filesUpload.length) {
+            const formData = new FormData();
+
+            filesUpload.forEach((file) => {
+                formData.append('files', file);
+            });
+            
+            await mediaService
+                .uploadFiles(formData)
+                .then((resp) => {
+                    const { urls } = resp.data.data;
+                    urlUploaded = urls;
+                })
+                .catch((err) => fireErrorMessage(err));
+        }
 
         const newRoom = {
             ...room,
+            imageUrls: urlUploaded,
             acreage: Number(room.acreage),
             deposit: Number(room.deposit),
             floor: Number(room.floor),
-            nameOfRoom: Number(room.nameOfRoom),
+            nameOfRoom: room.nameOfRoom,
             numberOfPeople: Number(room.numberOfPeople),
             period: Number(room.period),
             price: Number(room.price),
             createRoomServiceList: servicesDto,
         };
+
+       
+
         roomService
             .createRoom(newRoom, apartmentId)
             .then((resp) => {
@@ -309,8 +332,8 @@ const RoomCreate = () => {
                                 name="nameOfRoom"
                                 id="nameOfRoom"
                                 autoComplete="off"
-                                placeholder="ví dụ: 1"
-                                label="Số phòng (*)"
+                                placeholder="ví dụ: Phòng số 12"
+                                label="Tiêu đề phòng (*)"
                                 spellCheck={false}
                                 className="w-50"
                             />
@@ -361,7 +384,7 @@ const RoomCreate = () => {
                                 id="floor"
                                 autoComplete="off"
                                 placeholder="ví dụ: 1"
-                                label="Số phòng còn trống (*)"
+                                label="Vị trí tầng (*)"
                                 spellCheck={false}
                                 className="w-50"
                             />

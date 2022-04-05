@@ -84,7 +84,7 @@ export default function Headers() {
                                         setAnchorEl(null);
                                     }}
                                 >
-                                    Đăng phòng
+                                    Tạo căn hộ
                                 </MenuItem>
                                 <MenuItem onClick={() => logout()}>Đăng xuất</MenuItem>
                             </Menu>

@@ -51,6 +51,11 @@ const detectCard = async (front: File, back: File) => {
     return Promise.resolve();
 };
 
+
+const register = (user: BodyRequest) => {
+    return axios.post(api.user.REGISTER, user);
+};
+
 export const authService = {
     login,
     logout,
@@ -59,4 +64,5 @@ export const authService = {
     sendOtp,
     verifyEmail,
     detectCard,
+    register
 };

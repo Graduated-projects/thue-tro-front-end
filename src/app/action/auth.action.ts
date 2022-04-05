@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { authService } from '@/services/auth.service';
 import { BodyRequest } from '@/types/interface';
 import { setHeaderForAxios } from '@/configs/common-function';
+import { socketService } from '@/services/socket.service';
 
 const login = createAsyncThunk('user/login', async (params: BodyRequest, thunk) => {
     try {
@@ -9,7 +10,8 @@ const login = createAsyncThunk('user/login', async (params: BodyRequest, thunk) 
         if (response.data.success) {
             setHeaderForAxios(response.data.data.access_token);
             localStorage.setItem('accessToken', response.data.data.access_token);
-            thunk.dispatch(getUserByToken())
+            thunk.dispatch(getUserByToken());
+         
             return response.data;
         }
         return response.data;
@@ -25,6 +27,10 @@ const logout = createAsyncThunk('user/logout', async () => {
 
 const getUserByToken = createAsyncThunk('user/getUserByToken', async () => {
     const response = await authService.getUserByToken();
+    const user = {
+        userId: response.data.data.id,
+    };
+    socketService.connect(user)
     return response.data;
 });
 

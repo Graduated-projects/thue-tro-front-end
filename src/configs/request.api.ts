@@ -28,6 +28,8 @@ export const api = {
         SEND_OTP: server.user + '/email/gen-otp',
         VERIFY_EMAIL: server.user + '/email/otp/verify',
         SIGN_IN: server.user + '/login',
+        REGISTER: server.user + '/register',
+
     },
     ekyc: {
         DETECT_FRONT_CARD: server.ekyc + '/detect/front',

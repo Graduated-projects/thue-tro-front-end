@@ -30,6 +30,20 @@ const useStyle = makeStyles({
         fontSize: '24px',
         fontWeight: 'bold',
     },
+    leftTitle: {
+        color: '#17a2b8',
+        fontsize: '16px',
+        marginRight: '0.25rem',
+    },
+    services: {
+        paddingTop: '1rem',
+        marginTop: `1rem`,
+        borderTop: '2px dashed black'
+    },
+    eachService: {
+        margin: '0.5rem 0',
+
+    }
 });
 
 const RoomByDepartmentId = () => {
@@ -57,13 +71,11 @@ const RoomByDepartmentId = () => {
             ? room.serviceList.map((service: any, index) => {
                   console.log(service);
                   return (
-                      <div key={index}>
-                          {' '}
-                          <div style={{ marginLeft: '1rem' }}>.{service.description}: </div>
+                      <div key={index} className={`${classes.eachService}`}>
+                          <div style={{ marginLeft: '1rem' }} className={`${classes.leftTitle}`}>.{service.description}: </div>
                           <span style={{ marginLeft: '2rem' }}>
-                          -{' '}{service.unitsUnitPrice[0].description}:{' '}
+                              - {service.unitsUnitPrice[0].description}:
                               <b className="text-danger">
-                                  {' '}
                                   {formatVND(Number(service.unitsUnitPrice[0].unitPrice))}
                               </b>
                           </span>
@@ -92,34 +104,54 @@ const RoomByDepartmentId = () => {
                             <div className={`${classes.body}`}>
                                 <p className={`${classes.title}`}>{room?.nameOfRoom} </p>
                                 <p className={``}>
+                                    <span className={`${classes.leftTitle}`}> Ngày đăng:</span>
                                     {new Date(apartment?.createdDate || '').toLocaleDateString(
                                         'en-US'
-                                    )}{' '}
+                                    )}
                                 </p>
-                                <p className={``}>Địa chỉ: {apartment?.address} </p>
+                                <p className={``}>
+                                    <span className={`${classes.leftTitle}`}> Địa chỉ:</span>
+                                    {apartment?.address}
+                                </p>
                                 <Grid container spacing={2}>
                                     <Grid item xs={4}>
-                                        Giá phòng:{' '}
+                                        <span className={`${classes.leftTitle}`}> Giá phòng:</span>
                                         <b className="text-danger">
                                             {formatVND(Number(room?.price))}
                                         </b>
                                     </Grid>
                                     <Grid item xs={4}>
-                                        Diện tích: <b className="text-danger">{room?.acreage} m²</b>
+                                        <span className={`${classes.leftTitle}`}> Diện tích:</span>
+                                        <b className="text-danger">{room?.acreage} m²</b>
                                     </Grid>
                                     <Grid item xs={4}>
-                                        Kỳ hạn: <b className="text-danger">{room?.period} tháng</b>
+                                        <span className={`${classes.leftTitle}`}> Kỳ hạn:</span>
+                                        <b className="text-danger">{Math.ceil(Number(room?.period) / 30)} tháng</b>
                                     </Grid>
                                 </Grid>
-                                <p className={``}>Vị trí: Tầng {room?.floor || 'trệt'} </p>
                                 <p className={``}>
-                                    Trạng thái: {room?.available ? 'còn trống' : 'đã hết'}{' '}
+                                    <span className={`${classes.leftTitle}`}>Vị trí:</span> Tầng{' '}
+                                    {room?.floor || 'trệt'}
                                 </p>
-                                <p> Phòng dành cho: {room?.numberOfPeople} người </p>
-                                <p> Mô tả chi tiết: {room?.description} </p>
+                                <p className={``}>
+                                    <span className={`${classes.leftTitle}`}> Trạng thái:</span>
+                                    {room?.available ? 'còn trống' : 'đã hết'}
+                                </p>
+                                <p>
+                                    <span className={`${classes.leftTitle}`}>Phòng dành cho:</span>
+                                    {room?.numberOfPeople} người
+                                </p>
+                                <p>
+                                    <span className={`${classes.leftTitle}`}>Mô tả chi tiết:</span>
+                                    {room?.description}
+                                </p>
 
-                                <div>Các dịch vụ hiện tại của phòng:</div>
-                                <div>{renderServices}</div>
+                                <div className={`${classes.services}`}>
+                                    <span className={`${classes.leftTitle}`}>
+                                        Các dịch vụ hiện tại của phòng:
+                                    </span>
+                                </div>
+                                <div >{renderServices}</div>
 
                                 <Button variant="contained" onClick={() => rentRoom()}>
                                     Thuê phòng

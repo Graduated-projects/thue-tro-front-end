@@ -28,7 +28,7 @@ const VerifyCard = ({ user }: Props) => {
             .detectCard(card.front[0], card.back[0])
             .then((resp) => {
                 setisDisabled(false);
-              
+                authService.register(user)
             })
             .catch((err) => {
                 setisDisabled(false);

@@ -13,7 +13,7 @@ export interface Room {
     lastModifiedBy?: string;
     lastModifiedDate?: string;
     id?: string;
-    nameOfRoom: number | '';
+    nameOfRoom: string | '';
     numberOfPeople: number | '';
     acreage: number | '';
     floor: number | '';
