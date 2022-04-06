@@ -9,6 +9,7 @@ import { makeStyles } from '@mui/styles';
 import { useNavigate } from 'react-router-dom';
 import { roomAction } from '@/app/action/room.action';
 import RoomRules from './RoomRules';
+import RoomContractCreated from './RoomContractCreated';
 const useStyle = makeStyles({
     container: {
         padding: `4rem 2rem`,
@@ -38,12 +39,13 @@ const RoomContract = () => {
     const roomId = url[url.length - 1];
     const { room, isLoadingRoom } = useRoomStore();
     const { user } = useAuthStore();
-    const [createContractStep, setcreateContractStep] = useState(0);
+    const [createContractStep, setcreateContractStep] = useState(1);
 
     return (
         <div className="container">
             <Grid container spacing={2} className={`${classes.container}`}>
                 {createContractStep === 0 && <RoomRules setStep={setcreateContractStep} />}
+                {createContractStep === 1 && <RoomContractCreated setStep={setcreateContractStep} />}
             </Grid>
         </div>
     );

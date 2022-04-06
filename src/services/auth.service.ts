@@ -9,7 +9,7 @@ const login = (body: BodyRequest) => {
 
 const getUserByToken = async () => {
     const token = localStorage.getItem('accessToken');
-    if (token) setHeaderForAxios(token);
+    if (token) await setHeaderForAxios(token);
     return axios.get(api.user.ME);
 };
 
@@ -51,9 +51,12 @@ const detectCard = async (front: File, back: File) => {
     return Promise.resolve();
 };
 
-
 const register = (user: BodyRequest) => {
-    return axios.post(api.user.REGISTER, user);
+    return axios.post(api.user.REGISTER, user, {
+        headers: {
+            'content-type': 'multipart/form-data',
+        },
+    });
 };
 
 export const authService = {
@@ -64,5 +67,5 @@ export const authService = {
     sendOtp,
     verifyEmail,
     detectCard,
-    register
+    register,
 };

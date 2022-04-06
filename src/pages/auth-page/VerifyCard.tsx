@@ -5,6 +5,9 @@ import { fireErrorMessage } from '@/configs/common-function';
 import { authService } from '@/services/auth.service';
 import { Button, Grid } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { path } from '@/configs/path';
+import Swal from 'sweetalert2';
 
 interface Body {
     [key: string]: any;
@@ -17,6 +20,7 @@ interface Props {
 const VerifyCard = ({ user }: Props) => {
     const card = useCardStore();
     const [isDisabled, setisDisabled] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (card.front.length && card.back.length) setisDisabled(false);
@@ -28,12 +32,37 @@ const VerifyCard = ({ user }: Props) => {
             .detectCard(card.front[0], card.back[0])
             .then((resp) => {
                 setisDisabled(false);
-                authService.register(user)
+                const frontForm = new FormData();
+                const backForm = new FormData();
+                frontForm.append('frontCardFile', card.front[0]);
+                backForm.append('frontCardBack', card.back[0]);
+
+                const newUser = {...user, frontCardFile: frontForm, backCardFile: backForm}
+
+                console.log(newUser);
+                
+                authService
+                    .register(newUser)
+                    .then((resp) => {
+                        if (resp.data.success) {
+                            Swal.fire({
+                                title: 'Thành công!',
+                                text: 'Đăng ký tài khoản thành công!',
+                                icon: 'success',
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'Xác nhận',
+                            }).then((result) => {
+                                navigate(path.main.userInfo);
+                            });
+                        }
+                    })
+                    .catch((err) => {
+                        fireErrorMessage(err);
+                    });
             })
             .catch((err) => {
                 setisDisabled(false);
-                fireErrorMessage("Có lổi xãy ra. Vui lòng thử lại!")
-
+                fireErrorMessage('Có lổi xãy ra. Vui lòng thử lại!');
             });
     };
 

@@ -8,9 +8,14 @@ const login = createAsyncThunk('user/login', async (params: BodyRequest, thunk) 
     try {
         const response = await authService.login(params);
         if (response.data.success) {
-            setHeaderForAxios(response.data.data.access_token);
+            console.log(`set header start`);
+
+            await setHeaderForAxios(response.data.data.access_token);
             localStorage.setItem('accessToken', response.data.data.access_token);
-            thunk.dispatch(getUserByToken());
+            console.log(`set header done`);
+            
+            await thunk.dispatch(getUserByToken());
+            console.log(`end`);
          
             return response.data;
         }
@@ -30,7 +35,7 @@ const getUserByToken = createAsyncThunk('user/getUserByToken', async () => {
     const user = {
         userId: response.data.data.id,
     };
-    socketService.connect(user)
+    // socketService.connect(user)
     return response.data;
 });
 

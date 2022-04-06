@@ -322,7 +322,7 @@ const Register = () => {
                                 </React.Fragment>
                             )}
 
-                            {currentRegisterStep === registerSteps.FOURTH && <VerifyCard user={initialUser} />}
+                            {currentRegisterStep === registerSteps.FOURTH && <VerifyCard user={formik.values} />}
                         </Grid>
                     </Form>
                 )}

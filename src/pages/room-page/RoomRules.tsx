@@ -81,10 +81,6 @@ const RoomRules = ({ setStep }: Props) => {
                 <p className={`${classes.subTitle}`}>2. Điều khoản của bên thuê (Bên B)</p>
                 {renderGeneralRules(renterRules)}
             </Grid>
-            <Grid item xs={12} className={``}>
-                <p className={`${classes.subTitle}`}>2. Điều khoản của bên thuê (Bên B)</p>
-                {renderGeneralRules(renterRules)}
-            </Grid>
             <Grid item xs={12} className={`center`} textAlign="center">
                 <FormControlLabel
                     label="Tôi đồng ý với điều khoản này"

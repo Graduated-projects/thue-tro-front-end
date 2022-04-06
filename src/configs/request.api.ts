@@ -6,7 +6,8 @@ export const server = {
     user: baseUrl + '/user',
     ekyc: baseUrl + '/ekyc',
     media: baseUrl + '/media',
-    apartment: baseUrl + '/apartment'
+    apartment: baseUrl + '/apartment',
+    contract: baseUrl + '/contract'
 };
 
 export const api = {
@@ -43,6 +44,8 @@ export const api = {
         GET_ALL: server.apartment + '/list',
         GET_ROOMS: server.apartment + '/rooms/:id',
         GET_BY_ID: server.apartment + '/detail/:id'
-
+    },
+    contract: {
+        GET_INFO: server.contract + '/detail'
     }
 };
