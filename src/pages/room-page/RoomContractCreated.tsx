@@ -138,10 +138,10 @@ const RoomContractCreated = ({ setStep }: Props) => {
                 <p>
                     1.1. Bên A đồng ý cho Bên B thuê và Bên B cũng đồng ý thuê quyền sử dụng đất và
                     một căn nhà gắn liền với quyền sử dụng đất tại địa chỉ{' '}
-                    <b>{contractInfo?.room.address} </b> để sử dụng làm nơi để ở.
+                    <b>{contractInfo?.room?.address} </b> để sử dụng làm nơi để ở.
                 </p>
                 <p>
-                    Diện tích căn nhà :<b> {contractInfo?.room.acreage}m² </b>
+                    Diện tích căn nhà :<b> {contractInfo?.room?.acreage}m² </b>
                 </p>
                 <p>
                     1.2. Bên A cam kết quyền sử sụng đất và căn nhà gắn liền trên đất trên là tài
@@ -169,7 +169,7 @@ const RoomContractCreated = ({ setStep }: Props) => {
                 <b>Điều 3. Thời hạn thuê</b>
                 <p>
                     3.1. Bên A cam kết cho Bên B thuê Tài sản thuê với thời hạn là{' '}
-                    <b>{Math.ceil(contractInfo?.room.period) / 30}</b> tháng kể từ ngày bàn giao Tài
+                    <b>{Math.ceil(contractInfo?.room?.period) / 30}</b> tháng kể từ ngày bàn giao Tài
                     sản thuê;
                 </p>
                 <p>
@@ -181,7 +181,7 @@ const RoomContractCreated = ({ setStep }: Props) => {
                 <b>Điều 4. Đặc cọc tiền thuê nhà</b>
                 <p>
                     4.1. Bên B sẽ giao cho Bên A một khoản tiền là{' '}
-                    <b className="text-danger"> {formatVND(contractInfo?.room.deposit || '')}</b>{' '}
+                    <b className="text-danger"> {formatVND(contractInfo?.room?.deposit || '')}</b>{' '}
                     ngay sau khi ký hợp đồng này. Số tiền này là tiền đặt cọc để đảm bảm thực hiện
                     Hợp đồng cho thuê nhà. Kể từ ngày Hợp Đồng có hiệu lực.
                 </p>
@@ -212,7 +212,7 @@ const RoomContractCreated = ({ setStep }: Props) => {
                     5.1. Tiền Thuê nhà đối với Diện Tích Thuê nêu tại mục 1.1 Điều 1 là:{' '}
                     <b className="text-danger">
                         {' '}
-                        {formatVND(contractInfo?.room.price || '')} /tháng{' '}
+                        {formatVND(contractInfo?.room?.price || '')} /tháng{' '}
                     </b>
                 </p>
                 <p>
@@ -233,13 +233,13 @@ const RoomContractCreated = ({ setStep }: Props) => {
             </Grid>
             <Grid item xs={12} textAlign="left" className={`mt-5`}>
                 <b>Điều 7. Quyền và nghĩa vụ của bên cho thuê nhà:</b>
-                <b>7.1. Quyền của Bên Cho Thuê:</b>
+                <p> <b>7.1. Quyền của Bên Cho Thuê:</b> </p>
                 <p>
                     Yêu cầu Bên B thanh toán Tiền Thuê và Chi phí sử dụng Diện Tích Thuê đầy đủ,
                     đúng hạn theo thoả thuận trong Hợp Đồng.<br></br> Yêu cầu Bên B phải sửa chữa
                     phần hư hỏng, thiệt hại do lỗi của Bên B gây ra.
                 </p>
-                <b>Nghĩa vụ của Bên Cho Thuê:</b>
+                <b>7.2. Nghĩa vụ của Bên Cho Thuê:</b>
                 <p>
                     - Bàn giao Diện Tích Thuê cho Bên B theo đúng thời gian quy định trong Hợp Đồng;
                 </p>

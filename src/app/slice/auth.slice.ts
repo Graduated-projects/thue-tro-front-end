@@ -24,7 +24,8 @@ const authSlice = createSlice({
         },
         [authAction.login.fulfilled.toString()]: (state, action) => {
             state.isLoading = false;
-
+            console.log(action.payload);
+            
             if (action.payload.success) {
                 state.isLogin = true;
                 state.accessToken = action.payload.data.access_token;

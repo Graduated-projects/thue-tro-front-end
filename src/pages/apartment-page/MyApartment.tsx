@@ -83,7 +83,7 @@ const MyApartment = () => {
 
     const apartmentsMap = apartments.map((apartment: Apartment, index: number) => {
         return (
-            <Grid item xs={3}>
+            <Grid item xs={3} key={index}>
                 <Card variant="outlined" key={index} className={classes.cardContainer}>
                     <CardMedia
                         component="img"
@@ -98,24 +98,26 @@ const MyApartment = () => {
                             </span>
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                            <div>
-                                Số tầng: <b> {apartment.numberOfFloors}</b>
-                            </div>
-                            <div>
-                                Tổng số phòng: <b> {apartment.totalNumberOfRooms}</b>
-                            </div>
-                            <div>
-                                Số phòng trống: <b> {apartment.numberOfRoomsAvailable}</b>
-                            </div>
-                            <div>
-                                Ngày đăng:
-                                <b>
-                                    {new Date(apartment?.createdDate || '').toLocaleDateString(
-                                        'en-US'
-                                    )}
-                                </b>
-                            </div>
-                            <div>Mô tả: {limitString(apartment.description, 50)}</div>
+                            <React.Fragment>
+                                <div>
+                                    Số tầng: <b> {apartment.numberOfFloors}</b>
+                                </div>
+                                <div>
+                                    Tổng số phòng: <b> {apartment.totalNumberOfRooms}</b>
+                                </div>
+                                <div>
+                                    Số phòng trống: <b> {apartment.numberOfRoomsAvailable}</b>
+                                </div>
+                                <div>
+                                    Ngày đăng:
+                                    <b>
+                                        {new Date(apartment?.createdDate || '').toLocaleDateString(
+                                            'en-US'
+                                        )}
+                                    </b>
+                                </div>
+                                <div>Mô tả: {limitString(apartment.description, 50)}</div>
+                            </React.Fragment>
                         </Typography>
                     </CardContent>
                     <CardActions className={classes.cardAction}>

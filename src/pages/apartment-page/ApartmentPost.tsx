@@ -1,7 +1,17 @@
-import { Button, Checkbox, FormControlLabel, Grid, TextField } from '@mui/material';
+import {
+    Button,
+    Checkbox,
+    FormControl,
+    FormControlLabel,
+    Grid,
+    InputLabel,
+    MenuItem,
+    Select,
+    TextField,
+} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { Apartment } from '@/types/apartment.type';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import CloseIcon from '@mui/icons-material/Close';
@@ -12,15 +22,24 @@ import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { path } from '@/configs/path';
 import { useAuthStore } from '@/app/store';
-const TextAreaField = (props: any) => <TextField multiline {...props} rows={6} />;
+import background from '@/assets/img/background-1.jpg';
+import ImageIcon from '@mui/icons-material/Image';
+
+const allCity = require('../../dataCity.json');
+
+const TextAreaField = (props: any) => <TextField multiline {...props} rows={4} />;
 
 const useStyle = makeStyles({
     apartmentContainer: {
-        margin: '3rem 2rem',
-        padding: '2rem',
+        margin: '3rem 12rem',
+        padding: '0 1rem',
         borderRadius: '7.5px',
-        boxShadow:
-            'box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;',
+        background: `url(${background})`,
+        backgroundPositionY: '-100px',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
+        boxShadow: `rgba(100, 100, 111, 0.2) 0px 7px 29px 0px`,
+        height: '80vh',
     },
     title: {
         fontSize: '30px',
@@ -28,14 +47,13 @@ const useStyle = makeStyles({
     },
     fileUpload: {
         position: 'relative',
-
         display: 'flex',
         margin: '0.25rem',
     },
     fileName: {
         width: '400px',
         display: 'flex',
-        alignItems: 'center',
+        alignItems: '',
     },
     removeFile: {
         borderRadius: '100%',
@@ -51,7 +69,19 @@ const useStyle = makeStyles({
 
     img: {
         width: '75px',
-        height: '50px',
+        height: '100px',
+    },
+    dragFile: {
+        border: '1px dashed gray',
+        height: '124px',
+        flexDirection: 'column',
+        transition: '0.2s',
+        '&:hover': {
+            color: 'blue',
+            border: '1px dashed blue',
+            cursor: 'pointer',
+
+        },
     },
 });
 
@@ -69,11 +99,41 @@ const initialApartment: Apartment = {
 const ApartmentPost = () => {
     const classes = useStyle();
     const { isLogin } = useAuthStore();
-
-    const [isDisabledFloorField, setisDisabledFloorField] = useState(false);
     const [filesUpload, setfilesUpload] = useState([]);
     const navigate = useNavigate();
+    const [provinces, setprovinces] = useState([]);
+    const [districts, setdistricts] = useState([]);
+    const [wards, setwards] = useState([]);
+    const [numberOptions, setnumberOptions] = useState({
+        totalNumberOfRooms: 0,
+        numberOfFloors: 0,
+        numberOfRoomsAvailable: 0,
+    });
+    const [address, setaddress] = useState({
+        province: '',
+        district: '',
+        wards: '',
+        street: '',
+    });
 
+    const numbers = Array(50).fill(null);
+
+    useEffect(() => {
+        setprovinces(allCity.map((city: any) => city.name));
+    }, []);
+
+    useEffect(() => {
+        const filterDistrict = allCity.find((city: any) => city.name === address.province);
+        if (filterDistrict && filterDistrict.districts) setdistricts(filterDistrict.districts);
+    }, [address.province]);
+
+    useEffect(() => {
+        const filterWards: any = districts.find(
+            (district: any) => district.name === address.district
+        );
+
+        if (filterWards && filterWards.wards) setwards(filterWards.wards);
+    }, [address.district]);
 
     useEffect(() => {
         if (!isLogin) navigate(path.main.home);
@@ -90,14 +150,13 @@ const ApartmentPost = () => {
     };
 
     const renderFiles = filesUpload.map((file: any, index: number) => {
-        const url = URL.createObjectURL(file);
+        if (index >= 4) return null;
+        if (index === 3) return <div>`...`</div>;
         return (
             <div className={`${classes.fileUpload} w-100`} key={index}>
-                <div>
-                    <img className={`mr-2 ${classes.img}`} src={url} alt="#" key={index} />
-                </div>
+                <ImageIcon />
                 <div className={`mr-5 ml-5 ${classes.fileName}`}> {file.name} </div>
-                <div className={`center`} onClick={() => onRemoveFile(index)}>
+                <div className={``} onClick={() => onRemoveFile(index)}>
                     <CloseIcon className={`${classes.removeFile} text-danger`} fontSize="small" />
                 </div>
             </div>
@@ -105,18 +164,27 @@ const ApartmentPost = () => {
     });
 
     const postApartment = (apartment: Apartment, formik: any) => {
+        const apartmentPost = {
+            ...apartment,
+            address: `${apartment.address} + ${address.wards} + ${address.district} + ${address.province}`,
+            totalNumberOfRooms: numberOptions.numberOfFloors,
+            numberOfRoomsAvailable: numberOptions.numberOfRoomsAvailable,
+            numberOfFloors: numberOptions.numberOfFloors,
+        };
+
         const formData = new FormData();
         if (filesUpload.length) {
             filesUpload.forEach((file) => {
                 formData.append('files', file);
             });
+
             mediaService
                 .uploadFiles(formData)
                 .then((resp) => {
                     const { urls } = resp.data;
                     apartment.imageUrls = urls;
                     apartmentService
-                        .postApartment(apartment)
+                        .postApartment(apartmentPost)
                         .then((resp) => {
                             Swal.fire({
                                 title: 'Thành công!',
@@ -137,151 +205,235 @@ const ApartmentPost = () => {
     return (
         <div className={` ${classes.apartmentContainer}`}>
             <Formik initialValues={initialApartment} onSubmit={postApartment}>
-                {(formik) => (
+                {(formik: any) => (
                     <Form>
                         <Grid container spacing={2}>
-                            <Grid item xs={12} className="center">
+                            <Grid item xs={12} className="" textAlign="center">
                                 <p className={`${classes.title}`}>Tạo một căn hộ</p>
                             </Grid>
-                        </Grid>
-                        <Grid item xs={12} className="mt-5 center center">
-                            <Field
-                                as={TextField}
-                                type="text"
-                                name="reminiscentName"
-                                id="reminiscentName"
-                                autoComplete="off"
-                                placeholder="ví dụ: Nhà trọ giá tốt Quận 5"
-                                label="Tiêu đề phòng (*)"
-                                spellCheck={false}
-                                className="w-50"
-                            />
-                            <ErrorMessage
-                                name="reminiscentName"
-                                render={(err) => <div style={{ color: 'red' }}>{err}</div>}
-                            />
-                        </Grid>
-                        <Grid item xs={12} className="mt-5 center center">
-                            <Field
-                                as={TextField}
-                                type="text"
-                                name="address"
-                                id="address"
-                                autoComplete="off"
-                                placeholder="ví dụ: 497/24/3 Phan văn trị, Phường 5, Quận Gò Vấp, TP HCM"
-                                label="Địa chỉ (*)"
-                                spellCheck={false}
-                                className="w-50"
-                            />
-                            <ErrorMessage
-                                name="address"
-                                render={(err) => <div style={{ color: 'red' }}>{err}</div>}
-                            />
-                        </Grid>
-                        <Grid item xs={12} className="mt-5 center">
-                            <Field
-                                as={TextField}
-                                type="text"
-                                name="totalNumberOfRooms"
-                                id="totalNumberOfRooms"
-                                autoComplete="off"
-                                placeholder="ví dụ: 10"
-                                label="Tổng số phòng trong căn hộ (*)"
-                                spellCheck={false}
-                                className="w-50"
-                            />
-                            <ErrorMessage
-                                name="totalNumberOfRooms"
-                                render={(err) => <div style={{ color: 'red' }}>{err}</div>}
-                            />
-                        </Grid>
-                        <Grid item xs={12} className="mt-5 center">
-                            <Field
-                                as={TextField}
-                                type="text"
-                                name="numberOfRoomsAvailable"
-                                id="numberOfRoomsAvailable"
-                                autoComplete="off"
-                                placeholder="ví dụ: 8"
-                                label="Số phòng còn trống (*)"
-                                spellCheck={false}
-                                className="w-50"
-                            />
-                            <ErrorMessage
-                                name="numberOfRoomsAvailable"
-                                render={(err) => <div style={{ color: 'red' }}>{err}</div>}
-                            />
-                        </Grid>
-                        <Grid item xs={12} className="mt-5 center">
-                            <Field
-                                as={TextAreaField}
-                                name="description"
-                                id="description"
-                                autoComplete="off"
-                                placeholder={`ví dụ: -phòng trọ sạch sẽ,...`}
-                                label="Mô tả chi tiết"
-                                spellCheck={false}
-                                className={`w-50 `}
-                            />
-                            <ErrorMessage
-                                name="description"
-                                render={(err) => <div style={{ color: 'red' }}>{err}</div>}
-                            />
-                        </Grid>
-                        <Grid item xs={12} textAlign="center" className="mt-5">
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        defaultChecked
-                                        onChange={() => {
-                                            setisDisabledFloorField(!isDisabledFloorField);
-                                        }}
+                            <Grid item xs={6}>
+                                <Grid item xs={12} className="">
+                                    <Field
+                                        as={TextField}
+                                        type="text"
+                                        name="reminiscentName"
+                                        id="reminiscentName"
+                                        autoComplete="off"
+                                        placeholder="ví dụ: Nhà trọ giá tốt Quận 5"
+                                        label="Tiêu đề căn hộ (*)"
+                                        spellCheck={false}
+                                        className="w-100"
                                     />
-                                }
-                                label="Căn hộ có tầng?"
-                                className="w-50"
-                            />
-                            <Field
-                                as={TextField}
-                                type="text"
-                                name="numberOfFloors"
-                                id="numberOfFloors"
-                                autoComplete="off"
-                                placeholder="ví dụ: 10"
-                                label="Tổng số tầng trong căn hộ"
-                                spellCheck={false}
-                                className="w-50"
-                                disabled={isDisabledFloorField}
-                            />
-                            <ErrorMessage
-                                name="numberOfFloors"
-                                render={(err) => <div style={{ color: 'red' }}>{err}</div>}
-                            />
-                        </Grid>
-                        <Grid item xs={12} className="center mt-5">
-                            <div className="w-50">Thêm ảnh cho căn hộ:</div>
-                        </Grid>
-                        <Grid item xs={12} className="center">
-                            <div className="w-50">
-                                <label htmlFor="apartmentUploadFiles">
-                                    <DriveFolderUploadIcon fontSize="large" />
-                                    <input
-                                        type="file"
-                                        multiple
-                                        id="apartmentUploadFiles"
-                                        onChange={(e) => uploadFiles(e)}
-                                        style={{ display: 'none' }}
+                                    <ErrorMessage
+                                        name="reminiscentName"
+                                        render={(err) => <div style={{ color: 'red' }}>{err}</div>}
                                     />
-                                </label>
-                            </div>
-                        </Grid>
-                        <Grid item xs={12} className="center">
-                            <div className="w-50 "> {renderFiles} </div>
-                        </Grid>
-                        <Grid item xs={12} className="center mt-5">
-                            <Button variant="contained" color="primary" type="submit">
-                                Hoàn tất
-                            </Button>
+                                </Grid>
+                                <Grid item xs={12} className="mt-5">
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={4}>
+                                            <FormControl fullWidth className="col-3">
+                                                <InputLabel>Tổng số phòng</InputLabel>
+                                                <Select
+                                                    label="Tổng số phòng"
+                                                    onChange={(e) =>
+                                                        setnumberOptions({
+                                                            ...numberOptions,
+                                                            totalNumberOfRooms: Number(
+                                                                e.target.value
+                                                            ),
+                                                        })
+                                                    }
+                                                    defaultValue={0}
+                                                >
+                                                    {numbers.map((none: any, index: number) => (
+                                                        <MenuItem key={index} value={index + 1}>
+                                                            {index + 1}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>
+                                            </FormControl>
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                            <FormControl fullWidth className="col-3">
+                                                <InputLabel>Số phòn trống</InputLabel>
+                                                <Select
+                                                    label="Số phòn trống"
+                                                    onChange={(e) =>
+                                                        setnumberOptions({
+                                                            ...numberOptions,
+                                                            numberOfRoomsAvailable: Number(
+                                                                e.target.value
+                                                            ),
+                                                        })
+                                                    }
+                                                    defaultValue={0}
+                                                >
+                                                    {numbers.map((none: any, index: number) => (
+                                                        <MenuItem key={index} value={index + 1}>
+                                                            {index + 1}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>
+                                            </FormControl>
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                            <FormControl fullWidth className="col-3">
+                                                <InputLabel>Số Tầng</InputLabel>
+                                                <Select
+                                                    label="Số Tầng"
+                                                    onChange={(e) =>
+                                                        setnumberOptions({
+                                                            ...numberOptions,
+                                                            numberOfFloors: Number(e.target.value),
+                                                        })
+                                                    }
+                                                    defaultValue={0}
+                                                >
+                                                    {numbers.map((none: any, index: number) => (
+                                                        <MenuItem key={index} value={index + 1}>
+                                                            {index + 1}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>
+                                            </FormControl>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                                <Grid item xs={12} className="mt-5 ">
+                                    <Field
+                                        as={TextAreaField}
+                                        name="description"
+                                        id="description"
+                                        autoComplete="off"
+                                        placeholder={`ví dụ: -phòng trọ sạch sẽ,...`}
+                                        label="Mô tả chi tiết"
+                                        spellCheck={false}
+                                        className={`w-100 `}
+                                    />
+                                </Grid>{' '}
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Grid item xs={12}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={4}>
+                                            <FormControl fullWidth className="col-3">
+                                                <InputLabel>Tỉnh</InputLabel>
+                                                <Select
+                                                    label="Tỉnh"
+                                                    onChange={(e: any) =>
+                                                        setaddress({
+                                                            ...address,
+                                                            province: e.target.value as string,
+                                                        })
+                                                    }
+                                                    defaultValue=""
+                                                >
+                                                    {provinces.map((prv: any, index: number) => (
+                                                        <MenuItem key={index} value={prv}>
+                                                            {prv}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>
+                                            </FormControl>
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                            <FormControl fullWidth className="col-3">
+                                                <InputLabel>Quận/Huyện</InputLabel>
+                                                <Select
+                                                    label="Quận/Huyện"
+                                                    onChange={(e: any) =>
+                                                        setaddress({
+                                                            ...address,
+                                                            district: e.target.value as string,
+                                                        })
+                                                    }
+                                                    defaultValue=""
+                                                >
+                                                    {districts.map(
+                                                        (district: any, index: number) => (
+                                                            <MenuItem
+                                                                key={index}
+                                                                value={district.name}
+                                                            >
+                                                                {district.name}
+                                                            </MenuItem>
+                                                        )
+                                                    )}
+                                                </Select>
+                                            </FormControl>
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                            <FormControl fullWidth className="col-3">
+                                                <InputLabel>Phường/Xã</InputLabel>
+                                                <Select
+                                                    label="Phường/Xã"
+                                                    onChange={(e: any) =>
+                                                        setaddress({
+                                                            ...address,
+                                                            wards: e.target.value as string,
+                                                        })
+                                                    }
+                                                    defaultValue=""
+                                                >
+                                                    {wards.map((wards: any, index: number) => (
+                                                        <MenuItem key={index} value={wards.name}>
+                                                            {wards.name}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>
+                                            </FormControl>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                                <Grid item xs={12} className="mt-5">
+                                    <Field
+                                        as={TextField}
+                                        type="text"
+                                        name="address"
+                                        id="address"
+                                        autoComplete="off"
+                                        placeholder="ví dụ: 497/24/3 Phan văn trị"
+                                        label="Địa chỉ (*)"
+                                        spellCheck={false}
+                                        className="w-100"
+                                    />
+                                    <ErrorMessage
+                                        name="address"
+                                        render={(err) => <div style={{ color: 'red' }}>{err}</div>}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} className="mt-5">
+                                    <div className="w-100">
+                                        <label htmlFor="apartmentUploadFiles">
+                                            <div className={`${classes.dragFile} center`}>
+                                                <DriveFolderUploadIcon />
+                                                <p>kéo ảnh hoặc nhấn vào đây</p>
+                                            </div>
+                                            <input
+                                                type="file"
+                                                multiple
+                                                id="apartmentUploadFiles"
+                                                onChange={(e) => uploadFiles(e)}
+                                                style={{ display: 'none' }}
+                                            />
+                                        </label>
+                                    </div>
+                                </Grid>
+                                <Grid item xs={12} className="">
+                                    <div className="w-100 "> {renderFiles} </div>
+                                </Grid>
+                            </Grid>
+                            <Grid item xs={12} className="mt-5 mbot-5" textAlign="center">
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    type="submit"
+                                    style={{ marginTop: 'auto' }}
+                                >
+                                    Hoàn tất
+                                </Button>
+                            </Grid>
                         </Grid>
                     </Form>
                 )}

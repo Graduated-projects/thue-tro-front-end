@@ -39,7 +39,7 @@ const RoomContract = () => {
     const roomId = url[url.length - 1];
     const { room, isLoadingRoom } = useRoomStore();
     const { user } = useAuthStore();
-    const [createContractStep, setcreateContractStep] = useState(1);
+    const [createContractStep, setcreateContractStep] = useState(0);
 
     return (
         <div className="container">

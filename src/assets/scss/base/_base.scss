@@ -11,6 +11,7 @@ body {
     background-color: $lightTheme;
     overflow-x: hidden;
     width: 100vw;
+
 }
 .container {
     margin: 0 $baseMarginContainer !important;
@@ -22,6 +23,7 @@ p {
     background: url('../../img/background.jpg');
     background-repeat: no-repeat;
     background-size: cover;
+    min-height: 100vh;
 }
 
 .center {

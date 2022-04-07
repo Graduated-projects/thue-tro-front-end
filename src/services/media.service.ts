@@ -9,6 +9,9 @@ const uploadFiles = (files: FormData) => {
     });
 };
 
+
+
 export const mediaService = {
     uploadFiles,
+    
 };

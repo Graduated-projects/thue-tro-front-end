@@ -21,11 +21,11 @@ function App() {
             <div className="App">
                 <Headers />
                 <Routes>{routesMap}</Routes>
-                <div className="bg-light">
+                {/* <div className="bg-light">
                     <div className="container">
                         <Footer />
                     </div>
-                </div>
+                </div> */}
             </div>
         </Router>
     );
