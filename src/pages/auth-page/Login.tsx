@@ -20,6 +20,9 @@ const useStyles = makeStyles({
     formContainer: {
         width: '20rem',
     },
+    buttonSize: {
+        width: '10rem'
+    }
 });
 
 interface Body {
@@ -98,6 +101,8 @@ const Login = () => {
                                     variant="contained"
                                     type="submit"
                                     disabled={formik.isSubmitting}
+                                    className={classes.buttonSize}
+
                                 >
                                     Đăng nhập
                                 </Button>
@@ -106,6 +111,7 @@ const Login = () => {
                                 <Button
                                     variant="outlined"
                                     color="primary"
+                                    className={classes.buttonSize}
                                     type="button"
                                     onClick={() => navigate(path.auth.register)}
                                 >

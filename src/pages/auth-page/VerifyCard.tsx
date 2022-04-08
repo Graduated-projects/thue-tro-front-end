@@ -32,33 +32,34 @@ const VerifyCard = ({ user }: Props) => {
             .detectCard(card.front[0], card.back[0])
             .then((resp) => {
                 setisDisabled(false);
-                const frontForm = new FormData();
-                const backForm = new FormData();
-                frontForm.append('frontCardFile', card.front[0]);
-                backForm.append('frontCardBack', card.back[0]);
 
-                const newUser = {...user, frontCardFile: frontForm, backCardFile: backForm}
+                const newUser = new FormData()
 
+                newUser.append("email", user.email)
+                newUser.append("frontCardFile", card.front[0])
+                newUser.append("backCardFile", card.back[0])
+                console.log(resp);
+                
                 console.log(newUser);
                 
-                authService
-                    .register(newUser)
-                    .then((resp) => {
-                        if (resp.data.success) {
-                            Swal.fire({
-                                title: 'Thành công!',
-                                text: 'Đăng ký tài khoản thành công!',
-                                icon: 'success',
-                                confirmButtonColor: '#3085d6',
-                                confirmButtonText: 'Xác nhận',
-                            }).then((result) => {
-                                navigate(path.main.userInfo);
-                            });
-                        }
-                    })
-                    .catch((err) => {
-                        fireErrorMessage(err);
-                    });
+                // authService
+                //     .register(newUser)
+                //     .then((resp) => {
+                //         if (resp.data.success) {
+                //             Swal.fire({
+                //                 title: 'Thành công!',
+                //                 text: 'Đăng ký tài khoản thành công!',
+                //                 icon: 'success',
+                //                 confirmButtonColor: '#3085d6',
+                //                 confirmButtonText: 'Xác nhận',
+                //             }).then((result) => {
+                //                 navigate(path.main.userInfo);
+                //             });
+                //         }
+                //     })
+                //     .catch((err) => {
+                //         fireErrorMessage(err);
+                //     });
             })
             .catch((err) => {
                 setisDisabled(false);

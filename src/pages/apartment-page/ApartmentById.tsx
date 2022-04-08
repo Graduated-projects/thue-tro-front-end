@@ -4,10 +4,21 @@ import { useApartmentStore, useAuthStore } from '@/app/store';
 import { formatVND } from '@/configs/common-function';
 import { path } from '@/configs/path';
 import { Room } from '@/types/room.type';
-import { Button, Grid } from '@mui/material';
+import {
+    Button,
+    Card,
+    CardActions,
+    CardContent,
+    CardMedia,
+    CircularProgress,
+    Grid,
+    Typography,
+} from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Logo from '@/assets/img/logo.png';
+
 const useStyle = makeStyles({
     container: {
         padding: `4rem 0`,
@@ -15,16 +26,16 @@ const useStyle = makeStyles({
     room: {
         margin: '1rem 0',
     },
-    roomElement: {
-        backgroundColor: 'white',
-        boxShadow: `rgb(38, 57, 77) 0px 20px 30px -10px`,
-        padding: '1rem 2rem',
-        cursor: 'pointer',
-        transition: '0.2s',
-        '&:hover': {
-            backgroundColor: '#dddddd',
-        },
+    cardMedia: {
+        height: '150px',
     },
+    cardContent: {},
+    cardAction: {
+        marginTop: '50px',
+        display: 'flex',
+        justifyContent: 'center',
+    },
+    cardContainer: {},
 });
 const ApartmentById = () => {
     const dispatch = useAppDispatch();
@@ -48,8 +59,7 @@ const ApartmentById = () => {
         dispatch(apartmentAction.getRoomsByApartmentId(params));
         dispatch(apartmentAction.getById(apartmentId));
     }, [dispatch, apartmentId, user]);
-    console.log(rooms);
-    
+
     const gotoRoomDetail = (roomId: string) => {
         navigate(
             path.apartment.byId.replace(':id', apartmentId) + path.room.byId.replace(':id', roomId)
@@ -57,21 +67,68 @@ const ApartmentById = () => {
     };
 
     const roomsMap = rooms.map((room: Room, index) => {
+        console.log(room);
+
         return (
-            <Grid
-                item
-                xs={6}
-                className={`${classes.room}`}
-                key={index}
-                onClick={() => gotoRoomDetail(room.id as string)}
-            >
-                <div className={`${classes.roomElement}`}>
-                    <p>Tên phòng: {room.nameOfRoom}</p>
-                    <p>
-                        Giá phòng: <b className="text-danger"> {formatVND(Number(room.price))} </b>
-                    </p>
-                    <p>Tầng: {room.floor || 'Trệt'} </p>
-                </div>
+            <Grid item xs={2} key={index}>
+                <Card variant="outlined" key={index} className={classes.cardContainer}>
+                    <CardMedia
+                        component="img"
+                        alt="green iguana"
+                        className={classes.cardMedia}
+                        image={Logo}
+                    />
+                    <CardContent className={classes.cardMedia}>
+                        <Typography gutterBottom component="div" textAlign="center">
+                            <b> {room.nameOfRoom}</b>
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            <React.Fragment>
+                                <div>
+                                    Diện tích: <b> {room.acreage} m² </b>
+                                </div>
+                                <div>
+                                    Giá phòng:{' '}
+                                    <b className="text-danger">
+                                        {formatVND(room?.price as number)}
+                                    </b>
+                                </div>
+                                <div>
+                                    Tiền cọc: <b> {formatVND(room?.deposit as number)} </b>
+                                </div>
+
+                                <div>
+                                    Kỳ hạn thuê:{' '}
+                                    <b> {Math.ceil((room?.period as number) / 30)} tháng </b>
+                                </div>
+                                <div>
+                                    Trạng thái:{' '}
+                                    <b>
+                                        {room.available ? (
+                                            'Còn phòng'
+                                        ) : (
+                                            <span className="text-danger"> Hết phòng </span>
+                                        )}
+                                    </b>
+                                </div>
+                                <div>
+                                    Ngày đăng:{' '}
+                                    <b>
+                                        {' '}
+                                        {new Date(room?.createdDate || '').toLocaleDateString(
+                                            'en-US'
+                                        )}{' '}
+                                    </b>
+                                </div>
+                            </React.Fragment>
+                        </Typography>
+                    </CardContent>
+                    <CardActions className={classes.cardAction}>
+                        <Button size="small" onClick={() => gotoRoomDetail(room.id as string)}>
+                            Xem chi tiết
+                        </Button>
+                    </CardActions>
+                </Card>
             </Grid>
         );
     });

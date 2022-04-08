@@ -16,7 +16,6 @@ import VerifyCard from './VerifyCard';
 
 const useStyles = makeStyles({
     container: {
-        height: '85vh',
         flexDirection: 'column',
     },
     customContainer,

@@ -17,7 +17,8 @@ const useStyles = makeStyles({
         borderRadius: '7.5px',
         marginTop: '3rem',
         fontSize: '20px',
-        marginBottom: '35vh',
+        padding: '2rem',
+        backgroundColor: 'white'
     },
     title: {
         fontWeight: 'bold',

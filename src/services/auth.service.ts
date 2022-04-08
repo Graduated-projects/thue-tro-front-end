@@ -30,25 +30,32 @@ const verifyEmail = (user: BodyRequest) => {
 };
 
 const detectCard = async (front: File, back: File) => {
-    const frontForm = new FormData();
-    const backForm = new FormData();
-    frontForm.append('file', front);
-    backForm.append('file', back);
+    try {
+        const frontForm = new FormData();
+        const backForm = new FormData();
+        frontForm.append('file', front);
+        backForm.append('file', back);
 
-    const resultFront = await axios.post(api.ekyc.DETECT_FRONT_CARD, frontForm, {
-        headers: {
-            'content-type': 'multipart/form-data',
-        },
-    });
+        const frontCardFile = await axios.post(api.ekyc.DETECT_FRONT_CARD, frontForm, {
+            headers: {
+                'content-type': 'multipart/form-data',
+            },
+        });
 
-    const resultBack = await axios.post(api.ekyc.DETECT_BACK_CARD, backForm, {
-        headers: {
-            'content-type': 'multipart/form-data',
-        },
-    });
-    console.log(resultFront, resultBack);
+        const backCardFile = await axios.post(api.ekyc.DETECT_BACK_CARD, backForm, {
+            headers: {
+                'content-type': 'multipart/form-data',
+            },
+        });
+        console.log(frontCardFile);
+        console.log(backCardFile);
+        
+    return Promise.resolve({ frontCardFile, backCardFile });
 
-    return Promise.resolve();
+    } catch (error) {
+        Promise.reject(error);
+    }
+
 };
 
 const register = (user: BodyRequest) => {

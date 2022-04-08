@@ -324,6 +324,7 @@ const RoomCreate = () => {
             period: Number(numberOptions.period),
             price: Number(room.price),
             createRoomServiceList: servicesDto,
+            available: true
         };
 
         roomService

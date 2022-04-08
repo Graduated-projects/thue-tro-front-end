@@ -169,8 +169,8 @@ const RoomContractCreated = ({ setStep }: Props) => {
                 <b>Điều 3. Thời hạn thuê</b>
                 <p>
                     3.1. Bên A cam kết cho Bên B thuê Tài sản thuê với thời hạn là{' '}
-                    <b>{Math.ceil(contractInfo?.room?.period) / 30}</b> tháng kể từ ngày bàn giao Tài
-                    sản thuê;
+                    <b>{Math.ceil(contractInfo?.room?.period) / 30}</b> tháng kể từ ngày bàn giao
+                    Tài sản thuê;
                 </p>
                 <p>
                     3.2. Hết thời hạn thuê nêu trên nếu bên B có nhu cầu tiếp tục sử dụng thì Bên A
@@ -233,7 +233,10 @@ const RoomContractCreated = ({ setStep }: Props) => {
             </Grid>
             <Grid item xs={12} textAlign="left" className={`mt-5`}>
                 <b>Điều 7. Quyền và nghĩa vụ của bên cho thuê nhà:</b>
-                <p> <b>7.1. Quyền của Bên Cho Thuê:</b> </p>
+                <p>
+                    {' '}
+                    <b>7.1. Quyền của Bên Cho Thuê:</b>{' '}
+                </p>
                 <p>
                     Yêu cầu Bên B thanh toán Tiền Thuê và Chi phí sử dụng Diện Tích Thuê đầy đủ,
                     đúng hạn theo thoả thuận trong Hợp Đồng.<br></br> Yêu cầu Bên B phải sửa chữa
@@ -262,7 +265,9 @@ const RoomContractCreated = ({ setStep }: Props) => {
             <Grid item xs={12} textAlign="left" className={`mt-5`}>
                 <b>Điều 8. Quyền và nghĩa vụ của bên thuê nhà:</b>
 
-                <b>8.1. Quyền của Bên Cho Thuê:</b>
+                <p>
+                    <b>8.1. Quyền của Bên Cho Thuê:</b>
+                </p>
                 <p>+ Nhận bàn giao Diện tích Thuê theo đúng thoả thuận trong Hợp Đồng;</p>
                 <p>
                     + Được sử dụng phần Diện Tích Thuê làm nơi để ở và các hoạt động hợp pháp khác;

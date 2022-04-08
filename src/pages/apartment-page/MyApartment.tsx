@@ -31,17 +31,6 @@ const useStyle = makeStyles({
         alignItems: 'center',
         cursor: `pointer`,
     },
-    apartmentContainer: {
-        padding: `1rem 3rem`,
-        display: `flex`,
-        width: '75%',
-        '&:nth-child(even)': {
-            backgroundColor: '#dddddd',
-        },
-        '&:hover': {
-            boxShadow: `rgba(0, 0, 0, 0.35) 0px 5px 15px`,
-        },
-    },
     title: {
         fontSize: `25px`,
         fontWeight: 'bold',
@@ -52,16 +41,16 @@ const useStyle = makeStyles({
         margin: '0.25rem',
     },
     cardContainer: {
-        height: '510px',
     },
     cardMedia: {
-        height: '200px',
+        height: '150px',
     },
     cardContent: {
-        height: '420px',
     },
     cardAction: {
         marginTop: '50px',
+        display: 'flex',
+        justifyContent: 'center'
     },
 });
 
@@ -94,7 +83,7 @@ const MyApartment = () => {
                         image={apartment.imageUrls[0] || Logo}
                     />
                     <CardContent className={classes.cardMedia}>
-                        <Typography gutterBottom variant="h6" component="div">
+                        <Typography gutterBottom component="div"  textAlign="center">
                             <span style={{ fontSize: '16px', fontWeight: 'bold', lineHeight: 0.7 }}>
                                 {limitString(apartment.address, 70)}
                             </span>
@@ -130,6 +119,7 @@ const MyApartment = () => {
                                     path.apartment.byId.replace(':id', apartment?.id as string)
                                 )
                             }
+                           
                         >
                             Xem chi tiết
                         </Button>
