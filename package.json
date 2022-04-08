@@ -28,6 +28,7 @@
         "formik": "^2.2.9",
         "leaflet": "^1.7.1",
         "leaflet-react": "^3.0.5",
+        "material-ui-numeric-input": "^3.1.0",
         "net": "^1.0.2",
         "node-sass": "^7.0.1",
         "react": "^17.0.2",

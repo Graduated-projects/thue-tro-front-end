@@ -31,6 +31,7 @@ const apartmentSlice = createSlice({
             state.isLoadingApartments = false;
         },
 
+        
         [apartmentAction.getRoomsByApartmentId.pending.toString()]: (state, action) => {
             state.isLoadingRooms = true;
         },

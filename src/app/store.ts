@@ -30,6 +30,7 @@ export type AppThunk<ReturnType = void> = ThunkAction<
     unknown,
     Action<string>
 >;
+
 export const useLocationStore = () => useAppSelector((state) => state.location);
 export const useAuthStore = () => useAppSelector((state) => state.auth);
 export const useRoomStore = () => useAppSelector((state) => state.room);

@@ -104,6 +104,7 @@ const ApartmentPost = () => {
     const [provinces, setprovinces] = useState([]);
     const [districts, setdistricts] = useState([]);
     const [wards, setwards] = useState([]);
+    
     const [numberOptions, setnumberOptions] = useState({
         totalNumberOfRooms: 0,
         numberOfFloors: 0,
@@ -151,7 +152,7 @@ const ApartmentPost = () => {
 
     const renderFiles = filesUpload.map((file: any, index: number) => {
         if (index >= 4) return null;
-        if (index === 3) return <div>`...`</div>;
+        if (index === 3) return <div>...</div>;
         return (
             <div className={`${classes.fileUpload} w-100`} key={index}>
                 <ImageIcon />
@@ -166,7 +167,7 @@ const ApartmentPost = () => {
     const postApartment = (apartment: Apartment, formik: any) => {
         const apartmentPost = {
             ...apartment,
-            address: `${apartment.address} + ${address.wards} + ${address.district} + ${address.province}`,
+            address: `${apartment.address}, ${address.wards}, ${address.district}, ${address.province}`,
             totalNumberOfRooms: numberOptions.numberOfFloors,
             numberOfRoomsAvailable: numberOptions.numberOfRoomsAvailable,
             numberOfFloors: numberOptions.numberOfFloors,
@@ -181,8 +182,10 @@ const ApartmentPost = () => {
             mediaService
                 .uploadFiles(formData)
                 .then((resp) => {
-                    const { urls } = resp.data;
+                    const { urls } = resp.data.data;
                     apartment.imageUrls = urls;
+                    
+                    
                     apartmentService
                         .postApartment(apartmentPost)
                         .then((resp) => {
@@ -256,9 +259,9 @@ const ApartmentPost = () => {
                                         </Grid>
                                         <Grid item xs={4}>
                                             <FormControl fullWidth className="col-3">
-                                                <InputLabel>Số phòn trống</InputLabel>
+                                                <InputLabel>Số phòng trống</InputLabel>
                                                 <Select
-                                                    label="Số phòn trống"
+                                                    label="Số phòng trống"
                                                     onChange={(e) =>
                                                         setnumberOptions({
                                                             ...numberOptions,

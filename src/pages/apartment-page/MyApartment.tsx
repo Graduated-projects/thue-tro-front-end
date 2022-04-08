@@ -82,6 +82,8 @@ const MyApartment = () => {
     console.log(apartments);
 
     const apartmentsMap = apartments.map((apartment: Apartment, index: number) => {
+        console.log(apartment.imageUrls[0]);
+        
         return (
             <Grid item xs={3} key={index}>
                 <Card variant="outlined" key={index} className={classes.cardContainer}>

@@ -26,6 +26,7 @@ const useStyles = makeStyles({
         boxShadow: '0 0 5px #DDDDDD',
         padding: '5rem',
         borderRadius: '7.5px',
+        backgroundColor: 'white'
     },
 });
 
