@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { apartmentAction } from '@/app/action/apartment.action';
 import { useAppDispatch } from '@/app/hooks';
 import { useApartmentStore, useAuthStore, useRoomStore } from '@/app/store';
@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import Logo from '@/assets/img/logo.png';
 import { roomAction } from '@/app/action/room.action';
 import { Room } from '@/types/room.type';
+import { authService } from '@/services/auth.service';
 const useStyle = makeStyles({
     container: {
         padding: `4rem 0`,
@@ -38,12 +39,11 @@ const useStyle = makeStyles({
     services: {
         paddingTop: '1rem',
         marginTop: `1rem`,
-        borderTop: '2px dashed black'
+        borderTop: '2px dashed black',
     },
     eachService: {
         margin: '0.5rem 0',
-
-    }
+    },
 });
 
 const RoomByDepartmentId = () => {
@@ -56,11 +56,11 @@ const RoomByDepartmentId = () => {
     const { room, isLoadingRoom } = useRoomStore();
     const { apartment } = useApartmentStore();
     const { user } = useAuthStore();
+
     useEffect(() => {
         dispatch(roomAction.getById(roomId));
         dispatch(apartmentAction.getById(apartmentId));
     }, [user, roomId, apartmentId, dispatch]);
-    console.log(room);
 
     const rentRoom = () => {
         navigate(path.room.contract.replace(':id', roomId));
@@ -69,10 +69,11 @@ const RoomByDepartmentId = () => {
     const renderServices =
         room && room.serviceList
             ? room.serviceList.map((service: any, index) => {
-                  console.log(service);
                   return (
                       <div key={index} className={`${classes.eachService}`}>
-                          <div style={{ marginLeft: '1rem' }} className={`${classes.leftTitle}`}>.{service.description}: </div>
+                          <div style={{ marginLeft: '1rem' }} className={`${classes.leftTitle}`}>
+                              .{service.description}:{' '}
+                          </div>
                           <span style={{ marginLeft: '2rem' }}>
                               - {service.unitsUnitPrice[0].description}:
                               <b className="text-danger">
@@ -126,7 +127,9 @@ const RoomByDepartmentId = () => {
                                     </Grid>
                                     <Grid item xs={4}>
                                         <span className={`${classes.leftTitle}`}> Kỳ hạn:</span>
-                                        <b className="text-danger">{Math.ceil(Number(room?.period) / 30)} tháng</b>
+                                        <b className="text-danger">
+                                            {Math.ceil(Number(room?.period) / 30)} tháng
+                                        </b>
                                     </Grid>
                                 </Grid>
                                 <p className={``}>
@@ -151,11 +154,23 @@ const RoomByDepartmentId = () => {
                                         Các dịch vụ hiện tại của phòng:
                                     </span>
                                 </div>
-                                <div >{renderServices}</div>
+                                <div>{renderServices}</div>
 
                                 <Button variant="contained" onClick={() => rentRoom()}>
                                     Thuê phòng
                                 </Button>
+                            </div>
+                        </Grid>
+                        <Grid item xs={2}>
+                            <div className={`${classes.body}`}>
+                                <p className={``}>
+                                    <span className={`${classes.leftTitle}`}> Người Đăng:</span>
+                                    {apartment?.owner?.fullName}
+                                </p>
+                                <p className={``}>
+                                    <span className={`${classes.leftTitle}`}> SDT:</span>
+                                    {apartment?.owner?.phoneNumber}
+                                </p>
                             </div>
                         </Grid>
                     </Grid>

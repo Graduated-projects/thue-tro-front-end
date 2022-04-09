@@ -138,9 +138,6 @@ const ApartmentById = () => {
             <div className={`${classes.container}`}>
                 {isLogin && (
                     <React.Fragment>
-                        <div className={`text-danger`}>
-                            Chỉ có chủ trọ mới thấy chức năng thêm phòng!
-                        </div>
                         <Button
                             variant="contained"
                             onClick={() => navigate(path.room.create.replace(':id', apartmentId))}

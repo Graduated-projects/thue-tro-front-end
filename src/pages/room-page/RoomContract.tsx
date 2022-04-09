@@ -1,15 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { apartmentAction } from '@/app/action/apartment.action';
-import { useAppDispatch } from '@/app/hooks';
-import { useApartmentStore, useAuthStore, useRoomStore } from '@/app/store';
-import { formatVND } from '@/configs/common-function';
-import { path } from '@/configs/path';
-import { Button, Grid } from '@mui/material';
+import React, { useState } from 'react';
+import { Grid } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { useNavigate } from 'react-router-dom';
-import { roomAction } from '@/app/action/room.action';
 import RoomRules from './RoomRules';
 import RoomContractCreated from './RoomContractCreated';
+import RoomContractPayMethod from './RoomContractPayMethod';
 const useStyle = makeStyles({
     container: {
         padding: `4rem 2rem`,
@@ -32,20 +26,19 @@ const useStyle = makeStyles({
     },
 });
 const RoomContract = () => {
-    const dispatch = useAppDispatch();
     const classes = useStyle();
-    const navigate = useNavigate();
-    const url = window.location.href.split('/');
-    const roomId = url[url.length - 1];
-    const { room, isLoadingRoom } = useRoomStore();
-    const { user } = useAuthStore();
     const [createContractStep, setcreateContractStep] = useState(0);
 
     return (
         <div className="container">
             <Grid container spacing={2} className={`${classes.container}`}>
                 {createContractStep === 0 && <RoomRules setStep={setcreateContractStep} />}
-                {createContractStep === 1 && <RoomContractCreated setStep={setcreateContractStep} />}
+                {createContractStep === 1 && (
+                    <RoomContractCreated setStep={setcreateContractStep} />
+                )}
+                {createContractStep === 2 && (
+                    <RoomContractPayMethod setStep={setcreateContractStep} />
+                )}
             </Grid>
         </div>
     );

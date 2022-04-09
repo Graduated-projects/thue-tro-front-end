@@ -12,6 +12,7 @@ import ApartmentById from '@/pages/apartment-page/ApartmentById';
 import RoomCreate from '@/pages/room-page/RoomCreate';
 import RoomByDepartmentId from '@/pages/room-page/RoomByDepartmentId';
 import RoomContract from '@/pages/room-page/RoomContract';
+import RoomContractSuccess from '@/pages/room-page/RoomContractSuccess';
 
 const routes = [
     //notFound & Exception
@@ -27,6 +28,7 @@ const routes = [
     { path: path.apartment.byId + path.room.byId, component: RoomByDepartmentId, exact: true },
     { path: path.room.create, component: RoomCreate, exact: true },
     { path: path.room.contract, component: RoomContract, exact: true },
+    { path: path.room.success, component: RoomContractSuccess, exact: true },
     { path: '*', component: NotFound, exact: true },
 
     //Note: Page not Found need stay last of array.

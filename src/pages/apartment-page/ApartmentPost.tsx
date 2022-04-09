@@ -202,6 +202,8 @@ const ApartmentPost = () => {
                         .catch((err) => fireErrorMessage(err));
                 })
                 .catch((err) => fireErrorMessage(err));
+        } else {
+            fireErrorMessage("Bạn phải thêm ảnh cho căn hộ!")
         }
     };
 

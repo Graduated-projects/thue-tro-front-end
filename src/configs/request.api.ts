@@ -24,6 +24,7 @@ export const api = {
     },
     user: {
         ME: server.user + '/info',
+        INFO_BY_ID: server.user + '/info/:id',
         CREATE: server.user + '/create-new-user',
         EXISTS: server.user + '/email/exists',
         SEND_OTP: server.user + '/email/gen-otp',
@@ -43,9 +44,10 @@ export const api = {
         CREATE: server.apartment + '/create',
         GET_ALL: server.apartment + '/list',
         GET_ROOMS: server.apartment + '/rooms/:id',
-        GET_BY_ID: server.apartment + '/detail/:id'
+        GET_BY_ID: server.apartment + '/detail/other/:id'
     },
     contract: {
-        GET_INFO: server.contract + '/detail'
+        GET_INFO: server.contract + '/detail',
+        PAY_BY_VNPAY: server.contract + '/vn_pay'
     }
 };

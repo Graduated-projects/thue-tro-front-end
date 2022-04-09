@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Checkbox, FormControlLabel, Grid } from '@mui/material';
+import { Button, Checkbox, FormControlLabel, Grid, TextField } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { useAuthStore } from '@/app/store';
 import { contractService } from '@/services/contract.service';
 import { fireErrorMessage, formatVND } from '@/configs/common-function';
+
 import Swal from 'sweetalert2';
+import { authService } from '@/services/auth.service';
+import withReactContent from 'sweetalert2-react-content';
 
 const useStyle = makeStyles({
     container: {
@@ -43,11 +46,15 @@ const RoomContractCreated = ({ setStep }: Props) => {
     const classes = useStyle();
     const [contractInfo, setcontractInfo] = useState<any>();
     const { user } = useAuthStore();
-    console.log(user);
+
     const url = window.location.href.split('/');
     const roomId = url[url.length - 1];
     const today = new Date();
-    const CREATE_RULES_NEXT_STEP = 2;
+    const MySwal = withReactContent(Swal);
+
+    useEffect(() => {
+        sessionStorage.setItem('amountPayment', contractInfo?.totalCost);
+    }, [contractInfo]);
 
     useEffect(() => {
         contractService
@@ -59,6 +66,7 @@ const RoomContractCreated = ({ setStep }: Props) => {
     }, [user, roomId]);
 
     const signContract = () => {
+        const email = user?.email;
         Swal.fire({
             title: 'Xác nhận!',
             text: 'Bạn có đồng ý ký tên?',
@@ -68,7 +76,54 @@ const RoomContractCreated = ({ setStep }: Props) => {
             cancelButtonText: 'hủy',
             showCancelButton: true,
         }).then((result) => {
-            if (result.isConfirmed) setStep(CREATE_RULES_NEXT_STEP);
+            if (result.isConfirmed) {
+                authService
+                    .genOtp({
+                        email,
+                        type: 2,
+                    })
+                    .then((resp) => {
+                        MySwal.fire({
+                            title: 'Xác thực OTP!',
+                            html: (
+                                <div>
+                                    <p>
+                                        Một mã OTP đã gửi về email: <b>{email}</b>
+                                    </p>
+                                    <p>Vui lòng xác thực OTP để hoàn tất ký hợp đồng</p>
+                                    <TextField
+                                        id="outlined-basic"
+                                        label="OTP"
+                                        variant="outlined"
+                                        onChange={(e) => {
+                                            sessionStorage.setItem('otppay', e.target.value);
+                                        }}
+                                    />
+                                </div>
+                            ),
+                            icon: 'info',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Xác thực',
+                            cancelButtonText: 'hủy',
+                            showCancelButton: true,
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                const otp = sessionStorage.getItem('otppay');
+
+                                authService.verifyEmail({ email, otp }, 2).then((resp) => {
+                                    //chưa catch error
+                                    if (resp.data.data.success) {
+                                        setStep(2);
+                                        sessionStorage.removeItem('otppay')
+                                    } else {
+                                        fireErrorMessage("OTP không hợp lệ!")
+                                    }
+                                });
+                            }
+                            // chưa catch error
+                        });
+                    });
+            }
         });
     };
     console.log(contractInfo);
@@ -113,12 +168,12 @@ const RoomContractCreated = ({ setStep }: Props) => {
                 }, năm ${today.getFullYear()}, các Bên gồm:`}
             </Grid>
             <Grid item xs={12} textAlign="left" className={`mt-5`}>
-                <b> BÊN CHO THUÊ (Bên A):</b> (ĐIỀN ĐẦY ĐỦ HỌ VÀ TÊN)
-                <div>CMND số:. XXXXXXXXXX</div>
+                <b> BÊN CHO THUÊ (Bên A):</b> {contractInfo?.owner?.ekyc?.fullName}
+                <div>CMND số: {contractInfo?.owner?.ekyc?.idCardNo}</div>
             </Grid>
             <Grid item xs={12} textAlign="left" className={`mt-5`}>
                 <b> BÊN THUÊ (Bên B):</b> {user?.fullName.toUpperCase()}
-                <div>CMND số:. XXXXXXXXXX</div>
+                <div>CMND số:. {contractInfo?.renter?.ekyc?.idCardNo}</div>
             </Grid>
             <Grid item xs={12} textAlign="left" className={`mt-5`}>
                 <p>

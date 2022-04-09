@@ -1,12 +1,18 @@
-import { Room } from "./room.type";
+import { Room } from './room.type';
 
 export interface ApartmentStore {
     apartments: Array<Apartment>;
     apartment: Apartment | null;
     isLoadingApartment: boolean;
     isLoadingApartments: boolean;
-    rooms: Array<Room>,
-    isLoadingRooms: boolean
+    rooms: Array<Room>;
+    isLoadingRooms: boolean;
+}
+
+interface Owner {
+    fullName: string;
+    id: number | string;
+    phoneNumber: string;
 }
 
 export interface Apartment {
@@ -26,4 +32,5 @@ export interface Apartment {
     ownerId?: number | string;
     numberOfFloors: number | null | '';
     imageUrls: Array<string>;
+    owner?: Owner | null
 }

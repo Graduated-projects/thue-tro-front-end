@@ -21,12 +21,17 @@ const sendOtp = (email: string) => {
     return axios.post(api.user.SEND_OTP, { email, type: 1 });
 };
 
+const genOtp = (body: BodyRequest) => {
+    return axios.post(api.user.SEND_OTP, body);
+
+}
+
 const isExistsEmail = (email: string) => {
     return axios.get(api.user.EXISTS + `/?email=${email}`);
 };
 
-const verifyEmail = (user: BodyRequest) => {
-    return axios.post(api.user.VERIFY_EMAIL, { email: user.email, otp: user.otp, type: 1 });
+const verifyEmail = (user: BodyRequest, type = 1) => {
+    return axios.post(api.user.VERIFY_EMAIL, { email: user.email, otp: user.otp, type });
 };
 
 const detectCard = async (front: File, back: File) => {
@@ -66,6 +71,10 @@ const register = (user: BodyRequest) => {
     });
 };
 
+const getUserInfoById = (userId: string) => {
+    return axios.get(api.user.INFO_BY_ID.replace(":id", userId))
+}
+
 export const authService = {
     login,
     logout,
@@ -75,4 +84,6 @@ export const authService = {
     verifyEmail,
     detectCard,
     register,
+    genOtp,
+    getUserInfoById
 };
