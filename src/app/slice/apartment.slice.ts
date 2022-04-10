@@ -53,6 +53,18 @@ const apartmentSlice = createSlice({
         [apartmentAction.getById.rejected.toString()]: (state, action) => {
             state.isLoadingApartment = false;
         },
+
+        [apartmentAction.searchRoom.pending.toString()]: (state, action) => {
+            state.isLoadingApartments = true;
+        },
+        [apartmentAction.searchRoom.fulfilled.toString()]: (state, action) => {
+            state.isLoadingApartments = false;
+            state.apartments = action.payload.data.content;
+        },
+        [apartmentAction.searchRoom.rejected.toString()]: (state, action) => {
+            state.isLoadingApartments = false;
+        },
+
     },
 });
 

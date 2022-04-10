@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Form, Formik, Field } from 'formik';
 import { LocationSearching } from '@/types/location.type';
 import { Button, Grid, Slider, MenuItem, TextField } from '@mui/material';
-import { useDispatch } from 'react-redux';
 import { setLocationSlice } from '@/app/slice/location.slice';
 import { hcmLatLng } from '@/configs/location';
 import { useLocationStore } from '@/app/store';
@@ -11,6 +10,9 @@ import SaiGonLocations from './SaiGonLocations';
 import withReactContent from 'sweetalert2-react-content';
 import { LocationOpenStreetMap } from '@/types/location.type';
 import { unitStatus } from '@/configs/const';
+import { fireErrorMessage } from '@/configs/common-function';
+import { apartmentAction } from '@/app/action/apartment.action';
+import { useAppDispatch } from '@/app/hooks';
 
 const MySwal = withReactContent(Swal);
 
@@ -18,7 +20,7 @@ const initialLocation: LocationSearching = {
     place: { name: '', position: hcmLatLng },
     radius: 0,
     unit: 0,
-    zoom: 12,
+    zoom: 15,
 };
 
 const getLocationAtSaiGonByAddress = async (
@@ -39,12 +41,8 @@ const getLocationAtSaiGonByAddress = async (
     return Promise.reject();
 };
 
-const startSearching = (location: LocationSearching) => {
-    console.log(location);
-};
-
 const FilterLocation = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const location = useLocationStore();
     const [currentUnit, setcurrentUnit] = useState(unitStatus.METER);
 
@@ -76,6 +74,31 @@ const FilterLocation = () => {
                 });
                 return Promise.reject();
             });
+    };
+
+    const startSearching = (location: LocationSearching) => {
+        console.log(location);
+        const hcm = ['SÀI GÒN', 'THÀNH PHỐ HỒ CHÍ MINH', 'VIỆT NAM'];
+        const configAddress = location.place.name.split(', ').map((x) => x.toUpperCase());
+
+        const removeSaigonAddress = configAddress.filter((x) => !hcm.includes(x));
+        if (Number(removeSaigonAddress[removeSaigonAddress.length - 1])) removeSaigonAddress.pop();
+
+        const searchingAddress = removeSaigonAddress.join(", ")
+
+        const params = {
+            address: searchingAddress.replaceAll(' ', '%20'),
+            latitude: location.place.position[0],
+            longitude: location.place.position[1],
+            distanceTo: location.radius,
+        };
+
+        console.log(params);
+        if (params.distanceTo === 0) {
+            fireErrorMessage('vui lòng chọn bán kính tìm kiếm!');
+        } else {
+            dispatch(apartmentAction.searchRoom(params));
+        }
     };
 
     const setLocationRadius = (radius: number) => {

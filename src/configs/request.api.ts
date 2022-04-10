@@ -44,7 +44,8 @@ export const api = {
         CREATE: server.apartment + '/create',
         GET_ALL: server.apartment + '/list',
         GET_ROOMS: server.apartment + '/rooms/:id',
-        GET_BY_ID: server.apartment + '/detail/other/:id'
+        GET_BY_ID: server.apartment + '/detail/other/:id',
+        SEARCH: server.apartment + '/search'
     },
     contract: {
         GET_INFO: server.contract + '/detail',

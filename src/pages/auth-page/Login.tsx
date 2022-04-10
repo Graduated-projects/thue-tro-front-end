@@ -21,8 +21,8 @@ const useStyles = makeStyles({
         width: '20rem',
     },
     buttonSize: {
-        width: '10rem'
-    }
+        width: '10rem',
+    },
 });
 
 interface Body {
@@ -48,14 +48,16 @@ const Login = () => {
             .then((resp) => {
                 onFormik.setSubmitting(false);
 
-                if (!resp.success) {
-                    fireErrorMessage('Sai mật khẩu!');
+                if (resp.success) {
+                    dispatch(authAction.getUserByToken(resp.data.access_token));
                 } else {
-                    dispatch(authAction.getUserByToken());
+                    fireErrorMessage('Sai mật khẩu!');
                 }
             })
             .catch((err) => {
                 onFormik.setSubmitting(false);
+                console.error(err);
+
                 fireErrorMessage(err);
             });
     };
@@ -102,7 +104,6 @@ const Login = () => {
                                     type="submit"
                                     disabled={formik.isSubmitting}
                                     className={classes.buttonSize}
-
                                 >
                                     Đăng nhập
                                 </Button>

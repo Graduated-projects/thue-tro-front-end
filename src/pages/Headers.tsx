@@ -16,7 +16,7 @@ import { authAction } from '@/app/action/auth.action';
 import { useAppDispatch } from '@/app/hooks';
 
 export default function Headers() {
-    const auth = useAuthStore();
+    const { isLogin, user } = useAuthStore();
     const [anchorEl, setAnchorEl] = useState(null);
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
@@ -30,6 +30,7 @@ export default function Headers() {
 
     const logout = () => {
         setAnchorEl(null);
+
         dispatch(authAction.logout()).then(() => navigate(path.main.home));
     };
 
@@ -50,8 +51,9 @@ export default function Headers() {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         Tìm hiểu thêm
                     </Typography>
-                    {auth.isLogin ? (
+                    {isLogin ? (
                         <div>
+                            {`Hello ${user?.fullName}`}
                             <IconButton size="large" onClick={handleMenu} color="inherit">
                                 <AccountCircle />
                             </IconButton>

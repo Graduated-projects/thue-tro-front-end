@@ -11,8 +11,10 @@ export const formatPhone = (phone?: string) => {
 };
 
 export const setHeaderForAxios = (token: string) => {
-    return axios.interceptors.request.use((config = {}) => {
-        if (config.headers) {
+    axios.interceptors.request.use((config = {}) => {
+        const currentToken = localStorage.getItem('accessToken');
+
+        if (config.headers && token === currentToken) {
             config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
@@ -42,5 +44,5 @@ export const fireErrorMessage = (errorMessage: any) => {
 };
 
 export const limitString = (string: string, length: number) => {
-    return string.length > length ? string.slice(0, length) + "..." : string
-}
+    return string.length > length ? string.slice(0, length) + '...' : string;
+};

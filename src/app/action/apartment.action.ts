@@ -18,8 +18,14 @@ const getById =  createAsyncThunk('apartment/id', async (params: string, thunk) 
     return response.data;
 });
 
+const searchRoom = createAsyncThunk('apartment/search', async (params: BodyRequest, thunk) => {
+    const response = await apartmentService.searchRoom(params);
+    return response.data;
+});
+
 export const apartmentAction = {
       getAll,
       getRoomsByApartmentId,
-      getById
+      getById,
+      searchRoom
 };

@@ -7,13 +7,12 @@ const login = (body: BodyRequest) => {
     return axios.post(api.user.SIGN_IN, body);
 };
 
-const getUserByToken = async () => {
-    const token = localStorage.getItem('accessToken');
+const getUserByToken = async (token: string) => {
     if (token) await setHeaderForAxios(token);
     return axios.get(api.user.ME);
 };
 
-const logout = () => {
+const logout = async () => {
     localStorage.removeItem('accessToken');
 };
 
@@ -23,8 +22,7 @@ const sendOtp = (email: string) => {
 
 const genOtp = (body: BodyRequest) => {
     return axios.post(api.user.SEND_OTP, body);
-
-}
+};
 
 const isExistsEmail = (email: string) => {
     return axios.get(api.user.EXISTS + `/?email=${email}`);
@@ -54,13 +52,11 @@ const detectCard = async (front: File, back: File) => {
         });
         console.log(frontCardFile);
         console.log(backCardFile);
-        
-    return Promise.resolve({ frontCardFile, backCardFile });
 
+        return Promise.resolve({ frontCardFile, backCardFile });
     } catch (error) {
         Promise.reject(error);
     }
-
 };
 
 const register = (user: BodyRequest) => {
@@ -72,8 +68,8 @@ const register = (user: BodyRequest) => {
 };
 
 const getUserInfoById = (userId: string) => {
-    return axios.get(api.user.INFO_BY_ID.replace(":id", userId))
-}
+    return axios.get(api.user.INFO_BY_ID.replace(':id', userId));
+};
 
 export const authService = {
     login,
@@ -85,5 +81,5 @@ export const authService = {
     detectCard,
     register,
     genOtp,
-    getUserInfoById
+    getUserInfoById,
 };

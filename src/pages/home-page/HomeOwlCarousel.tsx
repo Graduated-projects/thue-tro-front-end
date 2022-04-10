@@ -40,7 +40,7 @@ const HomeOwlCarousel: React.FC = () => {
                 position: district.latlng,
             },
             radius: 0,
-            zoom: 12,
+            zoom: 15,
             unit: 0,
         };
         dispatch(setLocationSlice(locationSearching));

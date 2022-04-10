@@ -48,7 +48,7 @@ const ApartmentById = () => {
     const { apartment } = useApartmentStore();
 
     useEffect(() => {
-        if (!isLogin) navigate(path.main.home);
+        // if (!isLogin) navigate(path.main.home);
     }, []);
 
     useEffect(() => {
@@ -66,6 +66,10 @@ const ApartmentById = () => {
         );
     };
 
+    const renderImage = (room: Room) => {
+        if (room?.imageUrls) return room.imageUrls[0];
+        return Logo;
+    };
     const roomsMap = rooms.map((room: Room, index) => {
         console.log(room);
 
@@ -76,11 +80,11 @@ const ApartmentById = () => {
                         component="img"
                         alt="green iguana"
                         className={classes.cardMedia}
-                        image={Logo}
+                        image={renderImage(room)}
                     />
                     <CardContent className={classes.cardMedia}>
                         <Typography gutterBottom component="div" textAlign="center">
-                            <b> {room.nameOfRoom}</b>
+                            <b>Phòng {room.nameOfRoom}</b>
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
                             <React.Fragment>

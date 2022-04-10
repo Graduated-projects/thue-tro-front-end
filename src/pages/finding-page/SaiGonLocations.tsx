@@ -25,7 +25,7 @@ const SaiGonLocations = ({
 
         const locationDto = {
             place: { position, name: location.display_name },
-            zoom: 13,
+            zoom: 15,
             radius: locationStore.radius,
             unit: locationStore.unit,
         };
