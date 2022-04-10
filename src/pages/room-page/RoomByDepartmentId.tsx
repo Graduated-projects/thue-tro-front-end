@@ -10,22 +10,23 @@ import { useNavigate } from 'react-router-dom';
 import Logo from '@/assets/img/logo.png';
 import { roomAction } from '@/app/action/room.action';
 import { Room } from '@/types/room.type';
-import { authService } from '@/services/auth.service';
+import BackButton from '@/components/BackButton';
 const useStyle = makeStyles({
     container: {
         padding: `4rem 0`,
     },
     imgContainer: {
-        boxShadow: `0 0 5px black`,
         padding: '1rem',
-        borderRadius: '7.5px',
+        backgroundColor: 'white',
     },
     img: {
         width: '100%',
         height: '100%',
     },
-    body: {
-        padding: '1rem',
+    block: {
+        backgroundColor: 'white',
+        margin: '0 0 16px 0',
+        padding: '16px',
     },
     title: {
         fontSize: '24px',
@@ -38,7 +39,6 @@ const useStyle = makeStyles({
     },
     services: {
         paddingTop: '1rem',
-        marginTop: `1rem`,
         borderTop: '2px dashed black',
     },
     eachService: {
@@ -57,6 +57,8 @@ const RoomByDepartmentId = () => {
     const { apartment } = useApartmentStore();
     const { user } = useAuthStore();
 
+    console.log(room);
+
     useEffect(() => {
         dispatch(roomAction.getById(roomId));
         dispatch(apartmentAction.getById(apartmentId));
@@ -72,7 +74,7 @@ const RoomByDepartmentId = () => {
                   return (
                       <div key={index} className={`${classes.eachService}`}>
                           <div style={{ marginLeft: '1rem' }} className={`${classes.leftTitle}`}>
-                              .{service.description}:{' '}
+                              .{service.description}:
                           </div>
                           <span style={{ marginLeft: '2rem' }}>
                               - {service.unitsUnitPrice[0].description}:
@@ -85,35 +87,63 @@ const RoomByDepartmentId = () => {
               })
             : [];
 
+    const renderImage = () => {
+        if (room?.imageUrls) return room.imageUrls[0];
+        return Logo;
+    };
+
+    const isOwner = () => {
+        return Number(room?.createdBy) === Number(user?.id) ? true : false;
+    };
+
     return (
         <div className="container">
             <div className={`${classes.container}`}>
+                <BackButton />
                 {isLoadingRoom ? (
                     <CircularProgress />
                 ) : (
                     <Grid container spacing={2}>
                         <Grid item xs={4}>
                             <div className={`${classes.imgContainer}`}>
-                                <img
-                                    src={room?.imageUrls[0] || Logo}
-                                    alt="#"
-                                    className={classes.img}
-                                />
+                                <img src={renderImage()} alt="#" className={classes.img} />
                             </div>
                         </Grid>
-                        <Grid item xs={6}>
-                            <div className={`${classes.body}`}>
-                                <p className={`${classes.title}`}>{room?.nameOfRoom} </p>
-                                <p className={``}>
-                                    <span className={`${classes.leftTitle}`}> Ngày đăng:</span>
-                                    {new Date(apartment?.createdDate || '').toLocaleDateString(
-                                        'en-US'
-                                    )}
-                                </p>
-                                <p className={``}>
-                                    <span className={`${classes.leftTitle}`}> Địa chỉ:</span>
-                                    {apartment?.address}
-                                </p>
+
+                        <Grid item xs={5}>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12}>
+                                    <div className={classes.block}>
+                                        <p className={`${classes.title}`}>
+                                            Phòng {room?.nameOfRoom}
+                                        </p>
+                                        <p className={``}>
+                                            <span className={`${classes.leftTitle}`}>
+                                                Ngày đăng:
+                                            </span>
+                                            {new Date(
+                                                apartment?.createdDate || ''
+                                            ).toLocaleDateString('en-US')}
+                                        </p>
+                                        <p className={``}>
+                                            <span className={`${classes.leftTitle}`}>
+                                                Trạng thái:
+                                            </span>
+                                            {room?.available ? (
+                                                <span className="text-success">Còn trống</span>
+                                            ) : (
+                                                <span className="text-danger">Đã hết phòng</span>
+                                            )}
+                                        </p>
+                                        <p className={``}>
+                                            <span className={`${classes.leftTitle}`}>Địa chỉ:</span>
+                                            <b> {apartment?.address}</b>
+                                        </p>
+                                    </div>
+                                </Grid>
+                            </Grid>
+
+                            <div className={classes.block}>
                                 <Grid container spacing={2}>
                                     <Grid item xs={4}>
                                         <span className={`${classes.leftTitle}`}> Giá phòng:</span>
@@ -131,47 +161,69 @@ const RoomByDepartmentId = () => {
                                             {Math.ceil(Number(room?.period) / 30)} tháng
                                         </b>
                                     </Grid>
+                                    <Grid item xs={4}>
+                                        <span className={`${classes.leftTitle}`}>Vị trí:</span> Tầng
+                                        {room?.floor || ' trệt'}
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <span className={`${classes.leftTitle}`}>
+                                            Phòng dành cho:
+                                        </span>
+                                        {room?.numberOfPeople} người
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Button
+                                            variant="contained"
+                                            onClick={() => rentRoom()}
+                                            disabled={isOwner()}
+                                        >
+                                            Thuê phòng
+                                        </Button>
+                                    </Grid>
                                 </Grid>
-                                <p className={``}>
-                                    <span className={`${classes.leftTitle}`}>Vị trí:</span> Tầng{' '}
-                                    {room?.floor || 'trệt'}
-                                </p>
-                                <p className={``}>
-                                    <span className={`${classes.leftTitle}`}> Trạng thái:</span>
-                                    {room?.available ? 'còn trống' : 'đã hết'}
-                                </p>
-                                <p>
-                                    <span className={`${classes.leftTitle}`}>Phòng dành cho:</span>
-                                    {room?.numberOfPeople} người
-                                </p>
-                                <p>
-                                    <span className={`${classes.leftTitle}`}>Mô tả chi tiết:</span>
-                                    {room?.description}
-                                </p>
-
-                                <div className={`${classes.services}`}>
-                                    <span className={`${classes.leftTitle}`}>
-                                        Các dịch vụ hiện tại của phòng:
-                                    </span>
-                                </div>
-                                <div>{renderServices}</div>
-
-                                <Button variant="contained" onClick={() => rentRoom()}>
-                                    Thuê phòng
-                                </Button>
+                            </div>
+                            <div className={classes.block}>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12}>
+                                        <p>
+                                            <span className={`${classes.leftTitle}`}>
+                                                Mô tả chi tiết:
+                                            </span>
+                                            {room?.description}
+                                        </p>
+                                    </Grid>
+                                </Grid>
                             </div>
                         </Grid>
-                        <Grid item xs={2}>
-                            <div className={`${classes.body}`}>
-                                <p className={``}>
-                                    <span className={`${classes.leftTitle}`}> Người Đăng:</span>
-                                    {apartment?.owner?.fullName}
-                                </p>
-                                <p className={``}>
-                                    <span className={`${classes.leftTitle}`}> SDT:</span>
-                                    {apartment?.owner?.phoneNumber}
-                                </p>
-                            </div>
+
+                        <Grid item xs={3}>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12}>
+                                    <div className={classes.block}>
+                                        <p className={``}>
+                                            <span className={`${classes.leftTitle}`}>
+                                                {' '}
+                                                Người Đăng:
+                                            </span>
+                                            {apartment?.owner?.fullName}
+                                        </p>
+                                        <p className={``}>
+                                            <span className={`${classes.leftTitle}`}> SDT:</span>
+                                            {apartment?.owner?.phoneNumber}
+                                        </p>
+                                    </div>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <div className={classes.block}>
+                                        <div className={`${classes.services}`}>
+                                            <span className={`${classes.leftTitle}`}>
+                                                Các dịch vụ hiện tại của phòng:
+                                            </span>
+                                        </div>
+                                        <div>{renderServices}</div>
+                                    </div>
+                                </Grid>
+                            </Grid>
                         </Grid>
                     </Grid>
                 )}

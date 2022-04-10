@@ -4,6 +4,7 @@ import { makeStyles } from '@mui/styles';
 import RoomRules from './RoomRules';
 import RoomContractCreated from './RoomContractCreated';
 import RoomContractPayMethod from './RoomContractPayMethod';
+import BackButton from '@/components/BackButton';
 const useStyle = makeStyles({
     container: {
         padding: `4rem 2rem`,
@@ -31,6 +32,7 @@ const RoomContract = () => {
 
     return (
         <div className="container">
+             <BackButton />
             <Grid container spacing={2} className={`${classes.container}`}>
                 {createContractStep === 0 && <RoomRules setStep={setcreateContractStep} />}
                 {createContractStep === 1 && (
