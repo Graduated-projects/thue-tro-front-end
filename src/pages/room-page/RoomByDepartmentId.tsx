@@ -18,6 +18,7 @@ const useStyle = makeStyles({
     imgContainer: {
         padding: '1rem',
         backgroundColor: 'white',
+        boxShadow: `rgba(149, 157, 165, 0.2) 0px 8px 24px`,
     },
     img: {
         width: '100%',
@@ -27,6 +28,7 @@ const useStyle = makeStyles({
         backgroundColor: 'white',
         margin: '0 0 16px 0',
         padding: '16px',
+        boxShadow: `rgba(149, 157, 165, 0.2) 0px 8px 24px`,
     },
     title: {
         fontSize: '24px',

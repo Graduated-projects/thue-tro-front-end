@@ -29,7 +29,6 @@ const useStyle = makeStyles({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        cursor: `pointer`,
     },
     title: {
         fontSize: `25px`,
@@ -41,6 +40,10 @@ const useStyle = makeStyles({
         margin: '0.25rem',
     },
     cardContainer: {
+        boxShadow: `rgba(149, 157, 165, 0.2) 0px 8px 24px`,
+        cursor: `pointer`,
+
+
     },
     cardMedia: {
         height: '150px',

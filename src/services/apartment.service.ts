@@ -29,8 +29,6 @@ const searchRoom = (params: BodyRequest) => {
         isExistsParams(params.distanceTo, 'distanceTo') +
         isExistsParams(params.size, 'size');
 
-    console.log(api.apartment.SEARCH + '?' + paramsRequest);
-
     return axios.get(api.apartment.SEARCH + '?' + paramsRequest);
 };
 

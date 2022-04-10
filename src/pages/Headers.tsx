@@ -53,7 +53,7 @@ export default function Headers() {
                     </Typography>
                     {isLogin ? (
                         <div>
-                            {`Hello ${user?.fullName}`}
+                            {`Chào: ${user?.fullName}`}
                             <IconButton size="large" onClick={handleMenu} color="inherit">
                                 <AccountCircle />
                             </IconButton>
