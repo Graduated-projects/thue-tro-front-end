@@ -13,7 +13,8 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { path } from '@/configs/path';
-import { formatVND } from '@/configs/common-function';
+import { fireErrorMessage, formatVND } from '@/configs/common-function';
+import { contractService } from '@/services/contract.service';
 
 const useStyle = makeStyles({
     container: {
@@ -42,6 +43,7 @@ const RoomContractSuccess = () => {
     const url = window.location.href.split('/');
     const data = url[url.length - 1];
     const navigate = useNavigate();
+
     const [paymentInfo, setpaymentInfo] = useState<any>({
         vnp_Amount: 0,
         vnp_BankCode: '',
@@ -54,6 +56,11 @@ const RoomContractSuccess = () => {
         vnp_TransactionStatus: '',
         vnp_SecureHash: '',
     });
+    const [contractInfo, setcontractInfo] = useState({
+        roomId: '',
+        renterId: '',
+        period: 0,
+    });
 
     useEffect(() => {
         const basicLength = 'payment-success'.length;
@@ -65,12 +72,14 @@ const RoomContractSuccess = () => {
 
     useEffect(() => {
         const paymentSession = sessionStorage.getItem('dataPaymentSuccess') || window.location.href;
+        const contractSession = JSON.parse(sessionStorage.getItem('sessionContract') || '');
+
         const url = new URL(paymentSession);
         const paymentInfoClone = {
             ...paymentInfo,
             vnp_Amount: url.searchParams.get('vnp_Amount') || '',
             vnp_BankCode: url.searchParams.get('vnp_BankCode') || '',
-            vnp_BankTranNo: url.searchParams.get('vnp_BankTranNo') || '',
+            vnp_TransactionNo: url.searchParams.get('vnp_TransactionNo') || '',
             vnp_CardType: url.searchParams.get('vnp_CardType') || '',
             vnp_OrderInfo: url.searchParams.get('vnp_OrderInfo') || '',
             vnp_PayDate: url.searchParams.get('vnp_PayDate') || '',
@@ -80,7 +89,47 @@ const RoomContractSuccess = () => {
             vnp_SecureHash: url.searchParams.get('vnp_SecureHash') || '',
         };
         setpaymentInfo(paymentInfoClone);
+
+        const contractInfoClone = {
+            ...contractInfo,
+            roomId: contractSession?.roomId || '',
+            renterId: contractSession?.renterId || '',
+            period: Number(contractSession?.period) || 0,
+        };
+        setcontractInfo(contractInfoClone);
     }, []);
+
+    useEffect(() => {
+        const contract = {
+            roomId: Number(contractInfo.roomId),
+            renterId: Number(contractInfo.renterId),
+            period: contractInfo.period,
+            typePayment: 'vnpay',
+            vnp_Amount: Number(paymentInfo.vnp_Amount) / 100,
+            vnp_BankCode: paymentInfo.vnp_BankCode,
+            vnp_TransactionNo: paymentInfo.vnp_TransactionNo,
+            vnp_CardType: paymentInfo.vnp_CardType,
+            vnp_OrderInfo: paymentInfo.vnp_OrderInfo,
+            vnp_PayDate: paymentInfo.vnp_PayDate,
+        };
+        console.log(`contract post:`, contract);
+
+        if (contract.roomId) {
+            console.log(contract);
+            contractService
+                .createContract(contract)
+                .then((resp) => {
+                    if (resp.data.success) {
+                        console.log(resp.data);
+                    } else {
+                        fireErrorMessage('có gì đó không ổn! Vui lòng reload');
+                    }
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+        }
+    }, [paymentInfo, contractInfo]);
 
     const formatDMY = (string: string) => {
         const year = string.slice(0, 4);
@@ -127,7 +176,7 @@ const RoomContractSuccess = () => {
                                 </TableRow>
                                 <TableRow>
                                     <TableCell align="left">Mã giao dịch</TableCell>
-                                    <TableCell>{paymentInfo.vnp_BankTranNo}</TableCell>
+                                    <TableCell>{paymentInfo.vnp_TransactionNo}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell align="left">Loại thẻ</TableCell>
@@ -141,10 +190,7 @@ const RoomContractSuccess = () => {
                                     <TableCell align="left">Ngày thanh toán</TableCell>
                                     <TableCell>{formatDMY(paymentInfo.vnp_PayDate)}</TableCell>
                                 </TableRow>
-                                <TableRow>
-                                    <TableCell align="left">mã phản hồi</TableCell>
-                                    <TableCell>{paymentInfo.vnp_ResponseCode}</TableCell>
-                                </TableRow>
+
                                 <TableRow>
                                     <TableCell align="left">Trạng thái</TableCell>
                                     <TableCell>
@@ -158,7 +204,9 @@ const RoomContractSuccess = () => {
                     </TableContainer>
                 </Grid>
                 <Grid item xs={12} textAlign="center">
-                    <Button variant="contained">Xác nhận</Button>
+                    <Button variant="contained" onClick={() => navigate(path.main.myContract)}>
+                        Xác nhận
+                    </Button>
                 </Grid>
             </Grid>
         </div>

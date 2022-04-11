@@ -49,6 +49,8 @@ export const api = {
     },
     contract: {
         GET_INFO: server.contract + '/detail/:id',
-        PAY_BY_VNPAY: server.contract + '/vn_pay'
+        PAY_BY_VNPAY: server.contract + '/vn_pay',
+        CREATE: server.contract + '/vn-pay/create',
+        PAY_BY_H_WALLET: server.contract + '/h-wallet/create'
     }
 };

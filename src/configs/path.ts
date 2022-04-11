@@ -4,6 +4,7 @@ export const path = {
         finding: '/finding',
         userInfo: '/user',
         owner: '/onwer',
+        myContract: '/my-contract',
     },
     auth: {
         login: '/login',

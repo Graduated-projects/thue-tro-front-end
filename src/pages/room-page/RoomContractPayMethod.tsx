@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import React, { useState } from 'react';
 
@@ -107,14 +107,12 @@ const RoomContractPayMethod = ({ setStep }: Props) => {
                     description: 'THANH TOAN HOP DONG LAN DAU',
                 };
 
-                
-
                 contractService
                     .payByVNPay(payment)
                     .then((resp) => {
                         if (resp.data.success) {
                             const url = resp.data.data.message;
-                            window.open(url, "_self");
+                            window.open(url, '_self');
                         }
                     })
                     .catch((err) => {
@@ -133,6 +131,24 @@ const RoomContractPayMethod = ({ setStep }: Props) => {
             </Grid>
         );
     });
+
+    const payByHWallet = () => {
+        const contractSession = JSON.parse(sessionStorage.getItem('sessionContract') || '');
+
+        const contractInfoClone = {
+            roomId: Number(contractSession?.roomId) || '',
+            renterId: Number(contractSession?.renterId) || '',
+        };
+
+        contractService
+            .payByHWallet(contractInfoClone)
+            .then((resp) => {
+                console.log(resp.data);
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    };
 
     return (
         <Grid container spacing={2}>
@@ -155,7 +171,10 @@ const RoomContractPayMethod = ({ setStep }: Props) => {
 
             {paymentStatus === 2 && (
                 <Grid item xs={12}>
-                    CC gì vậy
+                    <Button variant="contained" onClick={() => payByHWallet()}>
+                        {' '}
+                        Thanh toán{' '}
+                    </Button>
                 </Grid>
             )}
         </Grid>

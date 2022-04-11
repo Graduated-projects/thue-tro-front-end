@@ -114,6 +114,15 @@ const RoomContractCreated = ({ setStep }: Props) => {
                                     //chưa catch error
                                     if (resp.data.data.success) {
                                         setStep(2);
+                                        const sessionContract = {
+                                            roomId,
+                                            renterId: user?.id,
+                                            period: contractInfo?.room?.period,
+                                        };
+                                        sessionStorage.setItem(
+                                            'sessionContract',
+                                            JSON.stringify(sessionContract)
+                                        );
                                         sessionStorage.removeItem('otppay');
                                     } else {
                                         fireErrorMessage('OTP không hợp lệ!');
