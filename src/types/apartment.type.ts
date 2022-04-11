@@ -33,5 +33,6 @@ export interface Apartment {
     numberOfFloors: number | null | '';
     imageUrls: Array<string>;
     owner?: Owner | null
-    basePrice?: number
+    basePrice?: number,
+    arceage?: number
 }

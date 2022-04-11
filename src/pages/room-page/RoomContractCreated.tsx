@@ -58,12 +58,12 @@ const RoomContractCreated = ({ setStep }: Props) => {
 
     useEffect(() => {
         contractService
-            .getInfoBeforeCreateContract(roomId, user?.id || '')
+            .getInfoBeforeCreateContract(roomId || '')
             .then((resp) => {
                 setcontractInfo(resp.data.data);
             })
             .catch((err) => fireErrorMessage(err));
-    }, [user, roomId]);
+    }, [roomId]);
 
     const signContract = () => {
         const email = user?.email;
@@ -114,9 +114,9 @@ const RoomContractCreated = ({ setStep }: Props) => {
                                     //chưa catch error
                                     if (resp.data.data.success) {
                                         setStep(2);
-                                        sessionStorage.removeItem('otppay')
+                                        sessionStorage.removeItem('otppay');
                                     } else {
-                                        fireErrorMessage("OTP không hợp lệ!")
+                                        fireErrorMessage('OTP không hợp lệ!');
                                     }
                                 });
                             }

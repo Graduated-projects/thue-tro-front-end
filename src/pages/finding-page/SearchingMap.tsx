@@ -59,8 +59,8 @@ const SearchingMap = () => {
     const navigate = useNavigate();
     const { apartments } = useApartmentStore();
     useEffect(() => {}, [dispatch]);
-
     console.log(apartments);
+    
     const renderApartments = apartments.map((apartment: Apartment, index) => {
         const [lng, lat] = [apartment.longitude, apartment.latitude];
 

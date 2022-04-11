@@ -18,6 +18,7 @@ import { makeStyles } from '@mui/styles';
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Logo from '@/assets/img/logo.png';
+import BackButton from '@/components/BackButton';
 
 const useStyle = makeStyles({
     container: {
@@ -140,6 +141,7 @@ const ApartmentById = () => {
     return (
         <div className="container">
             <div className={`${classes.container}`}>
+                <BackButton />
                 {isLogin && (
                     <React.Fragment>
                         <Button

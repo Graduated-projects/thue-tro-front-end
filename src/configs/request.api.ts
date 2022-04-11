@@ -48,7 +48,7 @@ export const api = {
         SEARCH: server.apartment + '/search'
     },
     contract: {
-        GET_INFO: server.contract + '/detail',
+        GET_INFO: server.contract + '/detail/:id',
         PAY_BY_VNPAY: server.contract + '/vn_pay'
     }
 };

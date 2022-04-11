@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
 import { Form, Formik, Field } from 'formik';
 import { LocationSearching } from '@/types/location.type';
-import { Button, Grid, Slider, MenuItem, TextField, Typography } from '@mui/material';
+import {
+    Button,
+    Grid,
+    Slider,
+    MenuItem,
+    TextField,
+    Typography,
+    CircularProgress,
+} from '@mui/material';
+import Backdrop from '@mui/material/Backdrop';
 import { setLocationSlice } from '@/app/slice/location.slice';
 import { hcmLatLng } from '@/configs/location';
-import { useLocationStore } from '@/app/store';
+import { useApartmentStore, useLocationStore } from '@/app/store';
 import Swal from 'sweetalert2';
 import SaiGonLocations from './SaiGonLocations';
 import withReactContent from 'sweetalert2-react-content';
@@ -78,6 +87,7 @@ const FilterLocation = () => {
     const [currentUnit, setcurrentUnit] = useState(unitStatus.METER);
     const [price, setprice] = React.useState<number[]>([1000000, 4000000]);
     const [arceage, setarceage] = React.useState<number[]>([10, 20]);
+    const { isLoadingApartments } = useApartmentStore();
 
     const handleChangePrice = (event: Event, newPrice: number | number[]) => {
         setprice(newPrice as number[]);
@@ -133,12 +143,12 @@ const FilterLocation = () => {
             latitude: location.place.position[0],
             longitude: location.place.position[1],
             distanceFrom: 0,
-            distanceTo: location.radius / 100,
+            distanceTo: location.radius / 1000,
             priceFrom: priceSorting[0],
             priceTo: priceSorting[1],
-            arceageFrom: arceageSorting[0],
-            arceageTo: arceageSorting[1],
-            size: 30,
+            acreageFrom: arceageSorting[0],
+            acreageTo: arceageSorting[1],
+            size: 500,
         };
 
         console.log(params);
@@ -175,6 +185,20 @@ const FilterLocation = () => {
         >
             {(formik) => (
                 <Form>
+                    <Backdrop
+                        open={isLoadingApartments}
+                        sx={{
+                            color: '#fff',
+                            fontSize: '28px',
+                            zIndex: 9999,
+                            display: 'flex',
+                            flexDirection: 'column',
+                        }}
+                    >
+                        <p> Đang tìm kiếm </p>
+                        <CircularProgress color="inherit" />
+                    </Backdrop>
+
                     <Grid container spacing={2}>
                         <Grid item xs={8}>
                             <Field

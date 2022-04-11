@@ -18,6 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import { path } from '@/configs/path';
 import Logo from '@/assets/img/logo.png';
 import { limitString } from '@/configs/common-function';
+import BackButton from '@/components/BackButton';
 
 const useStyle = makeStyles({
     my: {
@@ -134,6 +135,7 @@ const MyApartment = () => {
 
     return (
         <div className="container">
+            <BackButton />
             {isLoadingApartments ? (
                 <CircularProgress />
             ) : (

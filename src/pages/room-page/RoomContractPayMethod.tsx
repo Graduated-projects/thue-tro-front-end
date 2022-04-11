@@ -8,6 +8,21 @@ import Logo from '@/assets/img/logo.png';
 import VCB from '@/assets/img/bank-logo/vcb-logo.jpg';
 import NCB from '@/assets/img/bank-logo/ncb-logo.jpg';
 import AGRI from '@/assets/img/bank-logo/agribank.jpg';
+import acb from '@/assets/img/bank-logo/acb.png';
+import bidv from '@/assets/img/bank-logo/bidv.jpg';
+import mb from '@/assets/img/bank-logo/mb.png';
+import ocb from '@/assets/img/bank-logo/ocb.png';
+import ocean from '@/assets/img/bank-logo/ocean.png';
+import sacom from '@/assets/img/bank-logo/sacom.jpg';
+import scb from '@/assets/img/bank-logo/scb.png';
+import sea from '@/assets/img/bank-logo/sea.png';
+import shb from '@/assets/img/bank-logo/shb.png';
+import techcom from '@/assets/img/bank-logo/techcom.png';
+import tp from '@/assets/img/bank-logo/tp.png';
+import vib from '@/assets/img/bank-logo/vib.png';
+import vietin from '@/assets/img/bank-logo/vietin.png';
+import vpbank from '@/assets/img/bank-logo/vpbank.png';
+
 import Swal from 'sweetalert2';
 import { contractService } from '@/services/contract.service';
 import { fireErrorMessage } from '@/configs/common-function';
@@ -48,6 +63,20 @@ const RoomContractPayMethod = ({ setStep }: Props) => {
         { id: 0, imgUrl: NCB, value: 'NCB', title: 'NCB bank' },
         { id: 1, imgUrl: VCB, value: 'VCB', title: 'VCB bank' },
         { id: 2, imgUrl: AGRI, value: 'AGRI', title: 'AGRI bank' },
+        { id: 3, imgUrl: acb, value: 'acb', title: 'acb bank' },
+        { id: 4, imgUrl: bidv, value: 'bidv', title: 'bidv bank' },
+        { id: 5, imgUrl: ocb, value: 'ocb', title: 'ocb bank' },
+        { id: 6, imgUrl: mb, value: 'mb', title: 'mb bank' },
+        { id: 7, imgUrl: ocean, value: 'ocean', title: 'ocean bank' },
+        { id: 8, imgUrl: sacom, value: 'sacom', title: 'sacom bank' },
+        { id: 9, imgUrl: scb, value: 'scb', title: 'scb bank' },
+        { id: 10, imgUrl: sea, value: 'sea', title: 'sea bank' },
+        { id: 11, imgUrl: shb, value: 'shb', title: 'shb bank' },
+        { id: 12, imgUrl: techcom, value: 'techcom', title: 'techcom bank' },
+        { id: 13, imgUrl: tp, value: 'tp', title: 'tp bank' },
+        { id: 14, imgUrl: vib, value: 'vib', title: 'vib bank' },
+        { id: 15, imgUrl: vietin, value: 'vietin', title: 'vietin bank' },
+        { id: 16, imgUrl: vpbank, value: 'vpbank', title: 'vpbank bank' },
     ];
 
     const payMethodsMap = payMethods.map((method: any, index) => {

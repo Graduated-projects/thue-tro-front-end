@@ -4,13 +4,13 @@ import { styled } from '@mui/material/styles';
 import { Slider } from '@mui/material';
 
 const PriceSlider = styled(Slider)(({ theme }) => ({
-    color: 'yellow',
+    color: '1976d2',
     height: 2,
     padding: '15px 0',
     '& .MuiSlider-thumb': {
-        height: 20,
-        width: 20,
-        backgroundColor: 'yellow',
+        height: 15,
+        width: 15,
+        backgroundColor: '1976d2',
         boxShadow:
             '0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.13),0 0 0 1px rgba(0,0,0,0.02)',
         '&:focus, &:hover, &.Mui-active': {
