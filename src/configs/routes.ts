@@ -13,6 +13,8 @@ import RoomCreate from '@/pages/room-page/RoomCreate';
 import RoomByDepartmentId from '@/pages/room-page/RoomByDepartmentId';
 import RoomContract from '@/pages/room-page/RoomContract';
 import RoomContractSuccess from '@/pages/room-page/RoomContractSuccess';
+import MyContracts from '@/pages/contract-page/MyContracts';
+import OtherContracts from '@/pages/contract-page/OtherContracts';
 
 const routes = [
     //notFound & Exception
@@ -29,6 +31,8 @@ const routes = [
     { path: path.room.create, component: RoomCreate, exact: true },
     { path: path.room.contract, component: RoomContract, exact: true },
     { path: path.room.success, component: RoomContractSuccess, exact: true },
+    { path: path.contract.my, component: MyContracts, exact: true },
+    { path: path.contract.other, component: OtherContracts, exact: true },
     { path: '*', component: NotFound, exact: true },
 
     //Note: Page not Found need stay last of array.

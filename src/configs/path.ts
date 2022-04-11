@@ -4,7 +4,6 @@ export const path = {
         finding: '/finding',
         userInfo: '/user',
         owner: '/onwer',
-        myContract: '/my-contract',
     },
     auth: {
         login: '/login',
@@ -21,4 +20,9 @@ export const path = {
         my: '/apartment/my',
         byId: '/apartment/:id'
     },
+    contract: {
+        my: '/contract/my',
+        other: '/contract/other',
+        byId: 'contract/:id'
+    }
 };

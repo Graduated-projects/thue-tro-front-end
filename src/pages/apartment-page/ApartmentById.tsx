@@ -47,6 +47,7 @@ const ApartmentById = () => {
     const { rooms } = useApartmentStore();
     const { user, isLogin } = useAuthStore();
     const { apartment } = useApartmentStore();
+    console.log(apartment);
 
     useEffect(() => {
         // if (!isLogin) navigate(path.main.home);
@@ -72,8 +73,6 @@ const ApartmentById = () => {
         return Logo;
     };
     const roomsMap = rooms.map((room: Room, index) => {
-        console.log(room);
-
         return (
             <Grid item xs={2} key={index}>
                 <Card variant="outlined" key={index} className={classes.cardContainer}>
@@ -144,12 +143,16 @@ const ApartmentById = () => {
                 <BackButton />
                 {isLogin && (
                     <React.Fragment>
-                        <Button
-                            variant="contained"
-                            onClick={() => navigate(path.room.create.replace(':id', apartmentId))}
-                        >
-                            Tạo thêm phòng cho căn hộ
-                        </Button>
+                        {Number(apartment?.createdBy) === Number(user?.id) && (
+                            <Button
+                                variant="contained"
+                                onClick={() =>
+                                    navigate(path.room.create.replace(':id', apartmentId))
+                                }
+                            >
+                                Tạo thêm phòng cho căn hộ
+                            </Button>
+                        )}
                     </React.Fragment>
                 )}
                 <p className="mt-5">

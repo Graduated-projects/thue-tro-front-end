@@ -204,7 +204,7 @@ const RoomContractSuccess = () => {
                     </TableContainer>
                 </Grid>
                 <Grid item xs={12} textAlign="center">
-                    <Button variant="contained" onClick={() => navigate(path.main.myContract)}>
+                    <Button variant="contained" onClick={() => navigate(path.contract.my)}>
                         Xác nhận
                     </Button>
                 </Grid>

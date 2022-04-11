@@ -7,7 +7,7 @@ export const server = {
     ekyc: baseUrl + '/ekyc',
     media: baseUrl + '/media',
     apartment: baseUrl + '/apartment',
-    contract: baseUrl + '/contract'
+    contract: baseUrl + '/contract',
 };
 
 export const api = {
@@ -31,26 +31,28 @@ export const api = {
         VERIFY_EMAIL: server.user + '/email/otp/verify',
         SIGN_IN: server.user + '/login',
         REGISTER: server.user + '/register',
-
     },
     ekyc: {
         DETECT_FRONT_CARD: server.ekyc + '/detect/front',
         DETECT_BACK_CARD: server.ekyc + '/detect/back',
     },
     media: {
-        UPLOAD_FILES: server.media + '/upload/multi-file'
+        UPLOAD_FILES: server.media + '/upload/multi-file',
     },
     apartment: {
         CREATE: server.apartment + '/create',
         GET_ALL: server.apartment + '/list',
         GET_ROOMS: server.apartment + '/rooms/:id',
         GET_BY_ID: server.apartment + '/detail/other/:id',
-        SEARCH: server.apartment + '/search'
+        SEARCH: server.apartment + '/search',
     },
     contract: {
         GET_INFO: server.contract + '/detail/:id',
         PAY_BY_VNPAY: server.contract + '/vn_pay',
         CREATE: server.contract + '/vn-pay/create',
-        PAY_BY_H_WALLET: server.contract + '/h-wallet/create'
-    }
+        PAY_BY_H_WALLET: server.contract + '/h-wallet/create',
+        GET_OWNER: server.contract + '/list/owner',
+        GET_RENTER: server.contract + '/list/renter',
+        BY_ID: server.contract + '/:id',
+    },
 };

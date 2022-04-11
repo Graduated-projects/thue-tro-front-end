@@ -9,8 +9,12 @@ import { makeStyles } from '@mui/styles';
 import { useNavigate } from 'react-router-dom';
 import Logo from '@/assets/img/logo.png';
 import { roomAction } from '@/app/action/room.action';
-import { Room } from '@/types/room.type';
 import BackButton from '@/components/BackButton';
+import AccountBoxOutlinedIcon from '@mui/icons-material/AccountBoxOutlined';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import DownloadDoneOutlinedIcon from '@mui/icons-material/DownloadDoneOutlined';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import PhoneInTalkOutlinedIcon from '@mui/icons-material/PhoneInTalkOutlined';
 const useStyle = makeStyles({
     container: {
         padding: `4rem 0`,
@@ -22,7 +26,7 @@ const useStyle = makeStyles({
     },
     img: {
         width: '100%',
-        height: '100%',
+        height: '50vh',
     },
     block: {
         backgroundColor: 'white',
@@ -59,8 +63,6 @@ const RoomByDepartmentId = () => {
     const { apartment } = useApartmentStore();
     const { user } = useAuthStore();
 
-    console.log(room);
-
     useEffect(() => {
         dispatch(roomAction.getById(roomId));
         dispatch(apartmentAction.getById(apartmentId));
@@ -75,11 +77,11 @@ const RoomByDepartmentId = () => {
             ? room.serviceList.map((service: any, index) => {
                   return (
                       <div key={index} className={`${classes.eachService}`}>
-                          <div style={{ marginLeft: '1rem' }} className={`${classes.leftTitle}`}>
-                              .{service.description}:
+                          <div style={{ marginLeft: '1rem' }}>
+                              <b> {service.description}</b>
                           </div>
                           <span style={{ marginLeft: '2rem' }}>
-                              - {service.unitsUnitPrice[0].description}:
+                              - {service.unitsUnitPrice[0].description}: &nbsp;
                               <b className="text-danger">
                                   {formatVND(Number(service.unitsUnitPrice[0].unitPrice))}
                               </b>
@@ -121,7 +123,7 @@ const RoomByDepartmentId = () => {
                                         </p>
                                         <p className={``}>
                                             <span className={`${classes.leftTitle}`}>
-                                                Ngày đăng:
+                                                <CalendarTodayIcon fontSize="inherit" /> Ngày đăng:
                                             </span>
                                             {new Date(
                                                 apartment?.createdDate || ''
@@ -129,6 +131,7 @@ const RoomByDepartmentId = () => {
                                         </p>
                                         <p className={``}>
                                             <span className={`${classes.leftTitle}`}>
+                                                <DownloadDoneOutlinedIcon fontSize="inherit" />
                                                 Trạng thái:
                                             </span>
                                             {room?.available ? (
@@ -138,7 +141,9 @@ const RoomByDepartmentId = () => {
                                             )}
                                         </p>
                                         <p className={``}>
-                                            <span className={`${classes.leftTitle}`}>Địa chỉ:</span>
+                                            <span className={`${classes.leftTitle}`}>
+                                                <HomeOutlinedIcon fontSize="inherit" /> Địa chỉ:
+                                            </span>
                                             <b> {apartment?.address}</b>
                                         </p>
                                     </div>
@@ -148,13 +153,13 @@ const RoomByDepartmentId = () => {
                             <div className={classes.block}>
                                 <Grid container spacing={2}>
                                     <Grid item xs={4}>
-                                        <span className={`${classes.leftTitle}`}> Giá phòng:</span>
+                                        <span className={`${classes.leftTitle}`}>Giá phòng:</span>
                                         <b className="text-danger">
                                             {formatVND(Number(room?.price))}
                                         </b>
                                     </Grid>
                                     <Grid item xs={4}>
-                                        <span className={`${classes.leftTitle}`}> Diện tích:</span>
+                                        <span className={`${classes.leftTitle}`}>Diện tích:</span>
                                         <b className="text-danger">{room?.acreage} m²</b>
                                     </Grid>
                                     <Grid item xs={4}>
@@ -165,6 +170,7 @@ const RoomByDepartmentId = () => {
                                     </Grid>
                                     <Grid item xs={4}>
                                         <span className={`${classes.leftTitle}`}>Vị trí:</span> Tầng
+                                        &nbsp;
                                         {room?.floor || ' trệt'}
                                     </Grid>
                                     <Grid item xs={6}>
@@ -204,13 +210,16 @@ const RoomByDepartmentId = () => {
                                     <div className={classes.block}>
                                         <p className={``}>
                                             <span className={`${classes.leftTitle}`}>
-                                                {' '}
-                                                Người Đăng:
+                                                <AccountBoxOutlinedIcon fontSize="inherit" /> &nbsp;
+                                                Chủ hộ:
                                             </span>
                                             {apartment?.owner?.fullName}
                                         </p>
                                         <p className={``}>
-                                            <span className={`${classes.leftTitle}`}> SDT:</span>
+                                            <span className={`${classes.leftTitle}`}>
+                                                <PhoneInTalkOutlinedIcon fontSize="inherit" />{' '}
+                                                &nbsp; Liên lạc:
+                                            </span>
                                             {apartment?.owner?.phoneNumber}
                                         </p>
                                     </div>

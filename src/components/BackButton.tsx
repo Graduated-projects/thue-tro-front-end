@@ -5,7 +5,7 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 const BackButton = () => {
     const navigate = useNavigate();
     return (
-        <Grid xs={12} className='mt-3 mbot-3' textAlign="left">
+        <Grid item xs={12} className="mt-3 mbot-3" textAlign="left">
             <Button variant="contained" color="inherit" onClick={() => navigate(-1)}>
                 <KeyboardArrowLeftIcon /> &nbsp; Quay lại
             </Button>
