@@ -24,6 +24,7 @@
         "axios": "^0.26.0",
         "customize-cra": "^1.0.0",
         "dotenv": "^16.0.0",
+        "eslint-config-react-app": "^7.0.0",
         "formik": "^2.2.9",
         "leaflet": "^1.7.1",
         "leaflet-react": "^3.0.5",
