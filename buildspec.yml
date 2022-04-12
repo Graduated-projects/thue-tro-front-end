@@ -6,7 +6,7 @@ phases:
       - npm install
   build:
     commands:
-      - n latest
+      - n 14
       - npm run build
 
 artifacts:
