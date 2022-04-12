@@ -1,16 +1,12 @@
 version: 0.2
 
 phases:
-
-  initial:
-    commands:
-      - n latest
-    
   pre_build: 
     commands:
       - npm install
   build:
     commands:
+      - n latest
       - npm run build
 
 artifacts:
