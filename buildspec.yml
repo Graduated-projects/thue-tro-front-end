@@ -6,6 +6,7 @@ phases:
       - npm install
   build:
     commands:
+      - node -v
       - npm run build
 
 artifacts:
