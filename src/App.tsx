@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Headers from '@/pages/Headers';
-import './assets/scss/styles.scss';
+import './assets/scss/styles.css';
 import Footer from '@/pages/Footer';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import routes from '@/configs/routes';
