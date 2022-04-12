@@ -30,7 +30,6 @@
         "leaflet-react": "^3.0.5",
         "material-ui-numeric-input": "^3.1.0",
         "net": "^1.0.2",
-        "node-sass": "^7.0.1",
         "react": "^17.0.2",
         "react-app-rewired": "^2.2.1",
         "react-dom": "^17.0.2",
