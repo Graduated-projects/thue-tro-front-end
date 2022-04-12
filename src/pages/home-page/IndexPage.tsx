@@ -6,7 +6,7 @@ import OwlRoom from '@/components/owl-room/OwlRoom';
 import { useRoomStore } from '@/app/store';
 import { useAppDispatch } from '@/app/hooks';
 import { roomAction } from '@/app/action/room.action';
-const Index = () => {
+const IndexPage = () => {
     const dispatch = useAppDispatch();
     useEffect(() => {}, [dispatch]);
 
@@ -27,4 +27,4 @@ const Index = () => {
     );
 };
 
-export default Index;
+export default IndexPage;

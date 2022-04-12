@@ -1,6 +1,6 @@
 import { path } from './path';
 import NotFound from '@/pages/NotFound';
-import HomePage from '@/pages/home-page/Index';
+import HomePage from '@/pages/home-page/IndexPage';
 import FindingPage from '@/pages/finding-page/index';
 import Login from '@/pages/auth-page/Login';
 import Register from '@/pages/auth-page/Register';
