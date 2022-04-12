@@ -1,12 +1,21 @@
 version: 0.2
 
 phases:
+
+  initial:
+    commands:
+      - sudo apt update && sudo apt install curl -y
+      - curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash 
+      - nvm install v14.19.0 
+      - node --version 
+      - nvm use v14.19.0 
+      - node --version
+
   pre_build: 
     commands:
       - npm install
   build:
     commands:
-      - node -v
       - npm run build
 
 artifacts:
