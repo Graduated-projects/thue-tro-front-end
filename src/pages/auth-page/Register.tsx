@@ -25,7 +25,7 @@ const useStyles = makeStyles({
         boxShadow: '0 0 5px #DDDDDD',
         padding: '5rem',
         borderRadius: '7.5px',
-        backgroundColor: 'white'
+        backgroundColor: 'white',
     },
 });
 
@@ -54,10 +54,11 @@ const Register = () => {
         FOURTH: 3,
     };
     const [currentRegisterStep, setcurrentRegisterStep] = useState(0);
+
     const onRegisterStep1 = (user: Body, onFormik: FormikProps<Body>) => {
         const ACCEPTED_NUMBER_ERROR_PASS_STEP_1 = 2;
-
-        if (Object.keys(onFormik.errors).length <= ACCEPTED_NUMBER_ERROR_PASS_STEP_1) {
+        const lengthOfError = Object.keys(onFormik.errors).length;
+        if (lengthOfError <= ACCEPTED_NUMBER_ERROR_PASS_STEP_1 && lengthOfError !== 0) {
             authService
                 .isExistsEmail(user.email as string)
                 .then((resp) => {
@@ -322,7 +323,9 @@ const Register = () => {
                                 </React.Fragment>
                             )}
 
-                            {currentRegisterStep === registerSteps.FOURTH && <VerifyCard user={formik.values} />}
+                            {currentRegisterStep === registerSteps.FOURTH && (
+                                <VerifyCard user={formik.values} />
+                            )}
                         </Grid>
                     </Form>
                 )}
