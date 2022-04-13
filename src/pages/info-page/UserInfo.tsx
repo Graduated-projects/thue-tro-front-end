@@ -1,6 +1,6 @@
 import { makeStyles } from '@mui/styles';
 import { customContainer } from '@/configs/styles';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Button,
     Grid,
@@ -21,6 +21,7 @@ import LocalAtmRoundedIcon from '@mui/icons-material/LocalAtmRounded';
 import DocumentScannerOutlinedIcon from '@mui/icons-material/DocumentScannerOutlined';
 import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
 import { path } from '@/configs/path';
+import { walletService } from '@/services/wallet.service';
 
 const useStyles = makeStyles({
     customContainer,
@@ -80,9 +81,17 @@ const UserInfo = () => {
     const classes = useStyles();
     const { user, isLogin } = useAuthStore();
     const navigate = useNavigate();
+    const [balanceInWallet, setbalanceInWallet] = useState(0);
 
     useEffect(() => {
         if (!isLogin) navigate(path.main.home);
+
+        walletService
+            .getBalanceInWallet()
+            .then((resp) => {
+                if (resp.data.success) setbalanceInWallet(resp.data.data.balance);
+            })
+            .catch((err) => console.error(err));
     }, []);
 
     return (
@@ -118,7 +127,7 @@ const UserInfo = () => {
                                             </TableCell>
                                             <TableCell align="left">
                                                 {' '}
-                                                {formatVND(1000000)}{' '}
+                                                {formatVND(balanceInWallet)}{' '}
                                             </TableCell>
                                         </TableRow>
                                     </TableBody>

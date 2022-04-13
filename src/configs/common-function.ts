@@ -21,7 +21,7 @@ export const setHeaderForAxios = (token: string) => {
     });
 };
 
-export const formatVND = (currancy: number) => {
+export const formatVND = (currancy: number | string) => {
     return currancy.toLocaleString('vi', {
         style: 'currency',
         currency: 'VND',
@@ -45,4 +45,9 @@ export const fireErrorMessage = (errorMessage: any) => {
 
 export const limitString = (string: string, length: number) => {
     return string.length > length ? string.slice(0, length) + '...' : string;
+};
+
+export const getIdByUrl = () => {
+    const url = window.location.href.split('/');
+    return url[url.length - 1];
 };

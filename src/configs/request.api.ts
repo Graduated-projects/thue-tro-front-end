@@ -1,4 +1,5 @@
-const baseUrl = process.env.REACT_APP_BASE_URL + '/api/v1';
+const baseUrl = process.env.REACT_APP_BASE_TEST + '/api/v1';
+
 
 export const server = {
     auth: baseUrl + '/auth',
@@ -8,6 +9,7 @@ export const server = {
     media: baseUrl + '/media',
     apartment: baseUrl + '/apartment',
     contract: baseUrl + '/contract',
+    wallet: baseUrl + '/wallet',
 };
 
 export const api = {
@@ -54,5 +56,9 @@ export const api = {
         GET_OWNER: server.contract + '/list/owner',
         GET_RENTER: server.contract + '/list/renter',
         BY_ID: server.contract + '/:id',
+    },
+    wallet: {
+        GET_BALANCE: server.wallet,
+        RECHARGE: server.wallet + '/recharge',
     },
 };

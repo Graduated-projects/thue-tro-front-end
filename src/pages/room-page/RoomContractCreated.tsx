@@ -138,7 +138,7 @@ const RoomContractCreated = ({ setStep }: Props) => {
     console.log(contractInfo);
 
     return (
-        <Grid container spacing={1}>
+        <Grid container spacing={2} className={`${classes.container}`}>
             <Grid item xs={12} textAlign="center" className={``}>
                 CỘNG HÒA XÃ HỘI - CHỦ NGHĨA VIỆT NAM
             </Grid>

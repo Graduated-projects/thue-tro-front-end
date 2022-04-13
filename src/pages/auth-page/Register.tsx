@@ -88,6 +88,7 @@ const Register = () => {
     //         });
     //     }
     // );
+    
     const onRegisterStep3 = (user: Body, onFormik: FormikProps<Body>) => {
         if (user.password && user.password === user.confirmPassword) {
             setcurrentRegisterStep(registerSteps.FOURTH);

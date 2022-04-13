@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { contractAction } from '@/app/action/contract.action';
 import { useAppDispatch } from '@/app/hooks';
 import Contracts from './Contracts';
+import { path } from '@/configs/path';
 
 const MyContracts = () => {
     const { contracts, isLoadingContracts } = useContractStore();
@@ -17,7 +18,7 @@ const MyContracts = () => {
         <Contracts
             contracts={contracts}
             isLoadingContracts={isLoadingContracts}
-            pathTo=""
+            pathTo={path.contract.byId}
             title="Tất cả hợp đồng của tôi"
         />
     );

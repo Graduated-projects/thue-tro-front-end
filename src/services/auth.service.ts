@@ -71,6 +71,7 @@ const getUserInfoById = (userId: string) => {
     return axios.get(api.user.INFO_BY_ID.replace(':id', userId));
 };
 
+
 export const authService = {
     login,
     logout,

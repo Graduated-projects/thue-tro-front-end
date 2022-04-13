@@ -125,7 +125,10 @@ const Contracts = ({ contracts, isLoadingContracts, pathTo, title }: Props) => {
                         </Typography>
                     </CardContent>
                     <CardActions className={classes.cardAction}>
-                        <Button size="small" onClick={() => navigate(pathTo)}>
+                        <Button
+                            size="small"
+                            onClick={() => navigate(pathTo.replace(':id', contract.id.toString()))}
+                        >
                             Xem chi tiết
                         </Button>
                     </CardActions>

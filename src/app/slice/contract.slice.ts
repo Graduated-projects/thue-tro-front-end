@@ -38,6 +38,19 @@ const contractSlice = createSlice({
         [contractAction.getContractsRenter.rejected.toString()]: (state, action) => {
             state.isLoadingContracts = false;
         },
+
+        [contractAction.getContractById.pending.toString()]: (state, action) => {
+            state.isLoadingContract = true;
+        },
+        [contractAction.getContractById.fulfilled.toString()]: (state, action) => {
+            state.isLoadingContract = false;
+            if (action.payload.success) {
+                state.contract = action.payload.data;
+            }
+        },
+        [contractAction.getContractById.rejected.toString()]: (state, action) => {
+            state.isLoadingContract = false;
+        },
     },
 });
 

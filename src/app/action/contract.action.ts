@@ -12,8 +12,14 @@ const getContractsRenter = createAsyncThunk('contract/renter', async () => {
     return response.data;
 });
 
+const getContractById = createAsyncThunk('contract/byId', async (id: string) => {
+    const response = await contractService.getContractById(id);
+    return response.data;
+});
+
 
 export const contractAction = {
     getContractsOwner,
-    getContractsRenter
+    getContractsRenter,
+    getContractById
 };

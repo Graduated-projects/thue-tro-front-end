@@ -23,6 +23,6 @@ export const path = {
     contract: {
         my: '/contract/my',
         other: '/contract/other',
-        byId: 'contract/:id'
+        byId: '/contract/:id'
     }
 };
