@@ -61,7 +61,8 @@ const RoomByDepartmentId = () => {
     const apartmentId = url[url.length - 3];
     const { room, isLoadingRoom } = useRoomStore();
     const { apartment } = useApartmentStore();
-    const { user } = useAuthStore();
+    const { user, isLogin } = useAuthStore();
+
 
     useEffect(() => {
         dispatch(roomAction.getById(roomId));
@@ -97,6 +98,7 @@ const RoomByDepartmentId = () => {
     };
 
     const isOwner = () => {
+        if(!isLogin) return false
         return Number(room?.createdBy) === Number(user?.id) ? true : false;
     };
 

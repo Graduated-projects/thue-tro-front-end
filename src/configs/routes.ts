@@ -16,6 +16,9 @@ import RoomContractSuccess from '@/pages/room-page/RoomContractSuccess';
 import MyContracts from '@/pages/contract-page/MyContracts';
 import OtherContracts from '@/pages/contract-page/OtherContracts';
 import ContractById from '@/pages/contract-page/ContractById';
+import WalletHistory from '@/pages/wallet-page/WalletHistory';
+import ChangePassword from '@/pages/info-page/ChangePassword';
+import Forgot from '@/pages/auth-page/Forgot';
 
 const routes = [
     //notFound & Exception
@@ -35,6 +38,9 @@ const routes = [
     { path: path.contract.my, component: MyContracts, exact: true },
     { path: path.contract.other, component: OtherContracts, exact: true },
     { path: path.contract.byId, component: ContractById, exact: true },
+    { path: path.wallet.history, component: WalletHistory, exact: true },
+    { path: path.auth.changePassword, component: ChangePassword, exact: true },
+    { path: path.auth.forgot, component: Forgot, exact: true },
     { path: '*', component: NotFound, exact: true },
 
     //Note: Page not Found need stay last of array.

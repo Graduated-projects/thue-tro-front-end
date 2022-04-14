@@ -8,6 +8,8 @@ export const path = {
     auth: {
         login: '/login',
         register: '/register',
+        changePassword: '/changePassword',
+        forgot: '/forgot'
     },
     room: {
         byId: '/room/:id',
@@ -24,5 +26,8 @@ export const path = {
         my: '/contract/my',
         other: '/contract/other',
         byId: '/contract/:id'
+    },
+    wallet: {
+        history: '/wallet/history'
     }
 };

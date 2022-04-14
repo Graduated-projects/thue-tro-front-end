@@ -23,6 +23,14 @@ const useStyles = makeStyles({
     buttonSize: {
         width: '10rem',
     },
+    forgot: {
+        color: 'blue',
+        cursor: 'pointer',
+        textDecoration: 'underline',
+        '&:hover': {
+            color: 'black'
+        }
+    }
 });
 
 interface Body {
@@ -39,6 +47,7 @@ const Login = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const auth = useAuthStore();
+
 
     const onLogin = (user: Body, onFormik: FormikHelpers<Body>) => {
         onFormik.setSubmitting(true);
@@ -118,6 +127,12 @@ const Login = () => {
                                 >
                                     Đăng ký
                                 </Button>
+                            </Grid>
+                            <Grid item xs={12} className="center">
+                                <p className={`${classes.forgot}`}
+                                    onClick={() => navigate(path.auth.forgot)}
+                                
+                                >Quên mật khẩu</p>
                             </Grid>
                         </Grid>
                     </Form>

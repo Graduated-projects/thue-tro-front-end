@@ -33,6 +33,7 @@ export const api = {
         VERIFY_EMAIL: server.user + '/email/otp/verify',
         SIGN_IN: server.user + '/login',
         REGISTER: server.user + '/register',
+        CHANGE_PASSWORD: server.user + '/update-password'
     },
     ekyc: {
         DETECT_FRONT_CARD: server.ekyc + '/detect/front',

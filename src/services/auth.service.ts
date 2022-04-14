@@ -71,6 +71,9 @@ const getUserInfoById = (userId: string) => {
     return axios.get(api.user.INFO_BY_ID.replace(':id', userId));
 };
 
+const changePassword = (user: BodyRequest) => {
+    return axios.patch(api.user.CHANGE_PASSWORD, user)
+}
 
 export const authService = {
     login,
@@ -83,4 +86,5 @@ export const authService = {
     register,
     genOtp,
     getUserInfoById,
+    changePassword
 };

@@ -20,6 +20,8 @@ import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
 import LocalAtmRoundedIcon from '@mui/icons-material/LocalAtmRounded';
 import DocumentScannerOutlinedIcon from '@mui/icons-material/DocumentScannerOutlined';
 import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
+import HistoryIcon from '@mui/icons-material/History';
+import LockResetIcon from '@mui/icons-material/LockReset';
 import { path } from '@/configs/path';
 import { walletService } from '@/services/wallet.service';
 
@@ -75,6 +77,9 @@ const useStyles = makeStyles({
         animationIterationCount: 'infinite',
         animationDuration: '2s',
     },
+    button: {
+        width: '250px'
+    }
 });
 
 const UserInfo = () => {
@@ -212,6 +217,7 @@ const UserInfo = () => {
                                         {' '}
                                         <Button
                                             variant="contained"
+                                            className={`${classes.button}`}
                                             onClick={() => navigate(path.apartment.my)}
                                         >
                                             <HomeIcon /> &nbsp; Xem căn hộ của tôi
@@ -220,6 +226,7 @@ const UserInfo = () => {
                                     <TableCell align="center">
                                         <Button
                                             variant="contained"
+                                            className={`${classes.button}`}
                                             color="warning"
                                             onClick={() => navigate(path.contract.my)}
                                         >
@@ -237,12 +244,42 @@ const UserInfo = () => {
                                         {' '}
                                         <Button
                                             variant="contained"
+                                            className={`${classes.button}`}
                                             onClick={() => navigate(path.contract.other)}
                                             color="success"
                                         >
                                             <ReceiptLongOutlinedIcon /> &nbsp; Xem Hợp đồng khác
                                         </Button>{' '}
                                     </TableCell>
+                                    <TableCell align="center">
+                                        {' '}
+                                        <Button
+                                            variant="contained"
+                                            className={`${classes.button}`}
+                                            onClick={() => navigate(path.wallet.history)}
+                                            color="error"
+                                        >
+                                            <HistoryIcon /> &nbsp; Xem Lịch Sử Giao Dịch
+                                        </Button>{' '}
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow
+                                    sx={{
+                                        '&:last-child td, &:last-child th': { border: 0 },
+                                    }}
+                                >
+                                    <TableCell align="center">
+                                        {' '}
+                                        <Button
+                                            variant="contained"
+                                            className={`${classes.button}`}
+                                            onClick={() => navigate(path.auth.changePassword)}
+                                            color="secondary"
+                                        >
+                                            <LockResetIcon /> &nbsp; Đổi mật khẩu
+                                        </Button>{' '}
+                                    </TableCell>
+                                    
                                 </TableRow>
                             </TableBody>
                         </Table>

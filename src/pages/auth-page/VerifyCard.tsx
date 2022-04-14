@@ -32,34 +32,50 @@ const VerifyCard = ({ user }: Props) => {
             .detectCard(card.front[0], card.back[0])
             .then((resp) => {
                 setisDisabled(false);
+                const frontCardData = resp?.frontCardFile?.data?.data || {};
+                const newUser = new FormData();
 
-                const newUser = new FormData()
+                newUser.append('email', user.email);
+                newUser.append('frontCardFile', card.front[0]);
+                newUser.append('backCardFile', card.back[0]);
+                newUser.append('password', user.password);
+                newUser.append('fullName', user.fullName);
+                newUser.append('phoneNumber', user.phoneNumber);
+                newUser.append('idCardType', frontCardData.idCardType || "empty data");
+                newUser.append('expiredDate', frontCardData.expiredDate || "empty data");
+                newUser.append('idCardNo', frontCardData.idCardNo || "empty data");
+                newUser.append('issuedDate', frontCardData.issuedDate || "2028-10-23");
+                newUser.append('issuedBy', frontCardData.issuedBy || "2028-10-23");
+                newUser.append('gender', frontCardData.gender || "empty data");
+                newUser.append('dateOfBirth', frontCardData.dateOfBirth || "2028-10-23");
+                newUser.append('permanentAddress', frontCardData.permanentAddress || "empty data");
+                newUser.append('contactAddress', frontCardData.contactAddress || "empty data");
+                newUser.append('nationCode', frontCardData.nationCode || "empty data");
+                newUser.append('provinceCode', frontCardData.provinceCode || "empty data");
+                newUser.append('districtCode', frontCardData.districtCode || "empty data");
+                newUser.append('communeCode', frontCardData.communeCode || "empty data");
+                newUser.append('hometown', frontCardData.hometown || "empty data");
 
-                newUser.append("email", user.email)
-                newUser.append("frontCardFile", card.front[0])
-                newUser.append("backCardFile", card.back[0])
-                console.log(resp);
-                
-                console.log(newUser);
-                
-                // authService
-                //     .register(newUser)
-                //     .then((resp) => {
-                //         if (resp.data.success) {
-                //             Swal.fire({
-                //                 title: 'Thành công!',
-                //                 text: 'Đăng ký tài khoản thành công!',
-                //                 icon: 'success',
-                //                 confirmButtonColor: '#3085d6',
-                //                 confirmButtonText: 'Xác nhận',
-                //             }).then((result) => {
-                //                 navigate(path.main.userInfo);
-                //             });
-                //         }
-                //     })
-                //     .catch((err) => {
-                //         fireErrorMessage(err);
-                //     });
+                authService
+                    .register(newUser)
+                    .then((resp) => {
+                        console.log(resp.data);
+                        
+                        if (resp.data.success) {
+                            Swal.fire({
+                                title: 'Thành công!',
+                                text: 'Đăng ký tài khoản thành công!',
+                                icon: 'success',
+                                confirmButtonColor: '#3085d6',
+                                confirmButtonText: 'Xác nhận',
+                            }).then((result) => {
+                                navigate(path.main.userInfo);
+                            });
+                        }
+                    })
+                    .catch((err) => {
+                        fireErrorMessage(err);
+                    });
             })
             .catch((err) => {
                 setisDisabled(false);
@@ -85,7 +101,7 @@ const VerifyCard = ({ user }: Props) => {
             </Grid>
 
             <Grid item xs={12} className="center">
-                <Button variant="outlined" color="inherit">
+                <Button variant="outlined" color="inherit" onClick={() => navigate(-1)}>
                     Quay lại
                 </Button>
             </Grid>

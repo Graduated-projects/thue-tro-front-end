@@ -43,6 +43,7 @@ export const fireErrorMessage = (errorMessage: any) => {
     });
 };
 
+
 export const limitString = (string: string, length: number) => {
     return string.length > length ? string.slice(0, length) + '...' : string;
 };
