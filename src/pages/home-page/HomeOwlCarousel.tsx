@@ -14,17 +14,23 @@ import { DistrictOwl } from '@/types/interface';
 import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({
+    owlContainer: {
+        position: 'relative',
+        backgroundColor: 'white',
+        top: '-4rem',
+        borderRadius: '10px',
+        padding: '2rem',
+        boxShadow: ` rgba(0, 0, 0, 0.1) 0px 4px 12px, 0 -3px 10px white`,
+    },
     cardContainer: {
-        height: '480px',
     },
     cardMedia: {
         height: '200px',
     },
     cardContent: {
-        height: '320px',
     },
     cardAction: {
-        marginTop: 'auto'
+        marginTop: 'auto',
     },
 });
 
@@ -73,7 +79,7 @@ const HomeOwlCarousel: React.FC = () => {
     });
 
     return (
-        <div style={{ marginTop: `5rem` }}>
+        <div className={`${classes.owlContainer}`}>
             <p className="home-title mbot-3 ">Bạn muốn tìm kiếm ở đâu?</p>
             <ReactOwlCarousel className="owl-theme" margin={10} items={4} loop>
                 {owlDataMap}

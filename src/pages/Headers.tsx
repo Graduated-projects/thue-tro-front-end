@@ -14,8 +14,17 @@ import { path } from '../configs/path';
 import { useAuthStore } from '@/app/store';
 import { authAction } from '@/app/action/auth.action';
 import { useAppDispatch } from '@/app/hooks';
+import { makeStyles } from '@mui/styles';
+
+const url = window.location.href;
+
+console.log(url);
+
+const useStyles = makeStyles({});
 
 export default function Headers() {
+    const classes = useStyles();
+
     const { isLogin, user } = useAuthStore();
     const [anchorEl, setAnchorEl] = useState(null);
     const navigate = useNavigate();
@@ -35,7 +44,7 @@ export default function Headers() {
     };
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box>
             <AppBar position="static">
                 <Toolbar>
                     <IconButton

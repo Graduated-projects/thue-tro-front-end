@@ -21,8 +21,8 @@ const IndexPage = () => {
                 /> */}
                 {/* <OwlRoom rooms={rooms} isLoadingRooms={isLoadingRooms} title="Gợi ý cho bạn" /> */}
                 <HomeOwlCarousel />
-                <HomeFindout />
             </div>
+            <HomeFindout />
         </>
     );
 };
