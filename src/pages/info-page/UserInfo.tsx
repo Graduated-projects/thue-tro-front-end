@@ -38,12 +38,12 @@ const useStyles = makeStyles({
         width: '180px',
     },
     userImage: {
-        fontSize: '150px',
+        fontSize: '150px !important',
     },
     userInfo: {
         display: `flex`,
-        alignItems: 'flex-end',
         flexDirection: 'column',
+        alignItems: 'flex-end',
     },
     wallet: {
         fontSize: '100px',
@@ -78,8 +78,8 @@ const useStyles = makeStyles({
         animationDuration: '2s',
     },
     button: {
-        width: '250px'
-    }
+        width: '250px',
+    },
 });
 
 const UserInfo = () => {
@@ -102,44 +102,49 @@ const UserInfo = () => {
     return (
         <div className={classes.customContainer}>
             <Grid container spacing={2}>
-                <Grid item xs={4} className={`${classes.userInfo}`}>
-                    <div className={`${classes.userInfoContainer} w-75`}>
-                        <div className="center" style={{ flexDirection: 'column' }}>
-                            <AccountCircleIcon className={classes.userImage} />
-                            <p>Xin Chào!</p>
-                            <p>
-                                <b> {user?.fullName} </b>
-                            </p>
+                <Grid item xs={4}>
+                    <div className={`${classes.userInfo}`}>
+                        <div className={`${classes.userInfoContainer} w-75`}>
+                            <div className="center" style={{ flexDirection: 'column' }}>
+                                <AccountCircleIcon className={classes.userImage} />
+                                <p>Xin Chào!</p>
+                                <p>
+                                    <b> {user?.fullName} </b>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                    <div className={`${classes.userInfoContainer} w-75 mt-3`}>
-                        <div className="center" style={{ flexDirection: 'column' }}>
-                            <LocalAtmRoundedIcon className={classes.wallet} />
-                            <div>Ví H-flex của tôi</div>
-                            <TableContainer>
-                                <Table>
-                                    <TableBody>
-                                        <TableRow
-                                            sx={{
-                                                '&:last-child td, &:last-child th': { border: 0 },
-                                            }}
-                                        >
-                                            <TableCell
-                                                className={classes.walletTitle}
-                                                align="right"
+
+                        <div className={`${classes.userInfoContainer} w-75 mt-3`}>
+                            <div className="center" style={{ flexDirection: 'column' }}>
+                                <LocalAtmRoundedIcon className={classes.wallet} />
+                                <div>Ví H-flex của tôi</div>
+                                <TableContainer>
+                                    <Table>
+                                        <TableBody>
+                                            <TableRow
+                                                sx={{
+                                                    '&:last-child td, &:last-child th': {
+                                                        border: 0,
+                                                    },
+                                                }}
                                             >
-                                                Số dư:
-                                            </TableCell>
-                                            <TableCell align="left">
-                                                {' '}
-                                                {formatVND(balanceInWallet)}{' '}
-                                            </TableCell>
-                                        </TableRow>
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                            <div className={`${classes.depositMoney} ${classes.deposit}`}>
-                                <PaidOutlinedIcon fontSize="inherit" /> &nbsp; Nạp tiền vào ví
+                                                <TableCell
+                                                    className={classes.walletTitle}
+                                                    align="right"
+                                                >
+                                                    Số dư:
+                                                </TableCell>
+                                                <TableCell align="left">
+                                                    {' '}
+                                                    {formatVND(balanceInWallet)}{' '}
+                                                </TableCell>
+                                            </TableRow>
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                                <div className={`${classes.depositMoney} ${classes.deposit}`}>
+                                    <PaidOutlinedIcon fontSize="inherit" /> &nbsp; Nạp tiền vào ví
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -279,7 +284,6 @@ const UserInfo = () => {
                                             <LockResetIcon /> &nbsp; Đổi mật khẩu
                                         </Button>{' '}
                                     </TableCell>
-                                    
                                 </TableRow>
                             </TableBody>
                         </Table>
