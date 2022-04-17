@@ -138,25 +138,23 @@ const Contracts = ({ contracts, isLoadingContracts, pathTo, title }: Props) => {
     });
 
     return (
-        <div className="container">
+        <div className="">
             <BackButton />
             {isLoadingContracts ? (
                 <CircularProgress />
             ) : (
-                <div className={`container`}>
-                    <div className={`${classes.container} `}>
-                        <Grid
-                            item
-                            xs={12}
-                            textAlign="center"
-                            className={`text-success ${classes.my} mbot-3`}
-                        >
-                            {title}
-                        </Grid>
-                        <Grid container spacing={2}>
-                            {contractsMap}
-                        </Grid>
-                    </div>
+                <div className={`${classes.container} `}>
+                    <Grid
+                        item
+                        xs={12}
+                        textAlign="center"
+                        className={`text-success ${classes.my} mbot-3`}
+                    >
+                        {title}
+                    </Grid>
+                    <Grid container spacing={2}>
+                        {contractsMap}
+                    </Grid>
                 </div>
             )}
         </div>

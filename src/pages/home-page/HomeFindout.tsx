@@ -57,7 +57,7 @@ const HomeFindout = () => {
                                 tôi đã tạo nên Houflex!
                             </p>
                             <br />
-                            <p>Đừng lo lắng! Chúng tôi sẽ hổ trợ bạn.</p>
+                            <p>Đừng lo lắng! Chúng tôi sẽ hỗ trợ bạn.</p>
                             <Button> <ArrowRightAltIcon fontSize="medium" /> Tìm kiếm ngay </Button>
                         </div>
                     </div>

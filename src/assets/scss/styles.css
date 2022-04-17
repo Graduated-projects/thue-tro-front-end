@@ -203,9 +203,7 @@ input[type='number']::-webkit-outer-spin-button {
     background-size: cover;
     user-select: none;
 }
-.home-findout__left {
-    background-image: url('@/assets/img/findout-left.jpg');
-}
+
 
 .footer {
     padding: 2rem 0;

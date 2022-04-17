@@ -8,6 +8,7 @@ import { fireErrorMessage, formatVND } from '@/configs/common-function';
 import Swal from 'sweetalert2';
 import { authService } from '@/services/auth.service';
 import withReactContent from 'sweetalert2-react-content';
+import { PAYMENT_STORAGE, typeOfPayment } from '@/configs/const';
 
 const useStyle = makeStyles({
     container: {
@@ -53,7 +54,7 @@ const RoomContractCreated = ({ setStep }: Props) => {
     const MySwal = withReactContent(Swal);
 
     useEffect(() => {
-        sessionStorage.setItem('amountPayment', contractInfo?.totalCost);
+        sessionStorage.setItem(PAYMENT_STORAGE, contractInfo?.totalCost);
     }, [contractInfo]);
 
     useEffect(() => {
@@ -111,9 +112,7 @@ const RoomContractCreated = ({ setStep }: Props) => {
                                 const otp = sessionStorage.getItem('otppay');
 
                                 authService.verifyEmail({ email, otp }, 2).then((resp) => {
-                                    //chưa catch error
                                     if (resp.data.data.success) {
-                                        setStep(2);
                                         const sessionContract = {
                                             roomId,
                                             renterId: user?.id,
@@ -124,18 +123,17 @@ const RoomContractCreated = ({ setStep }: Props) => {
                                             JSON.stringify(sessionContract)
                                         );
                                         sessionStorage.removeItem('otppay');
+                                        setStep(2);
                                     } else {
                                         fireErrorMessage('OTP không hợp lệ!');
                                     }
                                 });
                             }
-                            // chưa catch error
                         });
                     });
             }
         });
     };
-    console.log(contractInfo);
 
     return (
         <Grid container spacing={2} className={`${classes.container}`}>

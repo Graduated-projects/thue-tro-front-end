@@ -12,13 +12,14 @@ import ApartmentById from '@/pages/apartment-page/ApartmentById';
 import RoomCreate from '@/pages/room-page/RoomCreate';
 import RoomByDepartmentId from '@/pages/room-page/RoomByDepartmentId';
 import RoomContract from '@/pages/room-page/RoomContract';
-import RoomContractSuccess from '@/pages/room-page/RoomContractSuccess';
+import PaymentSuccessfully from '@/pages/room-page/PaymentSuccessfully';
 import MyContracts from '@/pages/contract-page/MyContracts';
 import OtherContracts from '@/pages/contract-page/OtherContracts';
 import ContractById from '@/pages/contract-page/ContractById';
 import WalletHistory from '@/pages/wallet-page/WalletHistory';
 import ChangePassword from '@/pages/info-page/ChangePassword';
 import Forgot from '@/pages/auth-page/Forgot';
+import Recharge from '@/pages/wallet-page/Recharge';
 
 const routes = [
     //notFound & Exception
@@ -34,13 +35,15 @@ const routes = [
     { path: path.apartment.byId + path.room.byId, component: RoomByDepartmentId, exact: true },
     { path: path.room.create, component: RoomCreate, exact: true },
     { path: path.room.contract, component: RoomContract, exact: true },
-    { path: path.room.success, component: RoomContractSuccess, exact: true },
+    { path: path.room.success, component: PaymentSuccessfully, exact: true },
     { path: path.contract.my, component: MyContracts, exact: true },
     { path: path.contract.other, component: OtherContracts, exact: true },
     { path: path.contract.byId, component: ContractById, exact: true },
     { path: path.wallet.history, component: WalletHistory, exact: true },
+    { path: path.wallet.paymentMethod, component: Recharge, exact: true },
     { path: path.auth.changePassword, component: ChangePassword, exact: true },
     { path: path.auth.forgot, component: Forgot, exact: true },
+  
     { path: '*', component: NotFound, exact: true },
 
     //Note: Page not Found need stay last of array.

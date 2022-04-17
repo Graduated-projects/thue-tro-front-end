@@ -28,6 +28,7 @@ export const path = {
         byId: '/contract/:id'
     },
     wallet: {
-        history: '/wallet/history'
+        history: '/wallet/history',
+        paymentMethod: '/wallet/recharge'
     }
 };

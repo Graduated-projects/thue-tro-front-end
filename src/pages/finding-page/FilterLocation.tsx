@@ -127,19 +127,10 @@ const FilterLocation = () => {
     };
 
     const startSearching = (location: LocationSearching) => {
-        const hcm = ['SÀI GÒN', 'THÀNH PHỐ HỒ CHÍ MINH', 'VIỆT NAM'];
-        const configAddress = location.place.name.split(', ').map((x) => x.toUpperCase());
-
-        const removeSaigonAddress = configAddress.filter((x) => !hcm.includes(x));
-        if (Number(removeSaigonAddress[removeSaigonAddress.length - 1])) removeSaigonAddress.pop();
-
-        const searchingAddress = removeSaigonAddress.join(', ');
-
         const priceSorting = price.sort((a, b) => a - b);
         const arceageSorting = arceage.sort((a, b) => a - b);
 
         const params = {
-            address: searchingAddress.replaceAll(' ', '%20'),
             latitude: location.place.position[0],
             longitude: location.place.position[1],
             distanceFrom: 0,
@@ -151,7 +142,6 @@ const FilterLocation = () => {
             size: 500,
         };
 
-        console.log(params);
         if (params.distanceTo === 0) {
             fireErrorMessage('vui lòng chọn bán kính tìm kiếm!');
         } else {

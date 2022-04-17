@@ -26,9 +26,10 @@ import vpbank from '@/assets/img/bank-logo/vpbank.png';
 import Swal from 'sweetalert2';
 import { contractService } from '@/services/contract.service';
 import { fireErrorMessage } from '@/configs/common-function';
+import { PAYMENT_STORAGE, typeOfPayment, TYPE_PAYMENT_STORAGE } from '@/configs/const';
 
 interface Props {
-    setStep: any;
+    type?: number;
 }
 const useStyle = makeStyles({
     container: {
@@ -50,7 +51,7 @@ const useStyle = makeStyles({
         marginBottom: '1rem',
     },
 });
-const RoomContractPayMethod = ({ setStep }: Props) => {
+const RoomContractPayMethod = ({ type = 0 }: Props) => {
     const classes = useStyle();
     const [paymentStatus, setpaymentStatus] = useState(0);
 
@@ -80,6 +81,9 @@ const RoomContractPayMethod = ({ setStep }: Props) => {
     ];
 
     const payMethodsMap = payMethods.map((method: any, index) => {
+        if (method.id === 1 && type === typeOfPayment.RECHARGE)
+            return <React.Fragment key={index}></React.Fragment>;
+
         return (
             <Grid item xs={1} key={index}>
                 <div className={`${classes.container}`} onClick={() => setpaymentStatus(index + 1)}>
@@ -88,6 +92,17 @@ const RoomContractPayMethod = ({ setStep }: Props) => {
             </Grid>
         );
     });
+
+    const renderDescription = () => {
+        switch (type) {
+            case typeOfPayment.CREATE_CONTRACT:
+                return 'THANH TOAN HOP DONG LAN DAU';
+            case typeOfPayment.RECHARGE:
+                return 'NAP TIEN VAO VI';
+            default:
+                return '';
+        }
+    };
 
     const payment = (bank: any) => {
         Swal.fire({
@@ -100,11 +115,12 @@ const RoomContractPayMethod = ({ setStep }: Props) => {
             showCancelButton: true,
         }).then((result) => {
             if (result.isConfirmed) {
-                const amount = sessionStorage.getItem('amountPayment');
+                sessionStorage.setItem(TYPE_PAYMENT_STORAGE, type.toString());
+                const amount = sessionStorage.getItem(PAYMENT_STORAGE);
                 const payment = {
                     amount: Number(amount),
                     bankCode: bank.value,
-                    description: 'THANH TOAN HOP DONG LAN DAU',
+                    description: renderDescription(),
                 };
 
                 contractService
@@ -151,7 +167,7 @@ const RoomContractPayMethod = ({ setStep }: Props) => {
     };
 
     return (
-        <Grid container spacing={2}>
+        <Grid container spacing={2} className="p-3">
             <Grid item xs={12}>
                 <p className={`${classes.title}`}> Vui lòng chọn phương thức thanh toán: </p>
                 <div className="center">

@@ -10,13 +10,15 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    TextField,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useAuthStore } from '@/app/store';
 import { formatPhone, formatVND } from '@/configs/common-function';
-import PaidOutlinedIcon from '@mui/icons-material/PaidOutlined';
+import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import LocalAtmRoundedIcon from '@mui/icons-material/LocalAtmRounded';
 import DocumentScannerOutlinedIcon from '@mui/icons-material/DocumentScannerOutlined';
 import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
@@ -24,6 +26,10 @@ import HistoryIcon from '@mui/icons-material/History';
 import LockResetIcon from '@mui/icons-material/LockReset';
 import { path } from '@/configs/path';
 import { walletService } from '@/services/wallet.service';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+import NumericInput from 'material-ui-numeric-input';
+import { PAYMENT_STORAGE } from '@/configs/const';
 
 const useStyles = makeStyles({
     customContainer,
@@ -55,30 +61,20 @@ const useStyles = makeStyles({
     },
     depositMoney: {
         marginBottom: '16px',
+        marginLeft: '16px',
         color: 'blue',
         cursor: 'pointer',
+        fontSize: '16px',
     },
-    '@keyframes animationDeposit': {
-        '0%': {
-            color: 'red',
-        },
-        '50%': {
-            color: 'blue',
-        },
-        '75%': {
-            color: 'red',
-        },
-        '100%': {
-            color: 'blue',
-        },
-    },
-    deposit: {
-        animationName: '$animationDeposit',
-        animationIterationCount: 'infinite',
-        animationDuration: '2s',
-    },
+
     button: {
         width: '250px',
+    },
+    recharge: {
+        '&:hover': {
+            color: 'red',
+        },
+        margin: '0.5rem 0',
     },
 });
 
@@ -87,6 +83,7 @@ const UserInfo = () => {
     const { user, isLogin } = useAuthStore();
     const navigate = useNavigate();
     const [balanceInWallet, setbalanceInWallet] = useState(0);
+    const MySwal = withReactContent(Swal);
 
     useEffect(() => {
         if (!isLogin) navigate(path.main.home);
@@ -98,6 +95,41 @@ const UserInfo = () => {
             })
             .catch((err) => console.error(err));
     }, []);
+
+    const rechargeMoney = () => {
+        MySwal.fire({
+            title: 'Nạp tiền vào ví H-flex',
+            html: (
+                <div>
+                    <p>Nhập số tiền</p>
+                    <br></br>
+                    <NumericInput
+                        precision={0}
+                        decimalChar=","
+                        thousandChar="."
+                        className={`w-75`}
+                        label="Số tiền: VND"
+                        variant="outlined"
+                        onChange={(e) =>
+                            sessionStorage.setItem(
+                                PAYMENT_STORAGE,
+                                Number(e.target.value).toString()
+                            )
+                        }
+                    />
+                </div>
+            ),
+            icon: 'info',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Xác nhận',
+            cancelButtonText: 'hủy',
+            showCancelButton: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                navigate(path.wallet.paymentMethod);
+            }
+        });
+    };
 
     return (
         <div className={classes.customContainer}>
@@ -142,8 +174,16 @@ const UserInfo = () => {
                                         </TableBody>
                                     </Table>
                                 </TableContainer>
-                                <div className={`${classes.depositMoney} ${classes.deposit}`}>
-                                    <PaidOutlinedIcon fontSize="inherit" /> &nbsp; Nạp tiền vào ví
+                                <div className={`${classes.depositMoney}`}>
+                                    <div
+                                        className={classes.recharge}
+                                        onClick={() => rechargeMoney()}
+                                    >
+                                        <ArrowRightAltIcon fontSize="inherit" /> Nạp tiền vào ví
+                                    </div>
+                                    <div className={classes.recharge}>
+                                        <ArrowLeftIcon fontSize="inherit" /> Rút tiền{' '}
+                                    </div>
                                 </div>
                             </div>
                         </div>

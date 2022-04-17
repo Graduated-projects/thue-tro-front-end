@@ -32,15 +32,13 @@ const RoomContract = () => {
 
     return (
         <div className="container">
-             <BackButton />
+            <BackButton />
             <Grid container spacing={2} className={`${classes.container}`}>
                 {createContractStep === 0 && <RoomRules setStep={setcreateContractStep} />}
                 {createContractStep === 1 && (
                     <RoomContractCreated setStep={setcreateContractStep} />
                 )}
-                {createContractStep === 2 && (
-                    <RoomContractPayMethod setStep={setcreateContractStep} />
-                )}
+                {createContractStep === 2 && <RoomContractPayMethod />}
             </Grid>
         </div>
     );

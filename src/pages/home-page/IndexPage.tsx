@@ -6,6 +6,7 @@ import OwlRoom from '@/components/owl-room/OwlRoom';
 import { useRoomStore } from '@/app/store';
 import { useAppDispatch } from '@/app/hooks';
 import { roomAction } from '@/app/action/room.action';
+import HomeFindout2 from './HomeFindout2';
 const IndexPage = () => {
     const dispatch = useAppDispatch();
     useEffect(() => {}, [dispatch]);
@@ -23,6 +24,7 @@ const IndexPage = () => {
                 <HomeOwlCarousel />
             </div>
             <HomeFindout />
+            <HomeFindout2 />
         </>
     );
 };

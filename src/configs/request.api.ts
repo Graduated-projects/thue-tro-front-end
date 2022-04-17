@@ -61,5 +61,6 @@ export const api = {
     wallet: {
         GET_BALANCE: server.wallet,
         RECHARGE: server.wallet + '/recharge',
+        TRANSACTION_HISTORY: server.wallet + '/transaction-history'
     },
 };
