@@ -16,9 +16,6 @@ import { authAction } from '@/app/action/auth.action';
 import { useAppDispatch } from '@/app/hooks';
 import { makeStyles } from '@mui/styles';
 
-const url = window.location.href;
-
-console.log(url);
 
 const useStyles = makeStyles({});
 

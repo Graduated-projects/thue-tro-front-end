@@ -357,14 +357,14 @@ const UserInfo = () => {
                     </TableContainer>
                     <TableContainer className={`${classes.userInfoContainer} mt-3`}>
                         <Table>
-                            <TableHead style={{ backgroundColor: '#1976d2' }}>
+                            <TableHead style={{ backgroundColor: '#2f2f2f' }}>
                                 <TableRow>
                                     <TableCell
                                         align="center"
                                         colSpan={2}
                                         style={{ fontSize: '24px', color: 'white' }}
                                     >
-                                        Menu người dùng
+                                        Menu
                                     </TableCell>
                                 </TableRow>
                             </TableHead>

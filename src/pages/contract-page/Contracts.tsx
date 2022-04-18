@@ -138,7 +138,7 @@ const Contracts = ({ contracts, isLoadingContracts, pathTo, title }: Props) => {
     });
 
     return (
-        <div className="">
+        <div className="container">
             <BackButton />
             {isLoadingContracts ? (
                 <CircularProgress />

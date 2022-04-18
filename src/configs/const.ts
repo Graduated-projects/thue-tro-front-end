@@ -10,3 +10,4 @@ export const typeOfPayment = {
 
 export const PAYMENT_STORAGE = 'PAYMENT_STORAGE'
 export const TYPE_PAYMENT_STORAGE = 'TYPE_PAYMENT_STORAGE'
+export const CURRENT_ROOM_STORE = 'CURRENT_ROOM_STORE'

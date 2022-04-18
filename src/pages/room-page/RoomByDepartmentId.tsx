@@ -15,6 +15,7 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import DownloadDoneOutlinedIcon from '@mui/icons-material/DownloadDoneOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import PhoneInTalkOutlinedIcon from '@mui/icons-material/PhoneInTalkOutlined';
+import { CURRENT_ROOM_STORE } from '@/configs/const';
 const useStyle = makeStyles({
     container: {
         padding: `4rem 0`,
@@ -63,7 +64,6 @@ const RoomByDepartmentId = () => {
     const { apartment } = useApartmentStore();
     const { user, isLogin } = useAuthStore();
 
-
     useEffect(() => {
         dispatch(roomAction.getById(roomId));
         dispatch(apartmentAction.getById(apartmentId));
@@ -98,7 +98,7 @@ const RoomByDepartmentId = () => {
     };
 
     const isOwner = () => {
-        if(!isLogin) return false
+        if (!isLogin) return true;
         return Number(room?.createdBy) === Number(user?.id) ? true : false;
     };
 
@@ -182,13 +182,31 @@ const RoomByDepartmentId = () => {
                                         {room?.numberOfPeople} người
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <Button
-                                            variant="contained"
-                                            onClick={() => rentRoom()}
-                                            disabled={isOwner()}
-                                        >
-                                            Thuê phòng
-                                        </Button>
+                                        {isLogin ? (
+                                            <Button
+                                                variant="contained"
+                                                onClick={() => rentRoom()}
+                                                disabled={isOwner()}
+                                            >
+                                                Thuê phòng
+                                            </Button>
+                                        ) : (
+                                            <Button
+                                                variant="contained"
+                                                onClick={() => {
+                                                    sessionStorage.setItem(
+                                                        CURRENT_ROOM_STORE,
+                                                        path.apartment.byId.replace(
+                                                            ':id',
+                                                            apartmentId
+                                                        ) + path.room.byId.replace(':id', roomId)
+                                                    );
+                                                    navigate(path.auth.login);
+                                                }}
+                                            >
+                                                Đăng nhập để thuê
+                                            </Button>
+                                        )}
                                     </Grid>
                                 </Grid>
                             </div>

@@ -10,6 +10,7 @@ import { authAction } from '@/app/action/auth.action';
 import { useAppDispatch } from '@/app/hooks';
 import { fireErrorMessage } from '@/configs/common-function';
 import { unwrapResult } from '@reduxjs/toolkit';
+import { CURRENT_ROOM_STORE } from '@/configs/const';
 
 const useStyles = makeStyles({
     container: {
@@ -28,9 +29,9 @@ const useStyles = makeStyles({
         cursor: 'pointer',
         textDecoration: 'underline',
         '&:hover': {
-            color: 'black'
-        }
-    }
+            color: 'black',
+        },
+    },
 });
 
 interface Body {
@@ -47,7 +48,6 @@ const Login = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const auth = useAuthStore();
-
 
     const onLogin = (user: Body, onFormik: FormikHelpers<Body>) => {
         onFormik.setSubmitting(true);
@@ -72,7 +72,13 @@ const Login = () => {
     };
 
     useEffect(() => {
-        if (auth.isLogin) navigate(path.main.home);
+        const alreadyInRoom = sessionStorage.getItem(CURRENT_ROOM_STORE);
+        if (auth.isLogin && alreadyInRoom) {
+            navigate(alreadyInRoom);
+            sessionStorage.removeItem(CURRENT_ROOM_STORE);
+        } else if (auth.isLogin) {
+            navigate(path.main.home);
+        }
     }, [auth, navigate]);
 
     return (
@@ -129,10 +135,12 @@ const Login = () => {
                                 </Button>
                             </Grid>
                             <Grid item xs={12} className="center">
-                                <p className={`${classes.forgot}`}
+                                <p
+                                    className={`${classes.forgot}`}
                                     onClick={() => navigate(path.auth.forgot)}
-                                
-                                >Quên mật khẩu</p>
+                                >
+                                    Quên mật khẩu
+                                </p>
                             </Grid>
                         </Grid>
                     </Form>

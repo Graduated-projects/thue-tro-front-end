@@ -7,6 +7,7 @@ export interface ApartmentStore {
     isLoadingApartments: boolean;
     rooms: Array<Room>;
     isLoadingRooms: boolean;
+    totalOfApartments: number
 }
 
 interface Owner {

@@ -39,8 +39,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
     transition: '0.5',
     '&:hover': {
-      backgroundColor: '#c4fcef',
-    }
+        backgroundColor: '#c4fcef',
+    },
 }));
 
 const useStyles = makeStyles({
@@ -50,16 +50,21 @@ const useStyles = makeStyles({
 });
 
 const WalletHistoryPage = () => {
-    const [walletHistories, setwalletHistories] = useState([]);
+    const [walletHistories, setwalletHistories] = useState<any>([]);
     const [page, setpage] = useState(0);
     const { user } = useAuthStore();
     const classes = useStyles();
 
     useEffect(() => {
         walletService.getTransactionHistory(page).then((resp) => {
-            if (resp.data.data) setwalletHistories(resp.data.data.content);
+            if (resp.data.data) {
+                const clone = [...walletHistories, ...resp.data.data.content];
+                setwalletHistories(clone);
+            }
         });
     }, [user, page]);
+
+    console.log(page);
 
     const walletMap = walletHistories.map((wallet: WalletHistory, index: number) => {
         return (
@@ -90,6 +95,16 @@ const WalletHistoryPage = () => {
                             <TableBody>{walletMap}</TableBody>
                         </Table>
                     </TableContainer>
+                </Grid>
+                <Grid item xs={12} textAlign="center">
+                    <Button
+                        variant="outlined"
+                        onClick={() => {
+                            setpage((p) => p + 1);
+                        }}
+                    >
+                        Xem thêm lịch sử
+                    </Button>
                 </Grid>
             </Grid>
         </div>

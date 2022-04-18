@@ -9,10 +9,11 @@ import {
     CardContent,
     CardMedia,
     CircularProgress,
+    Pagination,
     Typography,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { path } from '@/configs/path';
@@ -47,19 +48,19 @@ const useStyle = makeStyles({
     cardMedia: {
         height: '150px',
     },
-    cardContent: {
-    },
+    cardContent: {},
     cardAction: {
         marginTop: '50px',
         display: 'flex',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
 });
 
 const MyApartment = () => {
     const dispatch = useAppDispatch();
-    const { apartments, isLoadingApartments } = useApartmentStore();
+    const { apartments, isLoadingApartments, totalOfApartments } = useApartmentStore();
     const { user, isLogin } = useAuthStore();
+    const [page, setpage] = useState(1);
     const classes = useStyle();
     const navigate = useNavigate();
 
@@ -68,13 +69,13 @@ const MyApartment = () => {
     }, []);
 
     useEffect(() => {
-        dispatch(apartmentAction.getAll(0));
-    }, [dispatch, user]);
+        dispatch(apartmentAction.getAll(page - 1));
+    }, [dispatch, user, page]);
     console.log(apartments);
 
     const apartmentsMap = apartments.map((apartment: Apartment, index: number) => {
         console.log(apartment.imageUrls[0]);
-        
+
         return (
             <Grid item xs={3} key={index}>
                 <Card variant="outlined" key={index} className={classes.cardContainer}>
@@ -85,7 +86,7 @@ const MyApartment = () => {
                         image={apartment.imageUrls[0] || Logo}
                     />
                     <CardContent className={classes.cardMedia}>
-                        <Typography gutterBottom component="div"  textAlign="center">
+                        <Typography gutterBottom component="div" textAlign="center">
                             <span style={{ fontSize: '16px', fontWeight: 'bold', lineHeight: 0.7 }}>
                                 {limitString(apartment.address, 70)}
                             </span>
@@ -121,7 +122,6 @@ const MyApartment = () => {
                                     path.apartment.byId.replace(':id', apartment?.id as string)
                                 )
                             }
-                           
                         >
                             Xem chi tiết
                         </Button>
@@ -149,6 +149,13 @@ const MyApartment = () => {
                         </Grid>
                         <Grid container spacing={2}>
                             {apartmentsMap}
+                            <Grid item xs={12}>
+                                <Pagination
+                                    count={Math.ceil(totalOfApartments / 20) }
+                                    page={page}
+                                    onChange={(e, value) => setpage(value)}
+                                />
+                            </Grid>
                         </Grid>
                     </div>
                 </div>

@@ -2,7 +2,7 @@ import { api } from '../configs/request.api';
 import axios from 'axios';
 import { BodyRequest } from '@/types/interface';
 import { setHeaderForAxios } from '@/configs/common-function';
-import { socketService } from './socket.service';
+// import { socketService } from './socket.service';
 
 const login = (body: BodyRequest) => {
     return axios.post(api.user.SIGN_IN, body);
@@ -15,7 +15,7 @@ const getUserByToken = async (token: string) => {
 
 const logout = async () => {
     localStorage.removeItem('accessToken');
-    socketService.disconnect()
+    // socketService.disconnect()
 };
 
 const sendOtp = (email: string) => {

@@ -5,6 +5,7 @@ let stompClient: any = null;
 
 const connect = (user: any) => {
     const WEB_SOCKET_URL = process.env.REACT_APP_WEB_SOCKET;
+    console.log(WEB_SOCKET_URL);
 
     let socket = new SockJS(WEB_SOCKET_URL || '');
     stompClient = Stomp.over(socket);
@@ -24,3 +25,5 @@ export const socketService = {
     connect,
     disconnect,
 };
+
+

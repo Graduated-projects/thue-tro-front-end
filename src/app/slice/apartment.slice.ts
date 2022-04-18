@@ -9,6 +9,7 @@ const initialState: ApartmentStore = {
     isLoadingApartments: false,
     rooms: [],
     isLoadingRooms: false,
+    totalOfApartments: 0,
 };
 
 const apartmentSlice = createSlice({
@@ -26,12 +27,12 @@ const apartmentSlice = createSlice({
         [apartmentAction.getAll.fulfilled.toString()]: (state, action) => {
             state.isLoadingApartments = false;
             state.apartments = action.payload.data?.content ?? [];
+            state.totalOfApartments = action.payload.data?.totalElements;
         },
         [apartmentAction.getAll.rejected.toString()]: (state, action) => {
             state.isLoadingApartments = false;
         },
 
-        
         [apartmentAction.getRoomsByApartmentId.pending.toString()]: (state, action) => {
             state.isLoadingRooms = true;
         },
@@ -64,7 +65,6 @@ const apartmentSlice = createSlice({
         [apartmentAction.searchRoom.rejected.toString()]: (state, action) => {
             state.isLoadingApartments = false;
         },
-
     },
 });
 
