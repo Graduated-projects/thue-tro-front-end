@@ -51,7 +51,7 @@ const authSlice = createSlice({
         },
         [authAction.getUserByToken.fulfilled.toString()]: (state, action) => {
             state.isLoading = false;
-
+            
             if (action.payload.success) {
                 console.log(`getByToken: `, action.payload.data);
                 state.isLoading = false;

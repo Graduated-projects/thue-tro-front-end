@@ -2,6 +2,7 @@ import { api } from '../configs/request.api';
 import axios from 'axios';
 import { BodyRequest } from '@/types/interface';
 import { setHeaderForAxios } from '@/configs/common-function';
+import { socketService } from './socket.service';
 
 const login = (body: BodyRequest) => {
     return axios.post(api.user.SIGN_IN, body);
@@ -14,6 +15,7 @@ const getUserByToken = async (token: string) => {
 
 const logout = async () => {
     localStorage.removeItem('accessToken');
+    socketService.disconnect()
 };
 
 const sendOtp = (email: string) => {
@@ -50,8 +52,6 @@ const detectCard = async (front: File, back: File) => {
                 'content-type': 'multipart/form-data',
             },
         });
-        console.log(frontCardFile);
-        console.log(backCardFile);
 
         return Promise.resolve({ frontCardFile, backCardFile });
     } catch (error) {
@@ -72,8 +72,8 @@ const getUserInfoById = (userId: string) => {
 };
 
 const changePassword = (user: BodyRequest) => {
-    return axios.patch(api.user.CHANGE_PASSWORD, user)
-}
+    return axios.patch(api.user.CHANGE_PASSWORD, user);
+};
 
 export const authService = {
     login,
@@ -86,5 +86,5 @@ export const authService = {
     register,
     genOtp,
     getUserInfoById,
-    changePassword
+    changePassword,
 };

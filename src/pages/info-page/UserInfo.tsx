@@ -16,13 +16,14 @@ import { useNavigate } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useAuthStore } from '@/app/store';
-import { formatPhone, formatVND } from '@/configs/common-function';
+import { fireErrorMessage, formatPhone, formatVND } from '@/configs/common-function';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import LocalAtmRoundedIcon from '@mui/icons-material/LocalAtmRounded';
 import DocumentScannerOutlinedIcon from '@mui/icons-material/DocumentScannerOutlined';
 import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
 import HistoryIcon from '@mui/icons-material/History';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import LockResetIcon from '@mui/icons-material/LockReset';
 import { path } from '@/configs/path';
 import { walletService } from '@/services/wallet.service';
@@ -30,6 +31,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import NumericInput from 'material-ui-numeric-input';
 import { PAYMENT_STORAGE } from '@/configs/const';
+import { authService } from '@/services/auth.service';
 
 const useStyles = makeStyles({
     customContainer,
@@ -101,7 +103,7 @@ const UserInfo = () => {
             title: 'Nạp tiền vào ví H-flex',
             html: (
                 <div>
-                    <p>Nhập số tiền</p>
+                    <p>Nhập số tiền muốn nạp:</p>
                     <br></br>
                     <NumericInput
                         precision={0}
@@ -129,6 +131,119 @@ const UserInfo = () => {
                 navigate(path.wallet.paymentMethod);
             }
         });
+    };
+
+    const withdrawMoney = () => {
+        MySwal.fire({
+            title: 'Rút tiền từ H-flex về paypal',
+            html: (
+                <div>
+                    <p>Nhập số tiền muốn rút:</p>
+                    <br></br>
+                    <NumericInput
+                        precision={0}
+                        decimalChar=","
+                        thousandChar="."
+                        className={`w-75`}
+                        label="Số tiền: VND"
+                        variant="outlined"
+                        onChange={(e) =>
+                            sessionStorage.setItem(
+                                PAYMENT_STORAGE,
+                                Number(e.target.value).toString()
+                            )
+                        }
+                    />
+                </div>
+            ),
+            icon: 'info',
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'Xác nhận',
+            cancelButtonText: 'hủy',
+            showCancelButton: true,
+        })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    authService.genOtp({
+                        email: user?.email,
+                        type: 2,
+                    });
+                    return Promise.resolve();
+                }
+                return Promise.reject();
+            })
+            .then(() => {
+                MySwal.fire({
+                    title: 'Xác thực',
+                    html: (
+                        <div>
+                            <p>
+                                Chúng tôi đã gửi mã OTP về mail:<b> {user?.email} </b>
+                            </p>
+                            <br></br>
+                            <TextField
+                                placeholder="Nhập mã OTP"
+                                label="Mã OTP"
+                                spellCheck={false}
+                                onChange={(e) => sessionStorage.setItem('otp', e.target.value)}
+                            />
+                        </div>
+                    ),
+                    icon: 'info',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Xác nhận',
+                    cancelButtonText: 'hủy',
+                    showCancelButton: true,
+                })
+                    .then((result) => {
+                        if (result.isConfirmed) {
+                            const otp = sessionStorage.getItem('otp');
+                            return authService
+                                .verifyEmail({ email: user?.email, otp }, 2)
+                                .then((resp) => {
+                                    if (resp.data.data.success) {
+                                        return Promise.resolve();
+                                    } else {
+                                        fireErrorMessage('OTP không hợp lệ!');
+                                        return Promise.reject();
+                                    }
+                                });
+                        }
+                        return Promise.reject();
+                    })
+                    .then(() => {
+                        const cost = Number(sessionStorage.getItem(PAYMENT_STORAGE));
+                        if (cost)
+                            walletService
+                                .withdrawPaypal(cost)
+                                .then((resp) => {
+                                    setbalanceInWallet((balance) => balance - cost);
+                                    MySwal.fire({
+                                        title: 'Thành công',
+                                        html: (
+                                            <div>
+                                                <p>Rút tiền từ ví H-flex thành công.</p>
+                                                <p>
+                                                    Số tiền rút:
+                                                    <b className="text-danger">{formatVND(cost)}</b>
+                                                </p>
+                                                <p>
+                                                    Tài khoản còn lại:
+                                                    <b> {formatVND(balanceInWallet - cost)}</b>
+                                                </p>
+                                            </div>
+                                        ),
+                                        icon: 'success',
+                                        confirmButtonColor: '#3085d6',
+                                        confirmButtonText: 'Xác nhận',
+                                    });
+                                })
+                                .catch((err) => {
+                                    console.error(err);
+                                    fireErrorMessage(err);
+                                });
+                    });
+            });
     };
 
     return (
@@ -167,8 +282,7 @@ const UserInfo = () => {
                                                     Số dư:
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    {' '}
-                                                    {formatVND(balanceInWallet)}{' '}
+                                                    {formatVND(balanceInWallet)}
                                                 </TableCell>
                                             </TableRow>
                                         </TableBody>
@@ -181,8 +295,11 @@ const UserInfo = () => {
                                     >
                                         <ArrowRightAltIcon fontSize="inherit" /> Nạp tiền vào ví
                                     </div>
-                                    <div className={classes.recharge}>
-                                        <ArrowLeftIcon fontSize="inherit" /> Rút tiền{' '}
+                                    <div
+                                        className={classes.recharge}
+                                        onClick={() => withdrawMoney()}
+                                    >
+                                        <ArrowLeftIcon fontSize="inherit" /> Rút tiền
                                     </div>
                                 </div>
                             </div>
@@ -247,8 +364,7 @@ const UserInfo = () => {
                                         colSpan={2}
                                         style={{ fontSize: '24px', color: 'white' }}
                                     >
-                                        {' '}
-                                        Menu người dùng{' '}
+                                        Menu người dùng
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
@@ -259,14 +375,40 @@ const UserInfo = () => {
                                     }}
                                 >
                                     <TableCell align="center">
-                                        {' '}
                                         <Button
                                             variant="contained"
                                             className={`${classes.button}`}
                                             onClick={() => navigate(path.apartment.my)}
                                         >
                                             <HomeIcon /> &nbsp; Xem căn hộ của tôi
-                                        </Button>{' '}
+                                        </Button>
+                                    </TableCell>
+
+                                    <TableCell align="center">
+                                        <Button
+                                            variant="contained"
+                                            className={`${classes.button}`}
+                                            onClick={() => navigate(path.apartment.post)}
+                                            color="info"
+                                        >
+                                            <AddCircleIcon fontSize="small" /> &nbsp; Tạo căn hộ mới
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow
+                                    sx={{
+                                        '&:last-child td, &:last-child th': { border: 0 },
+                                    }}
+                                >
+                                    <TableCell align="center">
+                                        <Button
+                                            variant="contained"
+                                            className={`${classes.button}`}
+                                            onClick={() => navigate(path.contract.other)}
+                                            color="success"
+                                        >
+                                            <ReceiptLongOutlinedIcon /> &nbsp; Xem Hợp đồng khác
+                                        </Button>
                                     </TableCell>
                                     <TableCell align="center">
                                         <Button
@@ -286,35 +428,6 @@ const UserInfo = () => {
                                     }}
                                 >
                                     <TableCell align="center">
-                                        {' '}
-                                        <Button
-                                            variant="contained"
-                                            className={`${classes.button}`}
-                                            onClick={() => navigate(path.contract.other)}
-                                            color="success"
-                                        >
-                                            <ReceiptLongOutlinedIcon /> &nbsp; Xem Hợp đồng khác
-                                        </Button>{' '}
-                                    </TableCell>
-                                    <TableCell align="center">
-                                        {' '}
-                                        <Button
-                                            variant="contained"
-                                            className={`${classes.button}`}
-                                            onClick={() => navigate(path.wallet.history)}
-                                            color="error"
-                                        >
-                                            <HistoryIcon /> &nbsp; Xem Lịch Sử Giao Dịch
-                                        </Button>{' '}
-                                    </TableCell>
-                                </TableRow>
-                                <TableRow
-                                    sx={{
-                                        '&:last-child td, &:last-child th': { border: 0 },
-                                    }}
-                                >
-                                    <TableCell align="center">
-                                        {' '}
                                         <Button
                                             variant="contained"
                                             className={`${classes.button}`}
@@ -322,7 +435,17 @@ const UserInfo = () => {
                                             color="secondary"
                                         >
                                             <LockResetIcon /> &nbsp; Đổi mật khẩu
-                                        </Button>{' '}
+                                        </Button>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        <Button
+                                            variant="contained"
+                                            className={`${classes.button}`}
+                                            onClick={() => navigate(path.wallet.history)}
+                                            color="error"
+                                        >
+                                            <HistoryIcon /> &nbsp; Xem Lịch Sử Giao Dịch
+                                        </Button>
                                     </TableCell>
                                 </TableRow>
                             </TableBody>

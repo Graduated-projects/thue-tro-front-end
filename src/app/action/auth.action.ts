@@ -24,10 +24,14 @@ const logout = createAsyncThunk('user/logout', async () => {
 const getUserByToken = createAsyncThunk('user/getUserByToken', async (token: string) => {
     const response = await authService.getUserByToken(token);
 
-    // const user = {
-    //     userId: response.data.data.id,
-    // };
-    // socketService.connect(user)
+    try {
+        const user = {
+            userId: response.data.data.id,
+        };
+        socketService.connect(user);
+    } catch (error) {
+        console.error(error);
+    }
     return response.data;
 });
 

@@ -80,7 +80,6 @@ const useStyle = makeStyles({
             color: 'blue',
             border: '1px dashed blue',
             cursor: 'pointer',
-
         },
     },
 });
@@ -104,7 +103,7 @@ const ApartmentPost = () => {
     const [provinces, setprovinces] = useState([]);
     const [districts, setdistricts] = useState([]);
     const [wards, setwards] = useState([]);
-    
+
     const [numberOptions, setnumberOptions] = useState({
         totalNumberOfRooms: 0,
         numberOfFloors: 0,
@@ -117,7 +116,7 @@ const ApartmentPost = () => {
         street: '',
     });
 
-    const numbers = Array(50).fill(null);
+    const numbers = Array(20).fill(null);
 
     useEffect(() => {
         setprovinces(allCity.map((city: any) => city.name));
@@ -125,7 +124,9 @@ const ApartmentPost = () => {
 
     useEffect(() => {
         const filterDistrict = allCity.find((city: any) => city.name === address.province);
-        if (filterDistrict && filterDistrict.districts) setdistricts(filterDistrict.districts);
+        if (filterDistrict && filterDistrict.districts) {
+            setdistricts(filterDistrict.districts);
+        }
     }, [address.province]);
 
     useEffect(() => {
@@ -133,7 +134,9 @@ const ApartmentPost = () => {
             (district: any) => district.name === address.district
         );
 
-        if (filterWards && filterWards.wards) setwards(filterWards.wards);
+        if (filterWards && filterWards.wards) {
+            setwards(filterWards.wards);
+        }
     }, [address.district]);
 
     useEffect(() => {
@@ -165,13 +168,16 @@ const ApartmentPost = () => {
     });
 
     const postApartment = (apartment: Apartment, formik: any) => {
-        const apartmentPost = {
+        formik.setSubmitting(true);
+
+        const test = {
             ...apartment,
             address: `${apartment.address}, ${address.wards}, ${address.district}, ${address.province}`,
-            totalNumberOfRooms: numberOptions.numberOfFloors,
-            numberOfRoomsAvailable: numberOptions.numberOfRoomsAvailable,
+            totalNumberOfRooms: numberOptions.totalNumberOfRooms,
+            numberOfRoomsAvailable: numberOptions.totalNumberOfRooms,
             numberOfFloors: numberOptions.numberOfFloors,
         };
+        console.log(test);
 
         const formData = new FormData();
         if (filesUpload.length) {
@@ -183,12 +189,20 @@ const ApartmentPost = () => {
                 .uploadFiles(formData)
                 .then((resp) => {
                     const { urls } = resp.data.data;
-                    apartment.imageUrls = urls;
-                    
-                    
+                    const finallyApartmentPost = {
+                        ...apartment,
+                        address: `${apartment.address}, ${address.wards}, ${address.district}, ${address.province}`,
+                        totalNumberOfRooms: numberOptions.totalNumberOfRooms,
+                        numberOfRoomsAvailable: numberOptions.totalNumberOfRooms,
+                        numberOfFloors: numberOptions.numberOfFloors,
+                        imageUrls: urls,
+                    };
+
                     apartmentService
-                        .postApartment(apartmentPost)
+                        .postApartment(finallyApartmentPost)
                         .then((resp) => {
+                            formik.setSubmitting(false);
+
                             Swal.fire({
                                 title: 'Thành công!',
                                 text: 'Bạn đã tạo 1 căn hộ!',
@@ -199,18 +213,24 @@ const ApartmentPost = () => {
                                 navigate(path.main.userInfo);
                             });
                         })
-                        .catch((err) => fireErrorMessage(err));
+                        .catch((err) => {
+                            formik.setSubmitting(false);
+                            fireErrorMessage(err);
+                        });
                 })
-                .catch((err) => fireErrorMessage(err));
+                .catch((err) => {
+                    fireErrorMessage(err);
+                });
         } else {
-            fireErrorMessage("Bạn phải thêm ảnh cho căn hộ!")
+            fireErrorMessage('Bạn phải thêm ảnh cho căn hộ!');
+            formik.setSubmitting(false);
         }
     };
 
     return (
         <div className={` ${classes.apartmentContainer}`}>
             <Formik initialValues={initialApartment} onSubmit={postApartment}>
-                {(formik: any) => (
+                {(formik) => (
                     <Form>
                         <Grid container spacing={2}>
                             <Grid item xs={12} className="" textAlign="center">
@@ -236,7 +256,7 @@ const ApartmentPost = () => {
                                 </Grid>
                                 <Grid item xs={12} className="mt-5">
                                     <Grid container spacing={2}>
-                                        <Grid item xs={4}>
+                                        <Grid item xs={6}>
                                             <FormControl fullWidth className="col-3">
                                                 <InputLabel>Tổng số phòng</InputLabel>
                                                 <Select
@@ -259,7 +279,7 @@ const ApartmentPost = () => {
                                                 </Select>
                                             </FormControl>
                                         </Grid>
-                                        <Grid item xs={4}>
+                                        {/* <Grid item xs={4}>
                                             <FormControl fullWidth className="col-3">
                                                 <InputLabel>Số phòng trống</InputLabel>
                                                 <Select
@@ -281,8 +301,8 @@ const ApartmentPost = () => {
                                                     ))}
                                                 </Select>
                                             </FormControl>
-                                        </Grid>
-                                        <Grid item xs={4}>
+                                        </Grid> */}
+                                        <Grid item xs={6}>
                                             <FormControl fullWidth className="col-3">
                                                 <InputLabel>Số Tầng</InputLabel>
                                                 <Select
@@ -435,6 +455,7 @@ const ApartmentPost = () => {
                                     color="primary"
                                     type="submit"
                                     style={{ marginTop: 'auto' }}
+                                    disabled={formik.isSubmitting}
                                 >
                                     Hoàn tất
                                 </Button>
