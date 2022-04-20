@@ -17,6 +17,7 @@ import { fireErrorMessage, formatVND } from '@/configs/common-function';
 import { contractService } from '@/services/contract.service';
 import { typeOfPayment, TYPE_PAYMENT_STORAGE } from '@/configs/const';
 import { walletService } from '@/services/wallet.service';
+import { useAuthStore } from '@/app/store';
 
 const useStyle = makeStyles({
     container: {
@@ -45,6 +46,7 @@ const PaymentSuccessfully = () => {
     const url = window.location.href.split('/');
     const data = url[url.length - 1];
     const navigate = useNavigate();
+    const { user } = useAuthStore();
 
     const [paymentInfo, setpaymentInfo] = useState<any>({
         vnp_Amount: 0,
@@ -57,6 +59,7 @@ const PaymentSuccessfully = () => {
         vnp_TmnCode: '',
         vnp_TransactionStatus: '',
         vnp_SecureHash: '',
+        vnp_TxnRef: '',
     });
     const [contractInfo, setcontractInfo] = useState({
         roomId: '',
@@ -89,6 +92,7 @@ const PaymentSuccessfully = () => {
             vnp_TmnCode: url.searchParams.get('vnp_TmnCode') || '',
             vnp_TransactionStatus: url.searchParams.get('vnp_TransactionStatus') || '',
             vnp_SecureHash: url.searchParams.get('vnp_SecureHash') || '',
+            vnp_TxnRef: url.searchParams.get('vnp_TxnRef') || '',
         };
         setpaymentInfo(paymentInfoClone);
         if (Object.keys(contractSession).length) {
@@ -105,21 +109,25 @@ const PaymentSuccessfully = () => {
     useEffect(() => {
         const typePaymentSession = Number(sessionStorage.getItem(TYPE_PAYMENT_STORAGE));
         const paymentData = {
+            typePayment: 'vnpay',
             vnp_Amount: Number(paymentInfo.vnp_Amount) / 100,
             vnp_BankCode: paymentInfo.vnp_BankCode,
             vnp_TransactionNo: paymentInfo.vnp_TransactionNo,
             vnp_CardType: paymentInfo.vnp_CardType,
             vnp_OrderInfo: paymentInfo.vnp_OrderInfo,
             vnp_PayDate: paymentInfo.vnp_PayDate,
+            vnp_TxnRef: paymentInfo.vnp_TxnRef,
+            // vnp_ResponseCode: paymentInfo.vnp_ResponseCode,
+            // vnp_SecureHash: paymentInfo.vnp_SecureHash,
+            // vnp_TxnRef: paymentInfo.vnp_TxnRef,
         };
         const contract = {
             roomId: Number(contractInfo.roomId),
             renterId: Number(contractInfo.renterId),
             period: contractInfo.period,
-            typePayment: 'vnpay',
             ...paymentData,
         };
-        if (contract.roomId && typePaymentSession === typeOfPayment.CREATE_CONTRACT) {
+        if (contract.roomId && typePaymentSession === typeOfPayment.CREATE_CONTRACT && user?.id) {
             console.log(`contract post:`, contract);
             contractService
                 .createContract(contract)
@@ -134,15 +142,19 @@ const PaymentSuccessfully = () => {
                 });
         }
 
-        if (typePaymentSession === typeOfPayment.RECHARGE) {
+        if (typePaymentSession === typeOfPayment.RECHARGE && user?.id) {
+            console.log(paymentData);
+
             walletService
                 .rechargeMoneyToWallet(paymentData)
-                .then((resp) => {})
+                .then((resp) => {
+                    console.log(resp.data);
+                })
                 .catch((err) => {
                     console.error(err);
                 });
         }
-    }, [paymentInfo, contractInfo]);
+    }, [paymentInfo, contractInfo, user]);
 
     const formatDMY = (string: string) => {
         const year = string.slice(0, 4);

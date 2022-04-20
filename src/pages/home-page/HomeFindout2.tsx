@@ -5,6 +5,8 @@ import { makeStyles } from '@mui/styles';
 import room from '@/assets/img/room.webp';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import whiteback from '@/assets/img/white-background.webp';
+import { path } from '@/configs/path';
+import { useAuthStore } from '@/app/store';
 const useStyles = makeStyles({
     container: {
         backgroundColor: '#1f1f1f',
@@ -37,8 +39,14 @@ const useStyles = makeStyles({
 
 const HomeFindout2 = () => {
     const classes = useStyles();
-
     const navigate = useNavigate();
+    const { isLogin } = useAuthStore();
+
+    const gotoCreateApartment = () => {
+        if (isLogin) navigate(path.apartment.post);
+        else navigate(path.auth.login);
+    };
+
     return (
         <div className={`${classes.container}`}>
             <Grid container spacing={0}>
@@ -59,7 +67,7 @@ const HomeFindout2 = () => {
                             </p>
                             <br />
                             <p>Đừng lo lắng! Chúng tôi sẽ hỗ trợ bạn.</p>
-                            <Button>
+                            <Button onClick={() => gotoCreateApartment()}>
                                 {' '}
                                 <ArrowRightAltIcon fontSize="medium" /> Thử tạo phòng ngay
                             </Button>

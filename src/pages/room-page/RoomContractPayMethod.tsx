@@ -104,6 +104,17 @@ const RoomContractPayMethod = ({ type = 0 }: Props) => {
         }
     };
 
+    const renderType = () => {
+        switch (type) {
+            case typeOfPayment.CREATE_CONTRACT:
+                return 'vnpay';
+            case typeOfPayment.RECHARGE:
+                return 'recharge';
+            default:
+                return '';
+        }
+    };
+
     const payment = (bank: any) => {
         Swal.fire({
             title: 'Xác nhận!',
@@ -121,6 +132,7 @@ const RoomContractPayMethod = ({ type = 0 }: Props) => {
                     amount: Number(amount),
                     bankCode: bank.value,
                     description: renderDescription(),
+                    type: renderType(),
                 };
 
                 contractService

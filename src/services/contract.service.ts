@@ -19,8 +19,7 @@ const getContractsOwner = () => axios.get(api.contract.GET_OWNER);
 const getContractsRenter = () => axios.get(api.contract.GET_RENTER);
 
 const getContractById = (contractId: string) =>
-    // axios.get(api.contract.BY_ID.replace(':id', contractId));
-     axios.get(api.contract.BY_ID.replace(':id', `{id}?id=${contractId}`));
+    axios.get(api.contract.BY_ID.replace(':id', contractId));
 
 export const contractService = {
     getInfoBeforeCreateContract,

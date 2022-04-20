@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import room from '@/assets/img/room.webp';
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
+import { path } from '@/configs/path';
 const useStyles = makeStyles({
     container: {
         backgroundColor: 'white',
@@ -58,7 +59,12 @@ const HomeFindout = () => {
                             </p>
                             <br />
                             <p>Đừng lo lắng! Chúng tôi sẽ hỗ trợ bạn.</p>
-                            <Button> <ArrowRightAltIcon fontSize="medium" /> Tìm kiếm ngay </Button>
+                            <Button
+                                onClick={() => navigate(path.main.finding)}
+                            >
+                                {' '}
+                                <ArrowRightAltIcon fontSize="medium" /> Tìm kiếm ngay{' '}
+                            </Button>
                         </div>
                     </div>
                 </Grid>
