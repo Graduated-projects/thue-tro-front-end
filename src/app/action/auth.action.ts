@@ -29,6 +29,9 @@ const getUserByToken = createAsyncThunk('user/getUserByToken', async (token: str
             userId: response.data.data.id,
         };
         socketService.connect(user);
+        setTimeout(() => {
+            socketService.test();
+        }, 2000);
     } catch (error) {
         console.error(error);
     }

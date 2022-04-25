@@ -75,6 +75,8 @@ const changePassword = (user: BodyRequest) => {
     return axios.patch(api.user.CHANGE_PASSWORD, user);
 };
 
+const forgotPassword = (user: BodyRequest) => axios.patch(api.user.RESET_PASSWORD, user)
+
 export const authService = {
     login,
     logout,
@@ -87,4 +89,5 @@ export const authService = {
     genOtp,
     getUserInfoById,
     changePassword,
+    forgotPassword
 };

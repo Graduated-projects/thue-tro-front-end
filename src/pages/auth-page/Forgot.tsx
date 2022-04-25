@@ -60,7 +60,7 @@ const Forgot = () => {
                     const result = resp.data;
                     const isExists = result.data.exists;
                     onFormik.setSubmitting(false);
-                    if (isExists) {     
+                    if (isExists) {
                         authService.sendOtp(user.email);
                         setcurrentRegisterStep(registerSteps.SECONDS);
                     } else {
@@ -75,14 +75,30 @@ const Forgot = () => {
 
     const onRegisterStep3 = (user: Body, onFormik: FormikProps<Body>) => {
         if (user.password && user.password === user.confirmPassword) {
+
+            if (user.password.length < 8) {
+                fireErrorMessage('Mật khẩu phải hơn 8 ký tự');
+            } else {
+                authService.forgotPassword({
+                    email: user.email,
+                    otp: user.otp,
+                    newPassword: user.password,
+                })
+                .then((resp) => {
+                    console.log(resp.data);
+                    if(resp.data) {
+                        
+                    }
+                })
+            }
         } else {
             fireErrorMessage('Xác nhận mật khẩu không trùng');
         }
     };
 
     const onRegisterStep2 = (user: Body, onFormik: FormikProps<Body>) => {
-         console.log(onFormik.isSubmitting);
-         
+        console.log(onFormik.isSubmitting);
+
         onFormik.setSubmitting(true);
         const userRegister = {
             email: user.email,
@@ -132,9 +148,7 @@ const Forgot = () => {
                                         />
                                         <ErrorMessage
                                             name="email"
-                                            render={(err) => (
-                                                <div style={{ color: 'red' }}>{err}</div>
-                                            )}
+                                            render={(err) => <div style={{ color: 'red' }}>{err}</div>}
                                         />
                                     </Grid>
 
@@ -176,9 +190,7 @@ const Forgot = () => {
                                         />
                                         <ErrorMessage
                                             name="password"
-                                            render={(err) => (
-                                                <div style={{ color: 'red' }}>{err}</div>
-                                            )}
+                                            render={(err) => <div style={{ color: 'red' }}>{err}</div>}
                                         />
                                     </Grid>
                                     <Grid item xs={12}>
@@ -195,9 +207,7 @@ const Forgot = () => {
                                         />
                                         <ErrorMessage
                                             name="confirmPassword"
-                                            render={(err) => (
-                                                <div style={{ color: 'red' }}>{err}</div>
-                                            )}
+                                            render={(err) => <div style={{ color: 'red' }}>{err}</div>}
                                         />
                                     </Grid>
                                     <Grid item xs={12} className="center">
@@ -213,9 +223,7 @@ const Forgot = () => {
                                         <Button
                                             variant="outlined"
                                             color="inherit"
-                                            onClick={() =>
-                                                setcurrentRegisterStep(registerSteps.FIRST)
-                                            }
+                                            onClick={() => setcurrentRegisterStep(registerSteps.FIRST)}
                                         >
                                             Quay lại
                                         </Button>
@@ -226,8 +234,8 @@ const Forgot = () => {
                             {currentRegisterStep === registerSteps.SECONDS && (
                                 <React.Fragment>
                                     <Grid item xs={12} textAlign="center">
-                                        Chúng tôi đã gửi về email: <b>{formik.values.email}</b> một
-                                        mã OTP. Vui lòng nhập mã OTP để hoàn tất đăng ký!
+                                        Chúng tôi đã gửi về email: <b>{formik.values.email}</b> một mã OTP. Vui lòng
+                                        nhập mã OTP để hoàn tất đăng ký!
                                     </Grid>
                                     <Grid item xs={12} className="center">
                                         <Grid item xs={12} className="center">
@@ -262,9 +270,7 @@ const Forgot = () => {
                                         <Button
                                             variant="outlined"
                                             color="inherit"
-                                            onClick={() =>
-                                                setcurrentRegisterStep(registerSteps.FIRST)
-                                            }
+                                            onClick={() => setcurrentRegisterStep(registerSteps.FIRST)}
                                         >
                                             Quay lại
                                         </Button>

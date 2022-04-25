@@ -11,7 +11,7 @@ import {
     TableHead,
     TableRow,
     TextField,
-} from '@mui/material';
+} from '@mui/material/';
 import { useNavigate } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';

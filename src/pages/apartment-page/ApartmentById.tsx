@@ -136,7 +136,7 @@ const ApartmentById = () => {
             </Grid>
         );
     });
-
+    
     return (
         <div className="container">
             <div className={`${classes.container}`}>
@@ -158,7 +158,7 @@ const ApartmentById = () => {
                 <p className="mt-5">
                     Địa chỉ căn hộ: <b> {apartment?.address}</b>
                 </p>
-                <p> Danh sách căn hộ của bạn </p>
+                <p> Danh sách phòng của căn hộ này </p>
 
                 <Grid container spacing={2}>
                     {roomsMap}

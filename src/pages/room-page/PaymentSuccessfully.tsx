@@ -109,7 +109,7 @@ const PaymentSuccessfully = () => {
     useEffect(() => {
         const typePaymentSession = Number(sessionStorage.getItem(TYPE_PAYMENT_STORAGE));
         const paymentData = {
-            typePayment: 'vnpay',
+            typePayment: 'payment',
             vnp_Amount: Number(paymentInfo.vnp_Amount) / 100,
             vnp_BankCode: paymentInfo.vnp_BankCode,
             vnp_TransactionNo: paymentInfo.vnp_TransactionNo,

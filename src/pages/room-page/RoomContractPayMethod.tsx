@@ -107,7 +107,7 @@ const RoomContractPayMethod = ({ type = 0 }: Props) => {
     const renderType = () => {
         switch (type) {
             case typeOfPayment.CREATE_CONTRACT:
-                return 'vnpay';
+                return 'payment';
             case typeOfPayment.RECHARGE:
                 return 'recharge';
             default:
@@ -138,6 +138,7 @@ const RoomContractPayMethod = ({ type = 0 }: Props) => {
                 contractService
                     .payByVNPay(payment)
                     .then((resp) => {
+
                         if (resp.data.success) {
                             const url = resp.data.data.message;
                             window.open(url, '_self');
